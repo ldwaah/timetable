@@ -6,57 +6,140 @@
   <title>Student timetable</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
       background: #0d1117;
       color: #e6edf3;
       min-height: 100vh;
-      padding: 1.5rem 1.25rem;
-      max-width: 1100px;
+      padding: 2rem 1.25rem;
+      max-width: 1200px;
       margin: 0 auto;
     }
-    .top { margin-bottom: 1rem; }
-    a.back { color: #58a6ff; text-decoration: none; font-size: 0.9rem; }
+
+    .top { margin-bottom: 1.5rem; }
+
+    a.back {
+      color: #58a6ff;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
     a.back:hover { text-decoration: underline; }
-    h1 { margin-top: 0.5rem; font-size: 1.35rem; font-weight: 600; color: #f0f6fc; }
-    .hints { font-size: 0.8rem; color: #8b949e; margin-bottom: 1.25rem; line-height: 1.45; }
-    .grid-section { margin-bottom: 2rem; }
-    .grid-section h2 { font-size: 1.05rem; font-weight: 600; color: #f0f6fc; margin-bottom: 0.35rem; }
-    .grid-note { font-size: 0.75rem; color: #8b949e; margin-bottom: 0.5rem; }
+
+    h1 {
+      margin-top: 1rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #f0f6fc;
+    }
+
+    .banner {
+      margin-bottom: 1.5rem;
+      padding: 1rem 1.25rem;
+      background: linear-gradient(135deg, #1f3a5f 0%, #161b22 100%);
+      border: 1px solid #30363d;
+      border-left: 4px solid #58a6ff;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      color: #c9d1d9;
+      line-height: 1.55;
+    }
+
+    .banner strong { color: #f0f6fc; }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.25rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.85rem;
+      color: #8b949e;
+    }
+
+    .legend span::before {
+      content: "";
+      display: inline-block;
+      width: 0.65rem;
+      height: 0.65rem;
+      border-radius: 3px;
+      margin-right: 0.35rem;
+      vertical-align: middle;
+    }
+
+    .legend .l-lesson::before { background: #30363d; }
+    .legend .l-maths::before { background: #1f6feb; }
+    .legend .l-english::before { background: #9e6a03; }
+    .legend .l-break::before { background: #238636; }
+    .legend .l-assembly::before { background: #a371f7; }
+    .legend .l-arrival::before { background: #58a6ff; }
+
+    .grid-section { margin-bottom: 2.5rem; }
+
+    .grid-section h2 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #f0f6fc;
+      margin-bottom: 0.75rem;
+    }
+
     .table-wrap {
       overflow-x: auto;
       border: 1px solid #30363d;
-      border-radius: 10px;
+      border-radius: 12px;
       background: #161b22;
     }
+
     .week-grid {
       width: 100%;
       border-collapse: collapse;
-      min-width: 560px;
+      min-width: 640px;
     }
-    .week-grid th, .week-grid td {
+
+    .week-grid th,
+    .week-grid td {
       border: 1px solid #21262d;
-      padding: 0.5rem 0.45rem;
-      vertical-align: middle;
-      font-size: 0.82rem;
+      padding: 0.55rem 0.5rem;
+      vertical-align: top;
+      font-size: 0.8rem;
+    }
+
+    .week-grid th {
+      background: #1c2128;
+      color: #f0f6fc;
+      font-weight: 600;
       text-align: center;
     }
-    .week-grid thead th { background: #1c2128; color: #f0f6fc; font-weight: 600; }
-    .period-col, .time-col {
-      text-align: left;
+
+    .finish-hint {
+      display: block;
+      font-size: 0.7rem;
       font-weight: 500;
-      color: #8b949e;
-      background: #1c2128;
-      white-space: nowrap;
+      color: #58a6ff;
+      margin-top: 0.15rem;
     }
-    .time-col { font-size: 0.75rem; }
-    .slot.lesson { color: #c9d1d9; }
-    .slot.core.maths { background: #1c2d4a; color: #79c0ff; font-weight: 600; }
-    .slot.core.english { background: #3d2e12; color: #e3b341; font-weight: 600; }
-    .slot.break { background: #132d1b; color: #3fb950; font-weight: 600; }
-    .slot.assembly { background: #2d1f4a; color: #d2a8ff; font-weight: 600; }
-    .slot.arrival { background: #1f3a5f33; color: #58a6ff; }
-    .slot.empty { color: #484f58; }
+
+    .slot-time {
+      display: block;
+      font-size: 0.68rem;
+      color: #8b949e;
+      margin-bottom: 0.2rem;
+    }
+
+    .slot-label { font-weight: 500; color: #e6edf3; }
+
+    .slot.lesson .slot-label { color: #c9d1d9; }
+    .slot.core.maths { background: #1c2d4a; }
+    .slot.core.maths .slot-label { color: #79c0ff; font-weight: 600; }
+    .slot.core.english { background: #3d2e12; }
+    .slot.core.english .slot-label { color: #e3b341; font-weight: 600; }
+    .slot.break { background: #132d1b; }
+    .slot.break .slot-label { color: #3fb950; }
+    .slot.assembly { background: #2d1f4a; }
+    .slot.assembly .slot-label { color: #d2a8ff; }
+    .slot.arrival { background: #1f3a5f44; }
+    .slot.arrival .slot-label { color: #58a6ff; }
+    .slot.empty { color: #484f58; text-align: center; }
 </style>
 </head>
 <body>
@@ -64,27 +147,44 @@
     <a class="back" href="index.html">← Back</a>
     <h1>Student timetable</h1>
   </div>
-  <p class="hints">
-    Lunch 12:15–12:30 daily.
-    Wed from 10:00.
-    Finish Mon–Wed 15:00, Thu–Fri 14:00.
-    Assembly Tuesday P1.
+
+  <aside class="banner" role="status">
+    <strong>Arrival &amp; finish</strong>
+    Mon, Tue, Thu, Fri: from <strong>08:50</strong> (latest <strong>09:05</strong>). Wednesday: from <strong>10:00</strong>.
+    Finish Mon–Wed <strong>15:00</strong>; Thu–Fri <strong>14:00</strong>.
+    Assembly <strong>Tuesday 09:05–09:40</strong> (35 min, whole school).
+    Two breaks and one lunch per day (15 min each); KS3 and KS4 staggered.
+    <strong>Maths &amp; English:</strong> English in the first teaching block; Maths in the block after the first break (between-breaks window). Not scheduled post-lunch.
+  </aside>
+
+  <div class="legend" aria-hidden="true">
+    <span class="l-english">English</span>
+    <span class="l-maths">Maths</span>
+    <span class="l-lesson">Lesson — TBC</span>
+    <span class="l-break">Break / Lunch</span>
+    <span class="l-assembly">Assembly</span>
+    <span class="l-arrival">Arrival</span>
+  </div>
+
+  <p class="legend" style="margin-top:-0.75rem">
+    <strong style="color:#f0f6fc">Example breaks — KS3:</strong> Mon: 10:40 &amp; 12:45 · Tue: 11:15 &amp; 13:20 · Wed: 11:35 &amp; 13:40 · Thu/Fri: 10:30 &amp; 12:25.
+    <strong style="color:#f0f6fc">KS4:</strong> Mon: 09:45 &amp; 13:40 · Tue: 10:20 &amp; 14:15 · Wed: 10:40 &amp; 14:35 · Thu/Fri: 09:40 &amp; 13:15.
+    <strong style="color:#f0f6fc">Lunch — KS3:</strong> Mon–Fri: 11:50–12:05 (KS4 at 11:35–11:50).
+    <strong style="color:#f0f6fc">KS4:</strong> Mon–Fri: 11:35–11:50 (KS3 at 11:50–12:05).
   </p>
+
   
     <section class="grid-section">
       <h2>Key Stage 3</h2>
-      <p class="grid-note">Times are Mon/Tue/Thu/Fri. Wednesday is one hour later (from 10:00).</p>
       <div class="table-wrap">
         <table class="week-grid">
           <thead>
             <tr>
-              <th scope="col">Period</th>
-              <th scope="col">Time</th>
-              <th scope="col">Monday</th><th scope="col">Tuesday</th><th scope="col">Wednesday</th><th scope="col">Thursday</th><th scope="col">Friday</th>
+              <th scope="col">Monday<span class="finish-hint"> → 15:00</span></th><th scope="col">Tuesday<span class="finish-hint"> → 15:00</span></th><th scope="col">Wednesday<span class="finish-hint"> → 15:00</span></th><th scope="col">Thursday<span class="finish-hint"> → 14:00</span></th><th scope="col">Friday<span class="finish-hint"> → 14:00</span></th>
             </tr>
           </thead>
           <tbody>
-            <tr><th scope="row" class="period-col">—</th><td class="time-col">08:50–09:00</td><td class="slot arrival">Arrival</td><td class="slot arrival">Arrival</td><td class="slot empty">—</td><td class="slot arrival">Arrival</td><td class="slot arrival">Arrival</td></tr><tr><th scope="row" class="period-col">P1</th><td class="time-col">09:00–09:45</td><td class="slot core english">English</td><td class="slot assembly">Assembly</td><td class="slot core english">English</td><td class="slot core english">English</td><td class="slot core english">English</td></tr><tr><th scope="row" class="period-col">P2</th><td class="time-col">09:45–10:00</td><td class="slot lesson">Lesson</td><td class="slot core english">English</td><td class="slot lesson">Lesson</td><td class="slot lesson">Lesson</td><td class="slot lesson">Lesson</td></tr><tr><th scope="row" class="period-col">P3</th><td class="time-col">10:00–10:45</td><td class="slot lesson">Lesson</td><td class="slot lesson">Lesson</td><td class="slot lesson">Lesson</td><td class="slot lesson">Lesson</td><td class="slot lesson">Lesson</td></tr><tr><th scope="row" class="period-col">P4</th><td class="time-col">10:45–11:00</td><td class="slot break">Break</td><td class="slot lesson">Lesson</td><td class="slot break">Break</td><td class="slot break">Break</td><td class="slot break">Break</td></tr><tr><th scope="row" class="period-col">P5</th><td class="time-col">11:00–12:15</td><td class="slot core maths">Maths</td><td class="slot break">Break</td><td class="slot core maths">Maths</td><td class="slot core maths">Maths</td><td class="slot core maths">Maths</td></tr><tr><th scope="row" class="period-col">Lunch</th><td class="time-col">12:15–12:30</td><td class="slot break">Lunch</td><td class="slot core maths">Maths</td><td class="slot break">Lunch</td><td class="slot break">Lunch</td><td class="slot break">Lunch</td></tr><tr><th scope="row" class="period-col">P6</th><td class="time-col">12:30–13:15</td><td class="slot lesson">Lesson</td><td class="slot break">Lunch</td><td class="slot lesson">Lesson</td><td class="slot lesson">Lesson</td><td class="slot lesson">Lesson</td></tr><tr><th scope="row" class="period-col">P7</th><td class="time-col">13:15–13:30</td><td class="slot break">Break</td><td class="slot lesson">Lesson</td><td class="slot break">Break</td><td class="slot break">Break</td><td class="slot break">Break</td></tr><tr><th scope="row" class="period-col">P8</th><td class="time-col">13:30–15:00</td><td class="slot lesson">Lesson</td><td class="slot lesson">Lesson</td><td class="slot lesson">Lesson</td><td class="slot lesson">Lesson</td><td class="slot lesson">Lesson</td></tr>
+            <tr><td class="slot arrival"><span class="slot-time">08:50–09:05</span><span class="slot-label">Arrival</span></td><td class="slot arrival"><span class="slot-time">08:50–09:05</span><span class="slot-label">Arrival</span></td><td class="slot core english"><span class="slot-time">10:00–10:40</span><span class="slot-label">English</span></td><td class="slot arrival"><span class="slot-time">08:50–09:05</span><span class="slot-label">Arrival</span></td><td class="slot arrival"><span class="slot-time">08:50–09:05</span><span class="slot-label">Arrival</span></td></tr><tr><td class="slot core english"><span class="slot-time">09:05–09:45</span><span class="slot-label">English</span></td><td class="slot assembly"><span class="slot-time">09:05–09:40</span><span class="slot-label">Assembly</span></td><td class="slot lesson"><span class="slot-time">10:40–10:55</span><span class="slot-label">Lesson — TBC</span></td><td class="slot core english"><span class="slot-time">09:05–09:40</span><span class="slot-label">English</span></td><td class="slot core english"><span class="slot-time">09:05–09:40</span><span class="slot-label">English</span></td></tr><tr><td class="slot lesson"><span class="slot-time">09:45–10:00</span><span class="slot-label">Lesson — TBC</span></td><td class="slot core english"><span class="slot-time">09:40–10:20</span><span class="slot-label">English</span></td><td class="slot"><span class="slot-time">10:55–11:35</span><span class="slot-label">Art</span></td><td class="slot lesson"><span class="slot-time">09:40–09:55</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">09:40–09:55</span><span class="slot-label">Lesson — TBC</span></td></tr><tr><td class="slot"><span class="slot-time">10:00–10:40</span><span class="slot-label">Citizenship</span></td><td class="slot lesson"><span class="slot-time">10:20–10:35</span><span class="slot-label">Lesson — TBC</span></td><td class="slot break"><span class="slot-time">11:35–11:50</span><span class="slot-label">Break</span></td><td class="slot lesson"><span class="slot-time">09:55–10:30</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">09:55–10:30</span><span class="slot-label">Lesson — TBC</span></td></tr><tr><td class="slot break"><span class="slot-time">10:40–10:55</span><span class="slot-label">Break</span></td><td class="slot lesson"><span class="slot-time">10:35–11:15</span><span class="slot-label">Lesson — TBC</span></td><td class="slot core maths"><span class="slot-time">11:50–12:00</span><span class="slot-label">Maths</span></td><td class="slot break"><span class="slot-time">10:30–10:45</span><span class="slot-label">Break</span></td><td class="slot break"><span class="slot-time">10:30–10:45</span><span class="slot-label">Break</span></td></tr><tr><td class="slot core maths"><span class="slot-time">10:55–11:35</span><span class="slot-label">Maths</span></td><td class="slot break"><span class="slot-time">11:15–11:30</span><span class="slot-label">Break</span></td><td class="slot break"><span class="slot-time">12:00–12:15</span><span class="slot-label">Lunch</span></td><td class="slot core maths"><span class="slot-time">10:45–11:20</span><span class="slot-label">Maths</span></td><td class="slot core maths"><span class="slot-time">10:45–11:20</span><span class="slot-label">Maths</span></td></tr><tr><td class="slot lesson"><span class="slot-time">11:35–12:00</span><span class="slot-label">Lesson — TBC</span></td><td class="slot core maths"><span class="slot-time">11:30–12:00</span><span class="slot-label">Maths</span></td><td class="slot lesson"><span class="slot-time">12:15–12:55</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">11:20–12:00</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">11:20–12:00</span><span class="slot-label">Lesson — TBC</span></td></tr><tr><td class="slot break"><span class="slot-time">12:00–12:15</span><span class="slot-label">Lunch</span></td><td class="slot break"><span class="slot-time">12:00–12:15</span><span class="slot-label">Lunch</span></td><td class="slot break"><span class="slot-time">12:55–13:10</span><span class="slot-label">Break</span></td><td class="slot break"><span class="slot-time">12:00–12:15</span><span class="slot-label">Lunch</span></td><td class="slot break"><span class="slot-time">12:00–12:15</span><span class="slot-label">Lunch</span></td></tr><tr><td class="slot lesson"><span class="slot-time">12:15–12:55</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">12:15–12:55</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">13:10–13:50</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">12:15–12:50</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">12:15–12:50</span><span class="slot-label">Lesson — TBC</span></td></tr><tr><td class="slot break"><span class="slot-time">12:55–13:10</span><span class="slot-label">Break</span></td><td class="slot break"><span class="slot-time">12:55–13:10</span><span class="slot-label">Break</span></td><td class="slot lesson"><span class="slot-time">13:50–14:05</span><span class="slot-label">Lesson — TBC</span></td><td class="slot break"><span class="slot-time">12:50–13:05</span><span class="slot-label">Break</span></td><td class="slot break"><span class="slot-time">12:50–13:05</span><span class="slot-label">Break</span></td></tr><tr><td class="slot lesson"><span class="slot-time">13:10–13:50</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">13:10–14:10</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">14:05–15:00</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">13:05–13:40</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">13:05–13:40</span><span class="slot-label">Lesson — TBC</span></td></tr><tr><td class="slot lesson"><span class="slot-time">13:50–14:05</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">14:10–14:25</span><span class="slot-label">Lesson — TBC</span></td><td class="slot empty">—</td><td class="slot lesson"><span class="slot-time">13:40–13:55</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">13:40–13:55</span><span class="slot-label">Lesson — TBC</span></td></tr><tr><td class="slot"><span class="slot-time">14:00–15:00</span><span class="slot-label">Food Technology</span></td><td class="slot lesson"><span class="slot-time">14:25–15:00</span><span class="slot-label">Lesson — TBC</span></td><td class="slot empty">—</td><td class="slot lesson"><span class="slot-time">13:55–14:00</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">13:55–14:00</span><span class="slot-label">Lesson — TBC</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -92,18 +192,15 @@
   
     <section class="grid-section">
       <h2>Key Stage 4</h2>
-      <p class="grid-note">Times are Mon/Tue/Thu/Fri. Wednesday is one hour later (from 10:00).</p>
       <div class="table-wrap">
         <table class="week-grid">
           <thead>
             <tr>
-              <th scope="col">Period</th>
-              <th scope="col">Time</th>
-              <th scope="col">Monday</th><th scope="col">Tuesday</th><th scope="col">Wednesday</th><th scope="col">Thursday</th><th scope="col">Friday</th>
+              <th scope="col">Monday<span class="finish-hint"> → 15:00</span></th><th scope="col">Tuesday<span class="finish-hint"> → 15:00</span></th><th scope="col">Wednesday<span class="finish-hint"> → 15:00</span></th><th scope="col">Thursday<span class="finish-hint"> → 14:00</span></th><th scope="col">Friday<span class="finish-hint"> → 14:00</span></th>
             </tr>
           </thead>
           <tbody>
-            <tr><th scope="row" class="period-col">—</th><td class="time-col">08:50–09:00</td><td class="slot arrival">Arrival</td><td class="slot arrival">Arrival</td><td class="slot empty">—</td><td class="slot arrival">Arrival</td><td class="slot arrival">Arrival</td></tr><tr><th scope="row" class="period-col">P1</th><td class="time-col">09:00–09:45</td><td class="slot core english">English</td><td class="slot assembly">Assembly</td><td class="slot core english">English</td><td class="slot core english">English</td><td class="slot core english">English</td></tr><tr><th scope="row" class="period-col">P2</th><td class="time-col">09:45–10:00</td><td class="slot break">Break</td><td class="slot core english">English</td><td class="slot break">Break</td><td class="slot break">Break</td><td class="slot break">Break</td></tr><tr><th scope="row" class="period-col">P3</th><td class="time-col">10:00–10:45</td><td class="slot core maths">Maths</td><td class="slot break">Break</td><td class="slot core maths">Maths</td><td class="slot core maths">Maths</td><td class="slot core maths">Maths</td></tr><tr><th scope="row" class="period-col">P4</th><td class="time-col">10:45–11:00</td><td class="slot lesson">Lesson</td><td class="slot core maths">Maths</td><td class="slot lesson">Lesson</td><td class="slot lesson">Lesson</td><td class="slot lesson">Lesson</td></tr><tr><th scope="row" class="period-col">P5</th><td class="time-col">11:00–12:15</td><td class="slot lesson">Lesson</td><td class="slot lesson">Lesson</td><td class="slot lesson">Lesson</td><td class="slot lesson">Lesson</td><td class="slot lesson">Lesson</td></tr><tr><th scope="row" class="period-col">Lunch</th><td class="time-col">12:15–12:30</td><td class="slot break">Lunch</td><td class="slot lesson">Lesson</td><td class="slot break">Lunch</td><td class="slot break">Lunch</td><td class="slot break">Lunch</td></tr><tr><th scope="row" class="period-col">P6</th><td class="time-col">12:30–13:15</td><td class="slot lesson">Lesson</td><td class="slot break">Lunch</td><td class="slot lesson">Lesson</td><td class="slot lesson">Lesson</td><td class="slot lesson">Lesson</td></tr><tr><th scope="row" class="period-col">P7</th><td class="time-col">13:15–13:30</td><td class="slot lesson">Lesson</td><td class="slot lesson">Lesson</td><td class="slot lesson">Lesson</td><td class="slot lesson">Lesson</td><td class="slot lesson">Lesson</td></tr><tr><th scope="row" class="period-col">P8</th><td class="time-col">13:30–15:00</td><td class="slot break">Break</td><td class="slot break">Break</td><td class="slot break">Break</td><td class="slot break">Break</td><td class="slot break">Break</td></tr>
+            <tr><td class="slot arrival"><span class="slot-time">08:50–09:05</span><span class="slot-label">Arrival</span></td><td class="slot arrival"><span class="slot-time">08:50–09:05</span><span class="slot-label">Arrival</span></td><td class="slot core english"><span class="slot-time">10:00–10:40</span><span class="slot-label">English</span></td><td class="slot arrival"><span class="slot-time">08:50–09:05</span><span class="slot-label">Arrival</span></td><td class="slot arrival"><span class="slot-time">08:50–09:05</span><span class="slot-label">Arrival</span></td></tr><tr><td class="slot core english"><span class="slot-time">09:05–09:45</span><span class="slot-label">English</span></td><td class="slot assembly"><span class="slot-time">09:05–09:40</span><span class="slot-label">Assembly</span></td><td class="slot break"><span class="slot-time">10:40–10:55</span><span class="slot-label">Break</span></td><td class="slot core english"><span class="slot-time">09:05–09:40</span><span class="slot-label">English</span></td><td class="slot core english"><span class="slot-time">09:05–09:40</span><span class="slot-label">English</span></td></tr><tr><td class="slot break"><span class="slot-time">09:45–10:00</span><span class="slot-label">Break</span></td><td class="slot core english"><span class="slot-time">09:40–10:20</span><span class="slot-label">English</span></td><td class="slot core maths"><span class="slot-time">10:55–11:35</span><span class="slot-label">Maths</span></td><td class="slot break"><span class="slot-time">09:40–09:55</span><span class="slot-label">Break</span></td><td class="slot break"><span class="slot-time">09:40–09:55</span><span class="slot-label">Break</span></td></tr><tr><td class="slot core maths"><span class="slot-time">10:00–10:40</span><span class="slot-label">Maths</span></td><td class="slot break"><span class="slot-time">10:20–10:35</span><span class="slot-label">Break</span></td><td class="slot lesson"><span class="slot-time">11:35–11:50</span><span class="slot-label">Lesson — TBC</span></td><td class="slot core maths"><span class="slot-time">09:55–10:30</span><span class="slot-label">Maths</span></td><td class="slot core maths"><span class="slot-time">09:55–10:30</span><span class="slot-label">Maths</span></td></tr><tr><td class="slot lesson"><span class="slot-time">10:40–10:55</span><span class="slot-label">Lesson — TBC</span></td><td class="slot core maths"><span class="slot-time">10:35–11:15</span><span class="slot-label">Maths</span></td><td class="slot lesson"><span class="slot-time">11:50–12:00</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">10:30–10:45</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">10:30–10:45</span><span class="slot-label">Lesson — TBC</span></td></tr><tr><td class="slot lesson"><span class="slot-time">10:55–11:35</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">11:15–11:30</span><span class="slot-label">Lesson — TBC</span></td><td class="slot break"><span class="slot-time">12:00–12:15</span><span class="slot-label">Lunch</span></td><td class="slot lesson"><span class="slot-time">10:45–11:20</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">10:45–11:20</span><span class="slot-label">Lesson — TBC</span></td></tr><tr><td class="slot lesson"><span class="slot-time">11:35–12:00</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">11:30–12:00</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">12:15–12:55</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">11:20–12:00</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">11:20–12:00</span><span class="slot-label">Lesson — TBC</span></td></tr><tr><td class="slot break"><span class="slot-time">12:00–12:15</span><span class="slot-label">Lunch</span></td><td class="slot break"><span class="slot-time">12:00–12:15</span><span class="slot-label">Lunch</span></td><td class="slot lesson"><span class="slot-time">12:55–13:10</span><span class="slot-label">Lesson — TBC</span></td><td class="slot break"><span class="slot-time">12:00–12:15</span><span class="slot-label">Lunch</span></td><td class="slot break"><span class="slot-time">12:00–12:15</span><span class="slot-label">Lunch</span></td></tr><tr><td class="slot"><span class="slot-time">12:15–12:55</span><span class="slot-label">Art</span></td><td class="slot"><span class="slot-time">12:15–12:55</span><span class="slot-label">Citizenship</span></td><td class="slot"><span class="slot-time">13:10–13:50</span><span class="slot-label">DofE</span></td><td class="slot lesson"><span class="slot-time">12:15–12:50</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">12:15–12:50</span><span class="slot-label">Lesson — TBC</span></td></tr><tr><td class="slot lesson"><span class="slot-time">12:55–13:10</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">12:55–13:10</span><span class="slot-label">Lesson — TBC</span></td><td class="slot break"><span class="slot-time">13:50–14:05</span><span class="slot-label">Break</span></td><td class="slot lesson"><span class="slot-time">12:50–13:05</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">12:50–13:05</span><span class="slot-label">Lesson — TBC</span></td></tr><tr><td class="slot lesson"><span class="slot-time">13:10–13:50</span><span class="slot-label">Lesson — TBC</span></td><td class="slot"><span class="slot-time">13:10–14:10</span><span class="slot-label">Food Technology</span></td><td class="slot lesson"><span class="slot-time">14:05–15:00</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">13:05–13:40</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">13:05–13:40</span><span class="slot-label">Lesson — TBC</span></td></tr><tr><td class="slot break"><span class="slot-time">13:50–14:05</span><span class="slot-label">Break</span></td><td class="slot break"><span class="slot-time">14:10–14:25</span><span class="slot-label">Break</span></td><td class="slot empty">—</td><td class="slot break"><span class="slot-time">13:40–13:55</span><span class="slot-label">Break</span></td><td class="slot break"><span class="slot-time">13:40–13:55</span><span class="slot-label">Break</span></td></tr><tr><td class="slot"><span class="slot-time">14:00–15:00</span><span class="slot-label">King&#x27;s Trust</span></td><td class="slot lesson"><span class="slot-time">14:25–15:00</span><span class="slot-label">Lesson — TBC</span></td><td class="slot empty">—</td><td class="slot lesson"><span class="slot-time">13:55–14:00</span><span class="slot-label">Lesson — TBC</span></td><td class="slot lesson"><span class="slot-time">13:55–14:00</span><span class="slot-label">Lesson — TBC</span></td></tr>
           </tbody>
         </table>
       </div>
