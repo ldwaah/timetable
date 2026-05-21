@@ -88,8 +88,16 @@
         },
         {
           "start": "13:05",
-          "end": "13:45",
+          "end": "13:20",
           "ks3": "Break",
+          "ks4": "DofE",
+          "kind": "lesson",
+          "staff_ks4": "Lloyd"
+        },
+        {
+          "start": "13:20",
+          "end": "13:45",
+          "ks3": "Lesson — TBC",
           "ks4": "DofE",
           "kind": "lesson",
           "staff_ks4": "Lloyd"
@@ -204,17 +212,24 @@
         },
         {
           "start": "13:55",
-          "end": "14:55",
+          "end": "14:40",
           "ks3": "Food Technology",
           "ks4": "King's Trust",
           "kind": "lesson",
           "staff_ks4": "Lorelle"
         },
         {
+          "start": "14:40",
+          "end": "14:55",
+          "ks3": "Food Technology",
+          "ks4": "Break",
+          "kind": "lesson"
+        },
+        {
           "start": "14:55",
           "end": "15:00",
           "ks3": "Lesson — TBC",
-          "ks4": "Break",
+          "ks4": "Lesson — TBC",
           "kind": "lesson"
         }
       ]
@@ -236,9 +251,16 @@
         },
         {
           "start": "10:40",
-          "end": "11:20",
+          "end": "10:55",
           "ks3": "Art",
           "ks4": "Break",
+          "kind": "lesson"
+        },
+        {
+          "start": "10:55",
+          "end": "11:20",
+          "ks3": "Art",
+          "ks4": "Lesson — TBC",
           "kind": "lesson"
         },
         {
