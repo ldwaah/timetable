@@ -7,6 +7,8 @@ import html
 import json
 from pathlib import Path
 
+from merge_rows import merge_consecutive_rows
+
 ROOT = Path(__file__).resolve().parent
 DATA_PATH = ROOT / "data" / "week.json"
 STAFF_DIR = ROOT / "staff"
@@ -74,10 +76,14 @@ def render_day_tab_bar() -> str:
     return f'<div class="tab-bar" role="tablist">{"".join(labels)}</div>'
 
 
+def display_rows(day: dict) -> list[dict]:
+    return merge_consecutive_rows(day["rows"])
+
+
 def render_student_day_panel(week: dict, day_key: str) -> str:
     day = week["days"][day_key]
     rows_html = []
-    for row in day["rows"]:
+    for row in display_rows(day):
         rows_html.append(
             "<tr>"
             f'<td class="time-col">{esc(row["start"])}–{esc(row["end"])}</td>'
@@ -123,11 +129,29 @@ def render_student_day_views(week: dict) -> str:
   </div>"""
 
 
+def merge_staff_sessions(sessions: list[dict]) -> list[dict]:
+    if not sessions:
+        return []
+    out = [dict(sessions[0])]
+    for s in sessions[1:]:
+        prev = out[-1]
+        if (
+            prev["day_key"] == s["day_key"]
+            and prev["stage"] == s["stage"]
+            and prev["subject"] == s["subject"]
+            and prev["time"].split("–")[1] == s["time"].split("–")[0]
+        ):
+            prev["time"] = f'{prev["time"].split("–")[0]}–{s["time"].split("–")[1]}'
+        else:
+            out.append(dict(s))
+    return out
+
+
 def collect_staff_sessions(week: dict) -> dict[str, list[dict]]:
     sessions: dict[str, list[dict]] = {}
     for day_key in DAY_ORDER:
         day = week["days"][day_key]
-        for row in day["rows"]:
+        for row in display_rows(day):
             for stage in ("ks3", "ks4"):
                 staff = row.get(f"staff_{stage}")
                 if not staff:
@@ -141,6 +165,8 @@ def collect_staff_sessions(week: dict) -> dict[str, list[dict]]:
                         "subject": row[stage],
                     }
                 )
+    for name in sessions:
+        sessions[name] = merge_staff_sessions(sessions[name])
     return sessions
 
 
@@ -227,7 +253,7 @@ def render_staff_person_page(week: dict, name: str, sessions: list[dict]) -> str
 def render_staff_day_panel(week: dict, day_key: str) -> str:
     day = week["days"][day_key]
     rows_html = []
-    for row in day["rows"]:
+    for row in display_rows(day):
         ks3, ks4 = row["ks3"], row["ks4"]
         s3 = row.get("staff_ks3")
         s4 = row.get("staff_ks4")

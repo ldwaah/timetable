@@ -54,8 +54,8 @@
         {
           "start": "10:35",
           "end": "11:15",
-          "ks3": "Lesson — TBC",
-          "ks4": "Lesson — TBC",
+          "ks3": "Lesson \u2014 TBC",
+          "ks4": "Lesson \u2014 TBC",
           "kind": "lesson"
         },
         {
@@ -101,7 +101,7 @@
         {
           "start": "13:45",
           "end": "14:30",
-          "ks3": "Lesson \u2014 TBC",
+          "ks3": "Food Technology",
           "ks4": "King's Trust",
           "kind": "lesson",
           "staff_ks4": "Lorelle"
@@ -109,7 +109,7 @@
         {
           "start": "14:30",
           "end": "14:45",
-          "ks3": "Lesson \u2014 TBC",
+          "ks3": "Food Technology",
           "ks4": "Break",
           "kind": "lesson"
         },
@@ -221,7 +221,6 @@
           "ks3": "Food Technology",
           "ks4": "King's Trust",
           "kind": "lesson",
-          "staff_ks3": "Sacha",
           "staff_ks4": "Lorelle"
         },
         {
@@ -278,7 +277,6 @@
           "ks3": "Art",
           "ks4": "Maths",
           "kind": "lesson",
-          "staff_ks3": "Sacha",
           "staff_ks4": "Laurent"
         },
         {
@@ -332,8 +330,8 @@
         {
           "start": "14:25",
           "end": "15:00",
-          "ks3": "Lesson \u2014 TBC",
-          "ks4": "Lesson \u2014 TBC",
+          "ks3": "Food Technology",
+          "ks4": "Food Technology",
           "kind": "lesson"
         }
       ]
@@ -427,7 +425,7 @@
         {
           "start": "13:30",
           "end": "14:00",
-          "ks3": "Lesson \u2014 TBC",
+          "ks3": "Food Technology",
           "ks4": "King's Trust",
           "kind": "lesson",
           "staff_ks4": "Lorelle"
@@ -475,14 +473,14 @@
         {
           "start": "10:35",
           "end": "10:50",
-          "ks3": "Lesson \u2014 TBC",
+          "ks3": "Art",
           "ks4": "Break",
           "kind": "lesson"
         },
         {
           "start": "10:50",
           "end": "11:15",
-          "ks3": "Lesson \u2014 TBC",
+          "ks3": "Art",
           "ks4": "Maths",
           "kind": "lesson",
           "staff_ks4": "Laurent"
@@ -508,7 +506,7 @@
           "start": "11:35",
           "end": "12:15",
           "ks3": "Maths",
-          "ks4": "DofE",
+          "ks4": "Citizenship",
           "kind": "lesson",
           "staff_ks3": "Lorelle",
           "staff_ks4": "Lloyd"
@@ -532,7 +530,7 @@
         {
           "start": "13:30",
           "end": "14:00",
-          "ks3": "Lesson \u2014 TBC",
+          "ks3": "Food Technology",
           "ks4": "Lesson \u2014 TBC",
           "kind": "lesson"
         }
