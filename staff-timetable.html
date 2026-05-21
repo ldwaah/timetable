@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff timetable</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      min-height: 100vh;
+      padding: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .top { margin-bottom: 1.5rem; }
+
+    a.back {
+      color: #58a6ff;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    a.back:hover { text-decoration: underline; }
+
+    h1 {
+      margin-top: 1rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #f0f6fc;
+    }
+
+    .banner {
+      margin-bottom: 1.5rem;
+      padding: 1rem 1.25rem;
+      background: linear-gradient(135deg, #3d1f5f 0%, #161b22 100%);
+      border: 1px solid #30363d;
+      border-left: 4px solid #a371f7;
+      border-radius: 12px;
+    }
+
+    .banner strong {
+      display: block;
+      font-size: 1.05rem;
+      color: #f0f6fc;
+      margin-bottom: 0.35rem;
+    }
+
+    .banner p {
+      font-size: 0.95rem;
+      color: #c9d1d9;
+      line-height: 1.5;
+    }
+
+    .banner .time {
+      font-weight: 600;
+    }
+
+    .banner .staff-time { color: #a371f7; }
+    .banner .student-time { color: #58a6ff; }
+
+    .week-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .week-table caption {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-weight: 600;
+      color: #f0f6fc;
+      background: #1c2128;
+      border-bottom: 1px solid #30363d;
+    }
+
+    .week-table th,
+    .week-table td {
+      padding: 0.85rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid #21262d;
+    }
+
+    .week-table th {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #8b949e;
+      background: #1c2128;
+    }
+
+    .week-table tr:last-child td { border-bottom: none; }
+
+    .week-table td:first-child {
+      font-weight: 500;
+      color: #f0f6fc;
+      width: 22%;
+    }
+
+    .week-table .staff-start {
+      color: #a371f7;
+      font-weight: 600;
+    }
+
+    .week-table .student-window {
+      color: #8b949e;
+      font-size: 0.9rem;
+    }
+
+    .week-table .student-window em {
+      font-style: normal;
+      color: #58a6ff;
+      font-weight: 500;
+    }
+
+    .week-table .finish {
+      color: #58a6ff;
+      font-weight: 600;
+    }
+
+    .week-table .detention {
+      color: #f85149;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .week-table .muted {
+      color: #484f58;
+    }
+  </style>
+</head>
+<body>
+  <div class="top">
+    <a class="back" href="index.html">← Back</a>
+    <h1>Staff timetable</h1>
+  </div>
+
+  <aside class="banner" role="status">
+    <strong>Start &amp; finish — Monday to Friday</strong>
+    <p>Staff on site from <span class="time staff-time">08:30</span> every day. Students Mon, Tue, Thu, Fri from <span class="time student-time">08:50</span> (latest <span class="time student-time">09:05</span>); Wednesday from <span class="time student-time">10:00</span>. School finish Mon–Wed <span class="time student-time">15:00</span>; Thu–Fri <span class="time student-time">14:00</span>.</p>
+  </aside>
+
+  <table class="week-table">
+    <caption>Weekly times</caption>
+    <thead>
+      <tr>
+        <th scope="col">Day</th>
+        <th scope="col">Staff start</th>
+        <th scope="col">Students</th>
+        <th scope="col">Finish</th>
+        <th scope="col">Detentions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Monday</td>
+        <td class="staff-start">08:30</td>
+        <td class="student-window">from <em>08:50</em>, latest <em>09:05</em></td>
+        <td class="finish">15:00</td>
+        <td class="detention">Detentions 15:00–15:30</td>
+      </tr>
+      <tr>
+        <td>Tuesday</td>
+        <td class="staff-start">08:30</td>
+        <td class="student-window">from <em>08:50</em>, latest <em>09:05</em></td>
+        <td class="finish">15:00</td>
+        <td class="muted">—</td>
+      </tr>
+      <tr>
+        <td>Wednesday</td>
+        <td class="staff-start">08:30</td>
+        <td class="student-window">from <em>10:00</em></td>
+        <td class="finish">15:00</td>
+        <td class="muted">—</td>
+      </tr>
+      <tr>
+        <td>Thursday</td>
+        <td class="staff-start">08:30</td>
+        <td class="student-window">from <em>08:50</em>, latest <em>09:05</em></td>
+        <td class="finish">14:00</td>
+        <td class="muted">—</td>
+      </tr>
+      <tr>
+        <td>Friday</td>
+        <td class="staff-start">08:30</td>
+        <td class="student-window">from <em>08:50</em>, latest <em>09:05</em></td>
+        <td class="finish">14:00</td>
+        <td class="detention">Detentions 14:00–15:00</td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>
