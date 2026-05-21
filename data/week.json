@@ -54,18 +54,16 @@
         {
           "start": "10:35",
           "end": "10:50",
-          "ks3": "Citizenship",
+          "ks3": "Lesson \u2014 TBC",
           "ks4": "Break",
-          "kind": "lesson",
-          "staff_ks3": "Lloyd"
+          "kind": "lesson"
         },
         {
           "start": "10:50",
           "end": "11:15",
-          "ks3": "Citizenship",
+          "ks3": "Lesson \u2014 TBC",
           "ks4": "Maths",
           "kind": "lesson",
-          "staff_ks3": "Lloyd",
           "staff_ks4": "Laurent"
         },
         {
@@ -121,7 +119,7 @@
         {
           "start": "13:45",
           "end": "14:30",
-          "ks3": "Food Technology",
+          "ks3": "Lesson \u2014 TBC",
           "ks4": "King's Trust",
           "kind": "lesson",
           "staff_ks4": "Lorelle"
@@ -129,7 +127,7 @@
         {
           "start": "14:30",
           "end": "14:45",
-          "ks3": "Food Technology",
+          "ks3": "Lesson \u2014 TBC",
           "ks4": "Break",
           "kind": "lesson"
         },
@@ -241,6 +239,7 @@
           "ks3": "Food Technology",
           "ks4": "King's Trust",
           "kind": "lesson",
+          "staff_ks3": "Sacha",
           "staff_ks4": "Lorelle"
         },
         {
@@ -297,6 +296,7 @@
           "ks3": "Art",
           "ks4": "Maths",
           "kind": "lesson",
+          "staff_ks3": "Sacha",
           "staff_ks4": "Laurent"
         },
         {
@@ -350,8 +350,8 @@
         {
           "start": "14:25",
           "end": "15:00",
-          "ks3": "Food Technology",
-          "ks4": "Food Technology",
+          "ks3": "Lesson \u2014 TBC",
+          "ks4": "Lesson \u2014 TBC",
           "kind": "lesson"
         }
       ]
@@ -397,18 +397,16 @@
         {
           "start": "10:35",
           "end": "10:50",
-          "ks3": "Citizenship",
+          "ks3": "Lesson \u2014 TBC",
           "ks4": "Break",
-          "kind": "lesson",
-          "staff_ks3": "Lloyd"
+          "kind": "lesson"
         },
         {
           "start": "10:50",
           "end": "11:15",
-          "ks3": "Citizenship",
+          "ks3": "Lesson \u2014 TBC",
           "ks4": "Maths",
           "kind": "lesson",
-          "staff_ks3": "Lloyd",
           "staff_ks4": "Laurent"
         },
         {
@@ -456,7 +454,7 @@
         {
           "start": "13:30",
           "end": "14:00",
-          "ks3": "Food Technology",
+          "ks3": "Lesson \u2014 TBC",
           "ks4": "King's Trust",
           "kind": "lesson",
           "staff_ks4": "Lorelle"
@@ -504,14 +502,14 @@
         {
           "start": "10:35",
           "end": "10:50",
-          "ks3": "Art",
+          "ks3": "Lesson \u2014 TBC",
           "ks4": "Break",
           "kind": "lesson"
         },
         {
           "start": "10:50",
           "end": "11:15",
-          "ks3": "Art",
+          "ks3": "Lesson \u2014 TBC",
           "ks4": "Maths",
           "kind": "lesson",
           "staff_ks4": "Laurent"
@@ -537,7 +535,7 @@
           "start": "11:35",
           "end": "12:15",
           "ks3": "Maths",
-          "ks4": "Citizenship",
+          "ks4": "DofE",
           "kind": "lesson",
           "staff_ks3": "Lorelle",
           "staff_ks4": "Lloyd"
@@ -561,7 +559,7 @@
         {
           "start": "13:30",
           "end": "14:00",
-          "ks3": "Food Technology",
+          "ks3": "Lesson \u2014 TBC",
           "ks4": "Lesson \u2014 TBC",
           "kind": "lesson"
         }
@@ -577,7 +575,8 @@
     "people": [
       "Lorelle",
       "Lloyd",
-      "Laurent"
+      "Laurent",
+      "Sacha"
     ],
     "assignments": {
       "Reset": {
@@ -605,6 +604,12 @@
       "PE": {
         "ks3": "Laurent",
         "ks4": "Laurent"
+      },
+      "Art": {
+        "ks3": "Sacha"
+      },
+      "Food Technology": {
+        "ks3": "Sacha"
       }
     }
   }
