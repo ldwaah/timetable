@@ -5,6 +5,53 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student timetable</title>
   <style>
+    .tab-input { position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0; }
+
+    .day-tabs { margin-top: 0.5rem; }
+
+    .tab-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-bottom: 1rem;
+    }
+
+    .day-tab-btn {
+      cursor: pointer;
+      padding: 0.45rem 0.9rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #8b949e;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+
+    .day-tab-btn:hover { color: #e6edf3; background: #21262d; }
+
+    #tab-monday:checked ~ .tab-bar label[for="tab-monday"],
+    #tab-tuesday:checked ~ .tab-bar label[for="tab-tuesday"],
+    #tab-wednesday:checked ~ .tab-bar label[for="tab-wednesday"],
+    #tab-thursday:checked ~ .tab-bar label[for="tab-thursday"],
+    #tab-friday:checked ~ .tab-bar label[for="tab-friday"] {
+      color: #f0f6fc;
+      background: #1f3a5f;
+      border-color: #58a6ff;
+    }
+
+    .tab-panels { position: relative; }
+
+    .day-panel { display: none; }
+
+    .day-meta {
+      font-size: 0.85rem;
+      color: #8b949e;
+      margin-bottom: 0.75rem;
+    }
+
+    .day-meta strong { color: #58a6ff; font-weight: 600; }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
@@ -153,16 +200,13 @@
     <h1>Student timetable</h1>
   </div>
 
-  <aside class="banner" role="status">
-    <strong>Arrival &amp; finish</strong>
-    Mon, Tue, Thu, Fri: from <strong>08:50</strong> (latest <strong>09:05</strong>). Wednesday: from <strong>10:00</strong>.
+  <p class="hints">
+    Pick a day below — <strong>KS3 and KS4 side by side</strong> for that day only.
+    Mon/Tue/Thu/Fri from <strong>08:50</strong> (latest <strong>09:05</strong>); Wed from <strong>10:00</strong>.
     Finish Mon–Wed <strong>15:00</strong>; Thu–Fri <strong>14:00</strong>.
-    Checks <strong>09:05–09:15</strong> (Mon/Tue/Thu/Fri), then <strong>Reset</strong> (35 min) before English and Maths.
-    Tuesday: <strong>Reset → Assembly → English</strong> (assembly 35 min after reset).
-    Two breaks and one lunch per day (15 min each); KS3 and KS4 staggered.
-    <strong>Maths &amp; English:</strong> after Reset; Maths in the block after the first break. Not scheduled post-lunch.
-    Teacher names shown under assigned subjects.
-  </aside>
+    Checks <strong>09:05–09:15</strong>, then Reset (35 min).
+    Tue: Reset → Assembly (35 min) → English. 15 min breaks &amp; lunch (staggered).
+  </p>
 
   <div class="legend" aria-hidden="true">
     <span class="l-english">English</span>

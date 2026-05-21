@@ -716,7 +716,7 @@ def build_student_html(week: dict) -> str:
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student timetable</title>
-  <style>{SHARED_STUDENT_CSS}</style>
+  <style>{DAY_TAB_CSS}{SHARED_STUDENT_CSS}</style>
 </head>
 <body>
   <div class="top">
@@ -724,16 +724,13 @@ def build_student_html(week: dict) -> str:
     <h1>Student timetable</h1>
   </div>
 
-  <aside class="banner" role="status">
-    <strong>Arrival &amp; finish</strong>
-    Mon, Tue, Thu, Fri: from <strong>08:50</strong> (latest <strong>09:05</strong>). Wednesday: from <strong>10:00</strong>.
+  <p class="hints">
+    Pick a day below — <strong>KS3 and KS4 side by side</strong> for that day only.
+    Mon/Tue/Thu/Fri from <strong>08:50</strong> (latest <strong>09:05</strong>); Wed from <strong>10:00</strong>.
     Finish Mon–Wed <strong>15:00</strong>; Thu–Fri <strong>14:00</strong>.
-    Checks <strong>{esc(meta["checks_window"])}</strong> (Mon/Tue/Thu/Fri), then <strong>Reset</strong> ({meta["reset_minutes"]} min) before English and Maths.
-    Tuesday: <strong>Reset → Assembly → English</strong> (assembly {meta["assembly_minutes"]} min after reset).
-    Two breaks and one lunch per day (15 min each); KS3 and KS4 staggered.
-    <strong>Maths &amp; English:</strong> after Reset; Maths in the block after the first break. Not scheduled post-lunch.
-    Teacher names shown under assigned subjects.
-  </aside>
+    Checks <strong>{esc(meta["checks_window"])}</strong>, then Reset ({meta["reset_minutes"]} min).
+    Tue: Reset → Assembly ({meta["assembly_minutes"]} min) → English. 15 min breaks &amp; lunch (staggered).
+  </p>
 
   <div class="legend" aria-hidden="true">
     <span class="l-english">English</span>
@@ -802,9 +799,9 @@ def build_staff_html(week: dict) -> str:
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Staff timetable</title>
-  <style>{STAFF_CSS}
-    .assign-list {{ margin: 0.5rem 0 0 1.1rem; font-size: 0.9rem; color: #c9d1d9; }}
-    .assign-list li {{ margin: 0.25rem 0; }}
+  <style>{DAY_TAB_CSS}{STAFF_CSS}
+    .assign-list {{ margin: 0.35rem 0 0 1.1rem; font-size: 0.85rem; color: #8b949e; }}
+    .assign-list li {{ margin: 0.2rem 0; }}
   </style>
 </head>
 <body>
@@ -813,17 +810,14 @@ def build_staff_html(week: dict) -> str:
     <h1>Staff timetable</h1>
   </div>
 
-  <aside class="banner" role="status">
-    <strong>Start &amp; finish — Monday to Friday</strong>
-    Staff on site from <span class="staff-time">{esc(staff["start"])}</span> every day.
-    Students Mon, Tue, Thu, Fri from <span class="student-time">08:50</span> (latest <span class="student-time">09:05</span>);
-    Wednesday from <span class="student-time">10:00</span>.
-    School finish Mon–Wed <span class="student-time">15:00</span>; Thu–Fri <span class="student-time">14:00</span>.
-    Checks <span class="student-time">{esc(meta["checks_window"])}</span> then Reset ({meta["reset_minutes"]} min) before core lessons.
-    Tuesday: Reset → Assembly ({meta["assembly_minutes"]} min) → English.
-    <strong>Lead teachers:</strong>
-    {assign_list}
-  </aside>
+  <p class="hints">
+    Pick a day — KS3 / KS4 timeline with staff in parentheses.
+    Staff from <strong>{esc(staff["start"])}</strong>.
+    Students Mon/Tue/Thu/Fri <strong>08:50–09:05</strong>; Wed <strong>10:00</strong>.
+    Finish Mon–Wed <strong>15:00</strong>; Thu–Fri <strong>14:00</strong>.
+    Checks {esc(meta["checks_window"])}, Reset {meta["reset_minutes"]} min; Tue assembly {meta["assembly_minutes"]} min.
+    Leads: {", ".join(f"{esc(s)} ({esc(', '.join(f'{k.upper()}: {v}' for k, v in stages.items()))})" for s, stages in assign.items())}.
+  </p>
 
   <nav class="staff-links" aria-label="Individual staff timetables">
     {person_links}

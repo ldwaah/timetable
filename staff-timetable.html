@@ -5,6 +5,53 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Staff timetable</title>
   <style>
+    .tab-input { position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0; }
+
+    .day-tabs { margin-top: 0.5rem; }
+
+    .tab-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-bottom: 1rem;
+    }
+
+    .day-tab-btn {
+      cursor: pointer;
+      padding: 0.45rem 0.9rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #8b949e;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+
+    .day-tab-btn:hover { color: #e6edf3; background: #21262d; }
+
+    #tab-monday:checked ~ .tab-bar label[for="tab-monday"],
+    #tab-tuesday:checked ~ .tab-bar label[for="tab-tuesday"],
+    #tab-wednesday:checked ~ .tab-bar label[for="tab-wednesday"],
+    #tab-thursday:checked ~ .tab-bar label[for="tab-thursday"],
+    #tab-friday:checked ~ .tab-bar label[for="tab-friday"] {
+      color: #f0f6fc;
+      background: #1f3a5f;
+      border-color: #58a6ff;
+    }
+
+    .tab-panels { position: relative; }
+
+    .day-panel { display: none; }
+
+    .day-meta {
+      font-size: 0.85rem;
+      color: #8b949e;
+      margin-bottom: 0.75rem;
+    }
+
+    .day-meta strong { color: #58a6ff; font-weight: 600; }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
@@ -163,8 +210,8 @@
     .slot.core.english { color: #e3b341; font-weight: 600; }
     .slot.pe { color: #3fb950; font-weight: 600; }
 
-    .assign-list { margin: 0.5rem 0 0 1.1rem; font-size: 0.9rem; color: #c9d1d9; }
-    .assign-list li { margin: 0.25rem 0; }
+    .assign-list { margin: 0.35rem 0 0 1.1rem; font-size: 0.85rem; color: #8b949e; }
+    .assign-list li { margin: 0.2rem 0; }
   </style>
 </head>
 <body>
@@ -173,17 +220,14 @@
     <h1>Staff timetable</h1>
   </div>
 
-  <aside class="banner" role="status">
-    <strong>Start &amp; finish — Monday to Friday</strong>
-    Staff on site from <span class="staff-time">08:30</span> every day.
-    Students Mon, Tue, Thu, Fri from <span class="student-time">08:50</span> (latest <span class="student-time">09:05</span>);
-    Wednesday from <span class="student-time">10:00</span>.
-    School finish Mon–Wed <span class="student-time">15:00</span>; Thu–Fri <span class="student-time">14:00</span>.
-    Checks <span class="student-time">09:05–09:15</span> then Reset (35 min) before core lessons.
-    Tuesday: Reset → Assembly (35 min) → English.
-    <strong>Lead teachers:</strong>
-    <ul class="assign-list"><li><strong>Reset</strong> — KS3: Lorelle, KS4: Laurent</li><li><strong>King&#x27;s Trust</strong> — KS4: Lorelle</li><li><strong>DofE</strong> — KS4: Lloyd</li><li><strong>Citizenship</strong> — KS3: Lloyd, KS4: Lloyd</li><li><strong>Maths</strong> — KS3: Lorelle, KS4: Laurent</li><li><strong>English</strong> — KS3: Lorelle, KS4: Laurent</li><li><strong>PE</strong> — KS3: Laurent, KS4: Laurent</li></ul>
-  </aside>
+  <p class="hints">
+    Pick a day — KS3 / KS4 timeline with staff in parentheses.
+    Staff from <strong>08:30</strong>.
+    Students Mon/Tue/Thu/Fri <strong>08:50–09:05</strong>; Wed <strong>10:00</strong>.
+    Finish Mon–Wed <strong>15:00</strong>; Thu–Fri <strong>14:00</strong>.
+    Checks 09:05–09:15, Reset 35 min; Tue assembly 35 min.
+    Leads: Reset (KS3: Lorelle, KS4: Laurent), King&#x27;s Trust (KS4: Lorelle), DofE (KS4: Lloyd), Citizenship (KS3: Lloyd, KS4: Lloyd), Maths (KS3: Lorelle, KS4: Laurent), English (KS3: Lorelle, KS4: Laurent), PE (KS3: Laurent, KS4: Laurent).
+  </p>
 
   <nav class="staff-links" aria-label="Individual staff timetables">
     <a href="staff/lorelle.html">Lorelle</a><a href="staff/lloyd.html">Lloyd</a><a href="staff/laurent.html">Laurent</a>
