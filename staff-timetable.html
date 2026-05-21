@@ -6,166 +6,51 @@
   <title>Staff timetable</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
       background: #0d1117;
       color: #e6edf3;
       min-height: 100vh;
-      padding: 2rem 1.25rem;
-      max-width: 900px;
+      padding: 1.5rem 1.25rem;
+      max-width: 1100px;
       margin: 0 auto;
     }
-
-    .top { margin-bottom: 1.5rem; }
-
-    a.back {
-      color: #58a6ff;
-      text-decoration: none;
-      font-size: 0.9rem;
-    }
-
-    a.back:hover { text-decoration: underline; }
-
-    h1 {
-      margin-top: 1rem;
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: #f0f6fc;
-    }
-
-    .banner {
-      margin-bottom: 1.5rem;
-      padding: 1rem 1.25rem;
-      background: linear-gradient(135deg, #3d1f5f 0%, #161b22 100%);
+    .top { margin-bottom: 1rem; }
+    a.back { color: #58a6ff; text-decoration: none; font-size: 0.9rem; }
+    h1 { margin-top: 0.5rem; font-size: 1.35rem; font-weight: 600; color: #f0f6fc; }
+    .hints { font-size: 0.8rem; color: #8b949e; margin-bottom: 1rem; }
+    .table-wrap {
+      overflow-x: auto;
       border: 1px solid #30363d;
-      border-left: 4px solid #a371f7;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      color: #c9d1d9;
-      line-height: 1.55;
-    }
-
-    .banner strong { color: #f0f6fc; display: block; margin-bottom: 0.35rem; }
-
-    .banner .staff-time { color: #a371f7; font-weight: 600; }
-    .banner .student-time { color: #58a6ff; font-weight: 600; }
-
-    .week-table {
-      width: 100%;
-      border-collapse: collapse;
+      border-radius: 10px;
       background: #161b22;
-      border: 1px solid #30363d;
-      border-radius: 12px;
-      overflow: hidden;
-      margin-bottom: 2rem;
-    }
-
-    .week-table caption {
-      padding: 0.75rem 1rem;
-      text-align: left;
-      font-weight: 600;
-      color: #f0f6fc;
-      background: #1c2128;
-      border-bottom: 1px solid #30363d;
-    }
-
-    .week-table th,
-    .week-table td {
-      padding: 0.85rem 1rem;
-      text-align: left;
-      border-bottom: 1px solid #21262d;
-    }
-
-    .week-table th {
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: #8b949e;
-      background: #1c2128;
-    }
-
-    .week-table tr:last-child td { border-bottom: none; }
-
-    .week-table td:first-child {
-      font-weight: 500;
-      color: #f0f6fc;
-      width: 22%;
-    }
-
-    .week-table .staff-start { color: #a371f7; font-weight: 600; }
-    .week-table .student-window { color: #8b949e; font-size: 0.9rem; }
-    .week-table .student-window em {
-      font-style: normal;
-      color: #58a6ff;
-      font-weight: 500;
-    }
-    .week-table .finish { color: #58a6ff; font-weight: 600; }
-    .week-table .detention { color: #f85149; font-weight: 600; font-size: 0.9rem; }
-    .week-table .muted { color: #484f58; }
-
-    h2.section-title {
-      font-size: 1.1rem;
-      margin-bottom: 1rem;
-      color: #f0f6fc;
-    }
-
-    .day-block {
       margin-bottom: 0.75rem;
-      border: 1px solid #30363d;
-      border-radius: 12px;
-      background: #161b22;
-      overflow: hidden;
     }
-
-    .day-block summary {
-      cursor: pointer;
-      padding: 0.85rem 1rem;
-      background: #1c2128;
-      list-style: none;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.35rem 1rem;
-      align-items: baseline;
-    }
-
-    .day-block summary::-webkit-details-marker { display: none; }
-
-    .day-name { font-weight: 600; color: #f0f6fc; }
-
-    .day-meta { font-size: 0.85rem; color: #8b949e; }
-
-    .timeline-table {
+    .staff-grid {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.85rem;
+      min-width: 640px;
+      font-size: 0.78rem;
     }
-
-    .timeline-table th,
-    .timeline-table td {
-      padding: 0.5rem 0.75rem;
-      border-top: 1px solid #21262d;
+    .staff-grid th, .staff-grid td {
+      border: 1px solid #21262d;
+      padding: 0.45rem 0.4rem;
+      text-align: center;
+      vertical-align: middle;
+    }
+    .staff-grid thead th, .staff-grid .period-col, .staff-grid .time-col {
+      background: #1c2128;
+      color: #f0f6fc;
       text-align: left;
     }
-
-    .timeline-table th {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: #8b949e;
-      background: #161b22;
-    }
-
-    .time-col { color: #8b949e; white-space: nowrap; width: 8.5rem; }
-    .note-col { color: #8b949e; font-size: 0.8rem; }
-    .slot.break { color: #3fb950; }
-    .slot.assembly { color: #d2a8ff; }
-    .slot.arrival { color: #58a6ff; }
-    .slot.lesson { color: #c9d1d9; }
-    .slot.core.maths { color: #79c0ff; font-weight: 600; }
-    .slot.core.english { color: #e3b341; font-weight: 600; }
+    .staff-grid .time-col { color: #8b949e; font-size: 0.72rem; }
+    .staff-cell .ks3 { color: #79c0ff; }
+    .staff-cell .ks4 { color: #e3b341; }
+    .stagger { color: #f85149; }
+    .meta-row th { color: #8b949e; font-weight: 500; }
+    .detention { color: #f85149; font-weight: 600; }
     .muted { color: #484f58; }
+    .grid-note { font-size: 0.75rem; color: #8b949e; }
 </style>
 </head>
 <body>
@@ -173,134 +58,32 @@
     <a class="back" href="index.html">← Back</a>
     <h1>Staff timetable</h1>
   </div>
-
-  <aside class="banner" role="status">
-    <strong>Start &amp; finish — Monday to Friday</strong>
-    Staff on site from <span class="staff-time">08:30</span> every day.
-    Students Mon, Tue, Thu, Fri from <span class="student-time">08:50</span> (latest <span class="student-time">09:05</span>);
-    Wednesday from <span class="student-time">10:00</span>.
-    School finish Mon–Wed <span class="student-time">15:00</span>; Thu–Fri <span class="student-time">14:00</span>.
-    Assembly <span class="student-time">Tuesday</span> (35 min).
-    <strong>Core subjects:</strong> English — first teaching block; Maths — after first break (between-breaks). Breaks staggered by key stage; lunch <span class="student-time">12:00–12:15</span> daily (whole school).
-    Staff roles <span class="muted">TBC</span>.
-  </aside>
-
-  <table class="week-table">
-    <caption>Weekly times</caption>
+  <p class="hints">Staff from 08:30. Students Mon/Tue/Thu/Fri 08:50 (latest 09:05), Wed 10:00.</p>
+  <div class="table-wrap">
+    
+  <table class="week-grid staff-grid">
     <thead>
       <tr>
-        <th scope="col">Day</th>
-        <th scope="col">Staff start</th>
-        <th scope="col">Students</th>
-        <th scope="col">Finish</th>
-        <th scope="col">Detentions</th>
+        <th scope="col">Period</th>
+        <th scope="col">Time</th>
+        <th scope="col">Monday</th><th scope="col">Tuesday</th><th scope="col">Wednesday</th><th scope="col">Thursday</th><th scope="col">Friday</th>
       </tr>
     </thead>
     <tbody>
-      <tr><td>Monday</td><td class="staff-start">08:30</td><td class="student-window">from <em>08:50</em>, latest <em>09:05</em></td><td class="finish">15:00</td><td class="detention">Detentions 15:00–15:30</td></tr><tr><td>Tuesday</td><td class="staff-start">08:30</td><td class="student-window">from <em>08:50</em>, latest <em>09:05</em></td><td class="finish">15:00</td><td class="muted">—</td></tr><tr><td>Wednesday</td><td class="staff-start">08:30</td><td class="student-window">from <em>10:00</em></td><td class="finish">15:00</td><td class="muted">—</td></tr><tr><td>Thursday</td><td class="staff-start">08:30</td><td class="student-window">from <em>08:50</em>, latest <em>09:05</em></td><td class="finish">14:00</td><td class="muted">—</td></tr><tr><td>Friday</td><td class="staff-start">08:30</td><td class="student-window">from <em>08:50</em>, latest <em>09:05</em></td><td class="finish">14:00</td><td class="detention">Detentions 14:00–15:00</td></tr>
+      <tr><th scope="row">Arrival</th><td class="time-col">08:50–09:00</td><td class="staff-cell"><span class="ks3">Arrival</span> / <span class="ks4">Arrival</span></td><td class="staff-cell"><span class="ks3">Arrival</span> / <span class="ks4">Arrival</span></td><td class="staff-cell muted">—</td><td class="staff-cell"><span class="ks3">Arrival</span> / <span class="ks4">Arrival</span></td><td class="staff-cell"><span class="ks3">Arrival</span> / <span class="ks4">Arrival</span></td></tr><tr><th scope="row">P1</th><td class="time-col">09:00–09:45</td><td class="staff-cell"><span class="ks3">English</span> / <span class="ks4">English</span></td><td class="staff-cell"><span class="ks3">Assembly</span> / <span class="ks4">Assembly</span></td><td class="staff-cell"><span class="ks3">English</span> / <span class="ks4">English</span></td><td class="staff-cell"><span class="ks3">English</span> / <span class="ks4">English</span></td><td class="staff-cell"><span class="ks3">English</span> / <span class="ks4">English</span></td></tr><tr><th scope="row">P2</th><td class="time-col">09:45–10:00</td><td class="staff-cell"><span class="ks3">Lesson</span> / <span class="ks4">Break</span><span class="stagger">≠</span></td><td class="staff-cell"><span class="ks3">English</span> / <span class="ks4">English</span></td><td class="staff-cell"><span class="ks3">Lesson</span> / <span class="ks4">Break</span><span class="stagger">≠</span></td><td class="staff-cell"><span class="ks3">Lesson</span> / <span class="ks4">Break</span><span class="stagger">≠</span></td><td class="staff-cell"><span class="ks3">Lesson</span> / <span class="ks4">Break</span><span class="stagger">≠</span></td></tr><tr><th scope="row">P3</th><td class="time-col">10:00–10:45</td><td class="staff-cell"><span class="ks3">Lesson</span> / <span class="ks4">Maths</span></td><td class="staff-cell"><span class="ks3">Lesson</span> / <span class="ks4">Break</span><span class="stagger">≠</span></td><td class="staff-cell"><span class="ks3">Lesson</span> / <span class="ks4">Maths</span></td><td class="staff-cell"><span class="ks3">Lesson</span> / <span class="ks4">Maths</span></td><td class="staff-cell"><span class="ks3">Lesson</span> / <span class="ks4">Maths</span></td></tr><tr><th scope="row">P4</th><td class="time-col">10:45–11:00</td><td class="staff-cell"><span class="ks3">Break</span> / <span class="ks4">Lesson</span><span class="stagger">≠</span></td><td class="staff-cell"><span class="ks3">Lesson</span> / <span class="ks4">Maths</span></td><td class="staff-cell"><span class="ks3">Break</span> / <span class="ks4">Lesson</span><span class="stagger">≠</span></td><td class="staff-cell"><span class="ks3">Break</span> / <span class="ks4">Lesson</span><span class="stagger">≠</span></td><td class="staff-cell"><span class="ks3">Break</span> / <span class="ks4">Lesson</span><span class="stagger">≠</span></td></tr><tr><th scope="row">P5</th><td class="time-col">11:00–12:15</td><td class="staff-cell"><span class="ks3">Maths</span> / <span class="ks4">Lesson</span></td><td class="staff-cell"><span class="ks3">Break</span> / <span class="ks4">Lesson</span><span class="stagger">≠</span></td><td class="staff-cell"><span class="ks3">Maths</span> / <span class="ks4">Lesson</span></td><td class="staff-cell"><span class="ks3">Maths</span> / <span class="ks4">Lesson</span></td><td class="staff-cell"><span class="ks3">Maths</span> / <span class="ks4">Lesson</span></td></tr><tr><th scope="row">Lunch</th><td class="time-col">12:15–12:30</td><td class="staff-cell"><span class="ks3">Lunch</span> / <span class="ks4">Lunch</span></td><td class="staff-cell"><span class="ks3">Maths</span> / <span class="ks4">Lesson</span></td><td class="staff-cell"><span class="ks3">Lunch</span> / <span class="ks4">Lunch</span></td><td class="staff-cell"><span class="ks3">Lunch</span> / <span class="ks4">Lunch</span></td><td class="staff-cell"><span class="ks3">Lunch</span> / <span class="ks4">Lunch</span></td></tr><tr><th scope="row">P6</th><td class="time-col">12:30–13:15</td><td class="staff-cell"><span class="ks3">Lesson</span> / <span class="ks4">Lesson</span></td><td class="staff-cell"><span class="ks3">Lunch</span> / <span class="ks4">Lunch</span></td><td class="staff-cell"><span class="ks3">Lesson</span> / <span class="ks4">Lesson</span></td><td class="staff-cell"><span class="ks3">Lesson</span> / <span class="ks4">Lesson</span></td><td class="staff-cell"><span class="ks3">Lesson</span> / <span class="ks4">Lesson</span></td></tr><tr><th scope="row">P7</th><td class="time-col">13:15–13:30</td><td class="staff-cell"><span class="ks3">Break</span> / <span class="ks4">Lesson</span><span class="stagger">≠</span></td><td class="staff-cell"><span class="ks3">Lesson</span> / <span class="ks4">Lesson</span></td><td class="staff-cell"><span class="ks3">Break</span> / <span class="ks4">Lesson</span><span class="stagger">≠</span></td><td class="staff-cell"><span class="ks3">Break</span> / <span class="ks4">Lesson</span><span class="stagger">≠</span></td><td class="staff-cell"><span class="ks3">Break</span> / <span class="ks4">Lesson</span><span class="stagger">≠</span></td></tr><tr><th scope="row">P8</th><td class="time-col">13:30–15:00</td><td class="staff-cell"><span class="ks3">Lesson</span> / <span class="ks4">Break</span><span class="stagger">≠</span></td><td class="staff-cell"><span class="ks3">Lesson</span> / <span class="ks4">Break</span><span class="stagger">≠</span></td><td class="staff-cell"><span class="ks3">Lesson</span> / <span class="ks4">Break</span><span class="stagger">≠</span></td><td class="staff-cell"><span class="ks3">Lesson</span> / <span class="ks4">Break</span><span class="stagger">≠</span></td><td class="staff-cell"><span class="ks3">Lesson</span> / <span class="ks4">Break</span><span class="stagger">≠</span></td></tr>
+      <tr class="meta-row">
+        <th scope="row">Finish</th>
+        <td></td>
+        <td>15:00</td><td>15:00</td><td>15:00</td><td>14:00</td><td>14:00</td>
+      </tr>
+      <tr class="meta-row">
+        <th scope="row">Detentions</th>
+        <td></td>
+        <td class="detention">15:00–15:30</td><td class="muted">—</td><td class="muted">—</td><td class="muted">—</td><td class="detention">14:00–15:00</td>
+      </tr>
     </tbody>
   </table>
-
-  <h2 class="section-title">Daily timeline (KS3 / KS4 — staggered breaks)</h2>
-  
-    <details class="day-block" open>
-      <summary>
-        <span class="day-name">Monday</span>
-        <span class="day-meta">Students from 08:50, latest 09:05 · finish 15:00</span>
-      </summary>
-      <table class="timeline-table">
-        <thead>
-          <tr>
-            <th scope="col">Time</th>
-            <th scope="col">KS3</th>
-            <th scope="col">KS4</th>
-            <th scope="col">Stagger</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="time-col">08:50–09:05</td><td class="slot arrival">Arrival</td><td class="slot arrival">Arrival</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:05–09:45</td><td class="slot core english">English</td><td class="slot core english">English</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:45–10:00</td><td class="slot lesson">Lesson — TBC</td><td class="slot break">Break</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">10:00–10:40</td><td class="slot lesson">Lesson — TBC</td><td class="slot core maths">Maths</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">10:40–10:55</td><td class="slot break">Break</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">10:55–11:35</td><td class="slot core maths">Maths</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">11:35–12:00</td><td class="slot lesson">Lesson — TBC</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">12:00–12:15</td><td class="slot break">Lunch</td><td class="slot break">Lunch</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">12:15–12:55</td><td class="slot lesson">Lesson — TBC</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">12:55–13:10</td><td class="slot break">Break</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">13:10–13:50</td><td class="slot lesson">Lesson — TBC</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">13:50–14:05</td><td class="slot lesson">Lesson — TBC</td><td class="slot break">Break</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">14:05–15:00</td><td class="slot lesson">Lesson — TBC</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr>
-        </tbody>
-      </table>
-    </details>
-
-    <details class="day-block" >
-      <summary>
-        <span class="day-name">Tuesday</span>
-        <span class="day-meta">Students from 08:50, latest 09:05 · finish 15:00</span>
-      </summary>
-      <table class="timeline-table">
-        <thead>
-          <tr>
-            <th scope="col">Time</th>
-            <th scope="col">KS3</th>
-            <th scope="col">KS4</th>
-            <th scope="col">Stagger</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="time-col">08:50–09:05</td><td class="slot arrival">Arrival</td><td class="slot arrival">Arrival</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:05–09:40</td><td class="slot assembly">Assembly</td><td class="slot assembly">Assembly</td><td class="note-col">Assembly (35 min)</td></tr><tr><td class="time-col">09:40–10:20</td><td class="slot core english">English</td><td class="slot core english">English</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">10:20–10:35</td><td class="slot lesson">Lesson — TBC</td><td class="slot break">Break</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">10:35–11:15</td><td class="slot lesson">Lesson — TBC</td><td class="slot core maths">Maths</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">11:15–11:30</td><td class="slot break">Break</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">11:30–12:00</td><td class="slot core maths">Maths</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">12:00–12:15</td><td class="slot break">Lunch</td><td class="slot break">Lunch</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">12:15–12:55</td><td class="slot lesson">Lesson — TBC</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">12:55–13:10</td><td class="slot break">Break</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">13:10–13:50</td><td class="slot lesson">Lesson — TBC</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">13:50–14:05</td><td class="slot lesson">Lesson — TBC</td><td class="slot break">Break</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">14:05–15:00</td><td class="slot lesson">Lesson — TBC</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr>
-        </tbody>
-      </table>
-    </details>
-
-    <details class="day-block" >
-      <summary>
-        <span class="day-name">Wednesday</span>
-        <span class="day-meta">Students from 10:00 · finish 15:00</span>
-      </summary>
-      <table class="timeline-table">
-        <thead>
-          <tr>
-            <th scope="col">Time</th>
-            <th scope="col">KS3</th>
-            <th scope="col">KS4</th>
-            <th scope="col">Stagger</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="time-col">10:00–10:40</td><td class="slot core english">English</td><td class="slot core english">English</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">10:40–10:55</td><td class="slot lesson">Lesson — TBC</td><td class="slot break">Break</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">10:55–11:35</td><td class="slot lesson">Lesson — TBC</td><td class="slot core maths">Maths</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">11:35–11:50</td><td class="slot break">Break</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">11:50–12:00</td><td class="slot core maths">Maths</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">12:00–12:15</td><td class="slot break">Lunch</td><td class="slot break">Lunch</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">12:15–12:55</td><td class="slot lesson">Lesson — TBC</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">12:55–13:10</td><td class="slot break">Break</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">13:10–13:50</td><td class="slot lesson">Lesson — TBC</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">13:50–14:05</td><td class="slot lesson">Lesson — TBC</td><td class="slot break">Break</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">14:05–15:00</td><td class="slot lesson">Lesson — TBC</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr>
-        </tbody>
-      </table>
-    </details>
-
-    <details class="day-block" >
-      <summary>
-        <span class="day-name">Thursday</span>
-        <span class="day-meta">Students from 08:50, latest 09:05 · finish 14:00</span>
-      </summary>
-      <table class="timeline-table">
-        <thead>
-          <tr>
-            <th scope="col">Time</th>
-            <th scope="col">KS3</th>
-            <th scope="col">KS4</th>
-            <th scope="col">Stagger</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="time-col">08:50–09:05</td><td class="slot arrival">Arrival</td><td class="slot arrival">Arrival</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:05–09:40</td><td class="slot core english">English</td><td class="slot core english">English</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:40–09:55</td><td class="slot lesson">Lesson — TBC</td><td class="slot break">Break</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">09:55–10:30</td><td class="slot lesson">Lesson — TBC</td><td class="slot core maths">Maths</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">10:30–10:45</td><td class="slot break">Break</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">10:45–11:20</td><td class="slot core maths">Maths</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">11:20–12:00</td><td class="slot lesson">Lesson — TBC</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">12:00–12:15</td><td class="slot break">Lunch</td><td class="slot break">Lunch</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">12:15–12:50</td><td class="slot lesson">Lesson — TBC</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">12:50–13:05</td><td class="slot break">Break</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">13:05–13:40</td><td class="slot lesson">Lesson — TBC</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">13:40–13:55</td><td class="slot lesson">Lesson — TBC</td><td class="slot break">Break</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">13:55–14:00</td><td class="slot lesson">Lesson — TBC</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr>
-        </tbody>
-      </table>
-    </details>
-
-    <details class="day-block" >
-      <summary>
-        <span class="day-name">Friday</span>
-        <span class="day-meta">Students from 08:50, latest 09:05 · finish 14:00</span>
-      </summary>
-      <table class="timeline-table">
-        <thead>
-          <tr>
-            <th scope="col">Time</th>
-            <th scope="col">KS3</th>
-            <th scope="col">KS4</th>
-            <th scope="col">Stagger</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="time-col">08:50–09:05</td><td class="slot arrival">Arrival</td><td class="slot arrival">Arrival</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:05–09:40</td><td class="slot core english">English</td><td class="slot core english">English</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:40–09:55</td><td class="slot lesson">Lesson — TBC</td><td class="slot break">Break</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">09:55–10:30</td><td class="slot lesson">Lesson — TBC</td><td class="slot core maths">Maths</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">10:30–10:45</td><td class="slot break">Break</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">10:45–11:20</td><td class="slot core maths">Maths</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">11:20–12:00</td><td class="slot lesson">Lesson — TBC</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">12:00–12:15</td><td class="slot break">Lunch</td><td class="slot break">Lunch</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">12:15–12:50</td><td class="slot lesson">Lesson — TBC</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">12:50–13:05</td><td class="slot break">Break</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">13:05–13:40</td><td class="slot lesson">Lesson — TBC</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">13:40–13:55</td><td class="slot lesson">Lesson — TBC</td><td class="slot break">Break</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">13:55–14:00</td><td class="slot lesson">Lesson — TBC</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr>
-        </tbody>
-      </table>
-    </details>
+  <p class="grid-note">Staff on site from 08:30. <span class="stagger">≠</span> staggered break.</p>
+  </div>
 </body>
 </html>
