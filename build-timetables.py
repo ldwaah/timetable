@@ -61,6 +61,20 @@ def day_arrival_hint(day: dict) -> str:
     return arrival
 
 
+def break_hints(week: dict, stage: str) -> str:
+    parts = []
+    for key in DAY_ORDER:
+        day = week["days"][key]
+        slots = [
+            f'{r["start"]}–{r["end"]}'
+            for r in day["rows"]
+            if r[stage] == "Break"
+        ]
+        if slots:
+            parts.append(f'{day["label"][:3]}: {" & ".join(slots)}')
+    return " · ".join(parts)
+
+
 def render_day_tab_inputs(default_key: str = "monday") -> str:
     parts = []
     for key in DAY_ORDER:
@@ -705,10 +719,9 @@ STAFF_PERSON_CSS = (
 
 def build_student_html(week: dict) -> str:
     meta = week["meta"]
-    ks3_breaks = "Mon: 11:20 & 13:45 · Tue: 11:55 & 14:05 · Wed: 11:55 & 13:55 · Thu/Fri: 11:10 & 13:25"
-    ks4_breaks = "Mon: 10:25 & 14:25 · Tue: 11:00 & 14:20 · Wed: 11:10 & 14:45 · Thu/Fri: 10:20 & 13:25"
-    ks3_lunch = "Mon: 12:30–12:45 · Tue: 12:50–13:05 · Wed: 13:05–13:20 · Thu/Fri: 12:10–12:25"
-    ks4_lunch = "Mon: 12:15–12:30 · Tue: 12:35–12:50 · Wed: 12:50–13:05 · Thu/Fri: 11:55–12:10"
+    ks3_breaks = break_hints(week, "ks3")
+    ks4_breaks = break_hints(week, "ks4")
+    lunch_line = meta.get("lunch_time", "12:15–12:30")
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -729,7 +742,8 @@ def build_student_html(week: dict) -> str:
     Mon/Tue/Thu/Fri from <strong>08:50</strong> (latest <strong>09:05</strong>); Wed from <strong>10:00</strong>.
     Finish Mon–Wed <strong>15:00</strong>; Thu–Fri <strong>14:00</strong>.
     Checks <strong>{esc(meta["checks_window"])}</strong>, then Reset ({meta["reset_minutes"]} min).
-    Tue: Reset → Assembly ({meta["assembly_minutes"]} min) → English. 15 min breaks &amp; lunch (staggered).
+    Tue: Reset → Assembly ({meta["assembly_minutes"]} min) → English.
+    Lunch <strong>{esc(lunch_line)}</strong> (both KS3 &amp; KS4). Breaks staggered between key stages.
   </p>
 
   <div class="legend" aria-hidden="true">
@@ -746,8 +760,8 @@ def build_student_html(week: dict) -> str:
   <p class="legend" style="margin-top:-0.75rem">
     <strong style="color:#f0f6fc">Example breaks — KS3:</strong> {esc(ks3_breaks)}.
     <strong style="color:#f0f6fc">KS4:</strong> {esc(ks4_breaks)}.
-    <strong style="color:#f0f6fc">Lunch — KS3:</strong> {esc(ks3_lunch)}.
-    <strong style="color:#f0f6fc">KS4:</strong> {esc(ks4_lunch)}.
+    <strong style="color:#f0f6fc">Breaks — KS3:</strong> {esc(ks3_breaks)}.
+    <strong style="color:#f0f6fc">KS4:</strong> {esc(ks4_breaks)}.
   </p>
 
   {render_student_day_views(week)}
@@ -774,9 +788,12 @@ def build_staff_html(week: dict) -> str:
             det_cell = f'<td class="detention">Detentions {esc(det["friday"])}</td>'
         else:
             det_cell = '<td class="muted">—</td>'
+        staff_note = ""
+        if key == "wednesday" and d.get("staff_meeting"):
+            staff_note = f'<br><span class="muted">Staff meeting {esc(d["staff_meeting"])} (students from {esc(d["arrival_from"])})</span>'
         overview_rows.append(
             f"<tr><td>{esc(d['label'])}</td>"
-            f'<td class="staff-start">{esc(staff["start"])}</td>'
+            f'<td class="staff-start">{esc(staff["start"])}{staff_note}</td>'
             f'<td class="student-window">{arrival}</td>'
             f'<td class="finish">{esc(d["finish"])}</td>'
             f"{det_cell}</tr>"
