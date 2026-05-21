@@ -442,10 +442,11 @@ STAFF_CSS = """
 
 def build_student_html(week: dict) -> str:
     meta = week["meta"]
-    ks3_breaks = "Mon: 10:40 & 12:45 · Tue: 11:15 & 13:20 · Wed: 11:35 & 13:40 · Thu/Fri: 10:30 & 12:25"
-    ks4_breaks = "Mon: 09:45 & 13:40 · Tue: 10:20 & 14:15 · Wed: 10:40 & 14:35 · Thu/Fri: 09:40 & 13:15"
-    ks3_lunch = "Mon–Fri: 11:50–12:05 (KS4 at 11:35–11:50)"
-    ks4_lunch = "Mon–Fri: 11:35–11:50 (KS3 at 11:50–12:05)"
+    lunch_time = week["meta"].get("lunch_time", "12:00–12:15")
+    ks3_breaks = "Mon: 10:40 & 12:55 · Tue: 11:15 & 12:55 · Wed: 11:35 & 12:55 · Thu/Fri: 10:30 & 12:50"
+    ks4_breaks = "Mon: 09:45 & 13:50 · Tue: 10:20 & 13:50 · Wed: 10:40 & 13:50 · Thu/Fri: 09:40 & 13:40"
+    ks3_lunch = f"Mon–Fri: {lunch_time} (KS3 & KS4 together)"
+    ks4_lunch = ks3_lunch
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -466,7 +467,7 @@ def build_student_html(week: dict) -> str:
     Mon, Tue, Thu, Fri: from <strong>08:50</strong> (latest <strong>09:05</strong>). Wednesday: from <strong>10:00</strong>.
     Finish Mon–Wed <strong>15:00</strong>; Thu–Fri <strong>14:00</strong>.
     Assembly <strong>Tuesday 09:05–09:40</strong> ({meta["assembly_minutes"]} min, whole school).
-    Two breaks and one lunch per day (15 min each); KS3 and KS4 staggered.
+    Two breaks and one lunch per day (15 min each); breaks staggered by key stage. Lunch <strong>{esc(lunch_time)}</strong> every day (KS3 &amp; KS4 together).
     <strong>Maths &amp; English:</strong> English in the first teaching block; Maths in the block after the first break (between-breaks window). Not scheduled post-lunch.
   </aside>
 
@@ -482,8 +483,7 @@ def build_student_html(week: dict) -> str:
   <p class="legend" style="margin-top:-0.75rem">
     <strong style="color:#f0f6fc">Example breaks — KS3:</strong> {esc(ks3_breaks)}.
     <strong style="color:#f0f6fc">KS4:</strong> {esc(ks4_breaks)}.
-    <strong style="color:#f0f6fc">Lunch — KS3:</strong> {esc(ks3_lunch)}.
-    <strong style="color:#f0f6fc">KS4:</strong> {esc(ks4_lunch)}.
+    <strong style="color:#f0f6fc">Lunch:</strong> {esc(ks3_lunch)}.
   </p>
 
   {render_stage_grid(week, "ks3")}
@@ -539,7 +539,7 @@ def build_staff_html(week: dict) -> str:
     Wednesday from <span class="student-time">10:00</span>.
     School finish Mon–Wed <span class="student-time">15:00</span>; Thu–Fri <span class="student-time">14:00</span>.
     Assembly <span class="student-time">Tuesday</span> ({meta["assembly_minutes"]} min).
-    <strong>Core subjects:</strong> English — first teaching block; Maths — after first break (between-breaks). KS3/KS4 times differ where breaks are staggered.
+    <strong>Core subjects:</strong> English — first teaching block; Maths — after first break (between-breaks). Breaks staggered by key stage; lunch <span class="student-time">{esc(week["meta"].get("lunch_time", "12:00–12:15"))}</span> daily (whole school).
     Staff roles <span class="muted">TBC</span>.
   </aside>
 
