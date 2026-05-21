@@ -5,6 +5,53 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Laurent — staff timetable</title>
   <style>
+    .tab-input { position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0; }
+
+    .day-tabs { margin-top: 0.5rem; }
+
+    .tab-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-bottom: 1rem;
+    }
+
+    .day-tab-btn {
+      cursor: pointer;
+      padding: 0.45rem 0.9rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #8b949e;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+
+    .day-tab-btn:hover { color: #e6edf3; background: #21262d; }
+
+    #tab-monday:checked ~ .tab-bar label[for="tab-monday"],
+    #tab-tuesday:checked ~ .tab-bar label[for="tab-tuesday"],
+    #tab-wednesday:checked ~ .tab-bar label[for="tab-wednesday"],
+    #tab-thursday:checked ~ .tab-bar label[for="tab-thursday"],
+    #tab-friday:checked ~ .tab-bar label[for="tab-friday"] {
+      color: #f0f6fc;
+      background: #1f3a5f;
+      border-color: #58a6ff;
+    }
+
+    .tab-panels { position: relative; }
+
+    .day-panel { display: none; }
+
+    .day-meta {
+      font-size: 0.85rem;
+      color: #8b949e;
+      margin-bottom: 0.75rem;
+    }
+
+    .day-meta strong { color: #58a6ff; font-weight: 600; }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -51,21 +98,100 @@
     <a class="back" href="../staff-timetable.html">← Staff timetable</a>
     <h1>Laurent</h1>
   </div>
-  <p class="hints">On site from 08:30. Teaching assignments this week.</p>
-  <div class="table-wrap">
-    <table class="person-grid">
-      <thead>
-        <tr>
-          <th scope="col">Day</th>
-          <th scope="col">Time</th>
-          <th scope="col">Group</th>
-          <th scope="col">Subject</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>Monday</td><td class="time-col">09:05–09:45</td><td>KS4</td><td class="subject-col">English</td></tr><tr><td>Monday</td><td class="time-col">10:00–10:40</td><td>KS4</td><td class="subject-col">Maths</td></tr><tr><td>Monday</td><td class="time-col">12:05–13:05</td><td>KS3</td><td class="subject-col">PE (50 min + 10 min change)</td></tr><tr><td>Monday</td><td class="time-col">12:05–13:05</td><td>KS4</td><td class="subject-col">PE (50 min + 10 min change)</td></tr><tr><td>Tuesday</td><td class="time-col">09:40–10:20</td><td>KS4</td><td class="subject-col">English</td></tr><tr><td>Tuesday</td><td class="time-col">10:35–11:15</td><td>KS4</td><td class="subject-col">Maths</td></tr><tr><td>Tuesday</td><td class="time-col">12:40–13:40</td><td>KS3</td><td class="subject-col">PE (50 min + 10 min change)</td></tr><tr><td>Tuesday</td><td class="time-col">12:40–13:40</td><td>KS4</td><td class="subject-col">PE (50 min + 10 min change)</td></tr><tr><td>Wednesday</td><td class="time-col">10:00–10:40</td><td>KS4</td><td class="subject-col">English</td></tr><tr><td>Wednesday</td><td class="time-col">11:20–11:35</td><td>KS4</td><td class="subject-col">Maths</td></tr><tr><td>Thursday</td><td class="time-col">09:05–09:40</td><td>KS4</td><td class="subject-col">English</td></tr><tr><td>Thursday</td><td class="time-col">09:55–10:30</td><td>KS4</td><td class="subject-col">Maths</td></tr><tr><td>Thursday</td><td class="time-col">11:50–12:50</td><td>KS3</td><td class="subject-col">PE (50 min + 10 min change)</td></tr><tr><td>Thursday</td><td class="time-col">11:50–12:50</td><td>KS4</td><td class="subject-col">PE (50 min + 10 min change)</td></tr><tr><td>Friday</td><td class="time-col">09:05–09:40</td><td>KS4</td><td class="subject-col">English</td></tr><tr><td>Friday</td><td class="time-col">09:55–10:30</td><td>KS4</td><td class="subject-col">Maths</td></tr><tr><td>Friday</td><td class="time-col">11:50–12:50</td><td>KS3</td><td class="subject-col">PE (50 min + 10 min change)</td></tr><tr><td>Friday</td><td class="time-col">11:50–12:50</td><td>KS4</td><td class="subject-col">PE (50 min + 10 min change)</td></tr>
-      </tbody>
-    </table>
+  <p class="hints">On site from 08:30. Teaching assignments by day.</p>
+  
+  <style>
+    #tab-monday:checked ~ .tab-panels #panel-monday { display: block; }
+    #tab-tuesday:checked ~ .tab-panels #panel-tuesday { display: block; }
+    #tab-wednesday:checked ~ .tab-panels #panel-wednesday { display: block; }
+    #tab-thursday:checked ~ .tab-panels #panel-thursday { display: block; }
+    #tab-friday:checked ~ .tab-panels #panel-friday { display: block; }
+  </style>
+  <div class="day-tabs">
+    <input type="radio" name="day-tab" id="tab-monday" class="tab-input" checked>
+    <input type="radio" name="day-tab" id="tab-tuesday" class="tab-input">
+    <input type="radio" name="day-tab" id="tab-wednesday" class="tab-input">
+    <input type="radio" name="day-tab" id="tab-thursday" class="tab-input">
+    <input type="radio" name="day-tab" id="tab-friday" class="tab-input">
+    <div class="tab-bar" role="tablist"><label for="tab-monday" class="day-tab-btn" role="tab">Mon</label><label for="tab-tuesday" class="day-tab-btn" role="tab">Tue</label><label for="tab-wednesday" class="day-tab-btn" role="tab">Wed</label><label for="tab-thursday" class="day-tab-btn" role="tab">Thu</label><label for="tab-friday" class="day-tab-btn" role="tab">Fri</label></div>
+    <div class="tab-panels">
+      
+      <section class="day-panel" id="panel-monday" role="tabpanel">
+        <p class="day-meta">Monday</p>
+        <div class="table-wrap">
+          <table class="person-grid">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Group</th>
+                <th scope="col">Subject</th>
+              </tr>
+            </thead>
+            <tbody><tr><td class="time-col">09:15–09:50</td><td>KS4</td><td class="subject-col">Reset</td></tr><tr><td class="time-col">09:50–10:25</td><td>KS4</td><td class="subject-col">English</td></tr><tr><td class="time-col">10:40–11:20</td><td>KS4</td><td class="subject-col">Maths</td></tr><tr><td class="time-col">12:45–13:45</td><td>KS3</td><td class="subject-col">PE (50 min + 10 min change)</td></tr><tr><td class="time-col">12:45–13:45</td><td>KS4</td><td class="subject-col">PE (50 min + 10 min change)</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+      <section class="day-panel" id="panel-tuesday" role="tabpanel">
+        <p class="day-meta">Tuesday</p>
+        <div class="table-wrap">
+          <table class="person-grid">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Group</th>
+                <th scope="col">Subject</th>
+              </tr>
+            </thead>
+            <tbody><tr><td class="time-col">09:15–09:50</td><td>KS4</td><td class="subject-col">Reset</td></tr><tr><td class="time-col">10:25–11:00</td><td>KS4</td><td class="subject-col">English</td></tr><tr><td class="time-col">11:15–11:55</td><td>KS4</td><td class="subject-col">Maths</td></tr><tr><td class="time-col">13:05–14:05</td><td>KS3</td><td class="subject-col">PE (50 min + 10 min change)</td></tr><tr><td class="time-col">13:05–14:05</td><td>KS4</td><td class="subject-col">PE (50 min + 10 min change)</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+      <section class="day-panel" id="panel-wednesday" role="tabpanel">
+        <p class="day-meta">Wednesday</p>
+        <div class="table-wrap">
+          <table class="person-grid">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Group</th>
+                <th scope="col">Subject</th>
+              </tr>
+            </thead>
+            <tbody><tr><td class="time-col">10:00–10:35</td><td>KS4</td><td class="subject-col">Reset</td></tr><tr><td class="time-col">10:35–11:10</td><td>KS4</td><td class="subject-col">English</td></tr><tr><td class="time-col">11:40–11:55</td><td>KS4</td><td class="subject-col">Maths</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+      <section class="day-panel" id="panel-thursday" role="tabpanel">
+        <p class="day-meta">Thursday</p>
+        <div class="table-wrap">
+          <table class="person-grid">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Group</th>
+                <th scope="col">Subject</th>
+              </tr>
+            </thead>
+            <tbody><tr><td class="time-col">09:15–09:50</td><td>KS4</td><td class="subject-col">Reset</td></tr><tr><td class="time-col">09:50–10:20</td><td>KS4</td><td class="subject-col">English</td></tr><tr><td class="time-col">10:35–11:10</td><td>KS4</td><td class="subject-col">Maths</td></tr><tr><td class="time-col">12:25–13:25</td><td>KS3</td><td class="subject-col">PE (50 min + 10 min change)</td></tr><tr><td class="time-col">12:25–13:25</td><td>KS4</td><td class="subject-col">PE (50 min + 10 min change)</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+      <section class="day-panel" id="panel-friday" role="tabpanel">
+        <p class="day-meta">Friday</p>
+        <div class="table-wrap">
+          <table class="person-grid">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Group</th>
+                <th scope="col">Subject</th>
+              </tr>
+            </thead>
+            <tbody><tr><td class="time-col">09:15–09:50</td><td>KS4</td><td class="subject-col">Reset</td></tr><tr><td class="time-col">09:50–10:20</td><td>KS4</td><td class="subject-col">English</td></tr><tr><td class="time-col">10:35–11:10</td><td>KS4</td><td class="subject-col">Maths</td></tr><tr><td class="time-col">12:25–13:25</td><td>KS3</td><td class="subject-col">PE (50 min + 10 min change)</td></tr><tr><td class="time-col">12:25–13:25</td><td>KS4</td><td class="subject-col">PE (50 min + 10 min change)</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
   </div>
 </body>
 </html>

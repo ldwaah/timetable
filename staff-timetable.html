@@ -34,22 +34,14 @@
       color: #f0f6fc;
     }
 
-    .banner {
-      margin-bottom: 1.5rem;
-      padding: 1rem 1.25rem;
-      background: linear-gradient(135deg, #3d1f5f 0%, #161b22 100%);
-      border: 1px solid #30363d;
-      border-left: 4px solid #a371f7;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      color: #c9d1d9;
+    .hints {
+      margin-bottom: 1.25rem;
+      font-size: 0.88rem;
+      color: #8b949e;
       line-height: 1.55;
     }
 
-    .banner strong { color: #f0f6fc; display: block; margin-bottom: 0.35rem; }
-
-    .banner .staff-time { color: #a371f7; font-weight: 600; }
-    .banner .student-time { color: #58a6ff; font-weight: 600; }
+    .hints strong { color: #c9d1d9; font-weight: 500; }
 
     .staff-links {
       display: flex;
@@ -130,30 +122,12 @@
       color: #f0f6fc;
     }
 
-    .day-block {
-      margin-bottom: 0.75rem;
+    .table-wrap {
+      overflow-x: auto;
       border: 1px solid #30363d;
       border-radius: 12px;
       background: #161b22;
-      overflow: hidden;
     }
-
-    .day-block summary {
-      cursor: pointer;
-      padding: 0.85rem 1rem;
-      background: #1c2128;
-      list-style: none;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.35rem 1rem;
-      align-items: baseline;
-    }
-
-    .day-block summary::-webkit-details-marker { display: none; }
-
-    .day-name { font-weight: 600; color: #f0f6fc; }
-
-    .day-meta { font-size: 0.85rem; color: #8b949e; }
 
     .timeline-table {
       width: 100%;
@@ -181,6 +155,8 @@
     .lead { color: #a371f7; font-size: 0.8rem; font-weight: 500; }
     .slot.break { color: #3fb950; }
     .slot.assembly { color: #d2a8ff; }
+    .slot.reset { color: #79c0ff; font-weight: 600; }
+    .slot.checks { color: #8b949e; font-style: italic; }
     .slot.arrival { color: #58a6ff; }
     .slot.lesson { color: #c9d1d9; }
     .slot.core.maths { color: #79c0ff; font-weight: 600; }
@@ -203,9 +179,10 @@
     Students Mon, Tue, Thu, Fri from <span class="student-time">08:50</span> (latest <span class="student-time">09:05</span>);
     Wednesday from <span class="student-time">10:00</span>.
     School finish Mon–Wed <span class="student-time">15:00</span>; Thu–Fri <span class="student-time">14:00</span>.
-    Assembly <span class="student-time">Tuesday</span> (35 min).
+    Checks <span class="student-time">09:05–09:15</span> then Reset (35 min) before core lessons.
+    Tuesday: Reset → Assembly (35 min) → English.
     <strong>Lead teachers:</strong>
-    <ul class="assign-list"><li><strong>King&#x27;s Trust</strong> — KS4: Lorelle</li><li><strong>DofE</strong> — KS4: Lloyd</li><li><strong>Citizenship</strong> — KS3: Lloyd, KS4: Lloyd</li><li><strong>Maths</strong> — KS3: Lorelle, KS4: Laurent</li><li><strong>English</strong> — KS3: Lorelle, KS4: Laurent</li><li><strong>PE</strong> — KS3: Laurent, KS4: Laurent</li></ul>
+    <ul class="assign-list"><li><strong>Reset</strong> — KS3: Lorelle, KS4: Laurent</li><li><strong>King&#x27;s Trust</strong> — KS4: Lorelle</li><li><strong>DofE</strong> — KS4: Lloyd</li><li><strong>Citizenship</strong> — KS3: Lloyd, KS4: Lloyd</li><li><strong>Maths</strong> — KS3: Lorelle, KS4: Laurent</li><li><strong>English</strong> — KS3: Lorelle, KS4: Laurent</li><li><strong>PE</strong> — KS3: Laurent, KS4: Laurent</li></ul>
   </aside>
 
   <nav class="staff-links" aria-label="Individual staff timetables">
@@ -230,104 +207,113 @@
 
   <h2 class="section-title">Daily timeline (KS3 / KS4 — names in parentheses)</h2>
   
-    <details class="day-block" open>
-      <summary>
-        <span class="day-name">Monday</span>
-        <span class="day-meta">Students from 08:50, latest 09:05 · finish 15:00</span>
-      </summary>
-      <table class="timeline-table">
-        <thead>
-          <tr>
-            <th scope="col">Time</th>
-            <th scope="col">KS3</th>
-            <th scope="col">KS4</th>
-            <th scope="col">Stagger</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="time-col">08:50–09:05</td><td class="slot arrival">Arrival</td><td class="slot arrival">Arrival</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:05–09:45</td><td class="slot core english">English <span class="lead">(Lorelle)</span></td><td class="slot core english">English <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:45–10:00</td><td class="slot">Citizenship <span class="lead">(Lloyd)</span></td><td class="slot break">Break</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">10:00–10:40</td><td class="slot">Art</td><td class="slot core maths">Maths <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">10:40–10:55</td><td class="slot break">Break</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">10:55–11:35</td><td class="slot core maths">Maths <span class="lead">(Lorelle)</span></td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">11:35–11:50</td><td class="slot lesson">Lesson — TBC</td><td class="slot break">Lunch</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">11:50–12:05</td><td class="slot break">Lunch</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">12:05–13:05</td><td class="slot pe">PE (50 min + 10 min change) <span class="lead">(Laurent)</span></td><td class="slot pe">PE (50 min + 10 min change) <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">13:05–13:20</td><td class="slot break">Break</td><td class="slot">DofE <span class="lead">(Lloyd)</span></td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">13:20–13:45</td><td class="slot lesson">Lesson — TBC</td><td class="slot">DofE <span class="lead">(Lloyd)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">13:45–14:00</td><td class="slot break">Break</td><td class="slot break">Break</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">14:00–15:00</td><td class="slot">Food Technology</td><td class="slot">King&#x27;s Trust <span class="lead">(Lorelle)</span></td><td class="note-col"><span class="muted">—</span></td></tr>
-        </tbody>
-      </table>
-    </details>
-
-    <details class="day-block" >
-      <summary>
-        <span class="day-name">Tuesday</span>
-        <span class="day-meta">Students from 08:50, latest 09:05 · finish 15:00</span>
-      </summary>
-      <table class="timeline-table">
-        <thead>
-          <tr>
-            <th scope="col">Time</th>
-            <th scope="col">KS3</th>
-            <th scope="col">KS4</th>
-            <th scope="col">Stagger</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="time-col">08:50–09:05</td><td class="slot arrival">Arrival</td><td class="slot arrival">Arrival</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:05–09:40</td><td class="slot assembly">Assembly</td><td class="slot assembly">Assembly</td><td class="note-col">Assembly (35 min)</td></tr><tr><td class="time-col">09:40–10:20</td><td class="slot core english">English <span class="lead">(Lorelle)</span></td><td class="slot core english">English <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">10:20–10:35</td><td class="slot">Art</td><td class="slot break">Break</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">10:35–11:15</td><td class="slot lesson">Lesson — TBC</td><td class="slot core maths">Maths <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">11:15–11:30</td><td class="slot break">Break</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">11:30–12:10</td><td class="slot core maths">Maths <span class="lead">(Lorelle)</span></td><td class="slot">DofE <span class="lead">(Lloyd)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">12:10–12:25</td><td class="slot lesson">Lesson — TBC</td><td class="slot break">Lunch</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">12:25–12:40</td><td class="slot break">Lunch</td><td class="slot">Citizenship <span class="lead">(Lloyd)</span></td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">12:40–13:40</td><td class="slot pe">PE (50 min + 10 min change) <span class="lead">(Laurent)</span></td><td class="slot pe">PE (50 min + 10 min change) <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">13:40–13:55</td><td class="slot break">Break</td><td class="slot">Food Technology</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">13:55–14:40</td><td class="slot">Food Technology</td><td class="slot">King&#x27;s Trust <span class="lead">(Lorelle)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">14:40–14:55</td><td class="slot">Food Technology</td><td class="slot break">Break</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">14:55–15:00</td><td class="slot lesson">Lesson — TBC</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr>
-        </tbody>
-      </table>
-    </details>
-
-    <details class="day-block" >
-      <summary>
-        <span class="day-name">Wednesday</span>
-        <span class="day-meta">Students from 10:00 · finish 15:00</span>
-      </summary>
-      <table class="timeline-table">
-        <thead>
-          <tr>
-            <th scope="col">Time</th>
-            <th scope="col">KS3</th>
-            <th scope="col">KS4</th>
-            <th scope="col">Stagger</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="time-col">10:00–10:40</td><td class="slot core english">English <span class="lead">(Lorelle)</span></td><td class="slot core english">English <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">10:40–10:55</td><td class="slot">Art</td><td class="slot break">Break</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">10:55–11:20</td><td class="slot">Art</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">11:20–11:35</td><td class="slot lesson">Lesson — TBC</td><td class="slot core maths">Maths <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">11:35–11:50</td><td class="slot break">Break</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">11:50–12:30</td><td class="slot core maths">Maths <span class="lead">(Lorelle)</span></td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">12:30–12:45</td><td class="slot lesson">Lesson — TBC</td><td class="slot break">Lunch</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">12:45–13:00</td><td class="slot break">Lunch</td><td class="slot">Citizenship <span class="lead">(Lloyd)</span></td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">13:00–13:40</td><td class="slot">Citizenship <span class="lead">(Lloyd)</span></td><td class="slot">Food Technology</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">13:40–13:55</td><td class="slot break">Break</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">13:55–14:35</td><td class="slot">Food Technology</td><td class="slot">DofE <span class="lead">(Lloyd)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">14:35–14:50</td><td class="slot lesson">Lesson — TBC</td><td class="slot break">Break</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">14:50–15:00</td><td class="slot lesson">Lesson — TBC</td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr>
-        </tbody>
-      </table>
-    </details>
-
-    <details class="day-block" >
-      <summary>
-        <span class="day-name">Thursday</span>
-        <span class="day-meta">Students from 08:50, latest 09:05 · finish 14:00</span>
-      </summary>
-      <table class="timeline-table">
-        <thead>
-          <tr>
-            <th scope="col">Time</th>
-            <th scope="col">KS3</th>
-            <th scope="col">KS4</th>
-            <th scope="col">Stagger</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="time-col">08:50–09:05</td><td class="slot arrival">Arrival</td><td class="slot arrival">Arrival</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:05–09:40</td><td class="slot core english">English <span class="lead">(Lorelle)</span></td><td class="slot core english">English <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:40–09:55</td><td class="slot">Citizenship <span class="lead">(Lloyd)</span></td><td class="slot break">Break</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">09:55–10:30</td><td class="slot lesson">Lesson — TBC</td><td class="slot core maths">Maths <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">10:30–10:45</td><td class="slot break">Break</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">10:45–11:25</td><td class="slot core maths">Maths <span class="lead">(Lorelle)</span></td><td class="slot">DofE <span class="lead">(Lloyd)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">11:25–11:35</td><td class="slot">Art</td><td class="slot break">Lunch</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">11:35–11:50</td><td class="slot break">Lunch</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">11:50–12:50</td><td class="slot pe">PE (50 min + 10 min change) <span class="lead">(Laurent)</span></td><td class="slot pe">PE (50 min + 10 min change) <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">12:50–13:05</td><td class="slot break">Break</td><td class="slot">King&#x27;s Trust <span class="lead">(Lorelle)</span></td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">13:05–13:45</td><td class="slot">Food Technology</td><td class="slot">King&#x27;s Trust <span class="lead">(Lorelle)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">13:45–14:00</td><td class="slot lesson">Lesson — TBC</td><td class="slot">Food Technology</td><td class="note-col"><span class="muted">—</span></td></tr>
-        </tbody>
-      </table>
-    </details>
-
-    <details class="day-block" >
-      <summary>
-        <span class="day-name">Friday</span>
-        <span class="day-meta">Students from 08:50, latest 09:05 · finish 14:00</span>
-      </summary>
-      <table class="timeline-table">
-        <thead>
-          <tr>
-            <th scope="col">Time</th>
-            <th scope="col">KS3</th>
-            <th scope="col">KS4</th>
-            <th scope="col">Stagger</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="time-col">08:50–09:05</td><td class="slot arrival">Arrival</td><td class="slot arrival">Arrival</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:05–09:40</td><td class="slot core english">English <span class="lead">(Lorelle)</span></td><td class="slot core english">English <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:40–09:55</td><td class="slot">Art</td><td class="slot break">Break</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">09:55–10:30</td><td class="slot lesson">Lesson — TBC</td><td class="slot core maths">Maths <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">10:30–10:45</td><td class="slot break">Break</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">10:45–11:25</td><td class="slot core maths">Maths <span class="lead">(Lorelle)</span></td><td class="slot">DofE <span class="lead">(Lloyd)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">11:25–11:35</td><td class="slot lesson">Lesson — TBC</td><td class="slot break">Lunch</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">11:35–11:50</td><td class="slot break">Lunch</td><td class="slot">Citizenship <span class="lead">(Lloyd)</span></td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">11:50–12:50</td><td class="slot pe">PE (50 min + 10 min change) <span class="lead">(Laurent)</span></td><td class="slot pe">PE (50 min + 10 min change) <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">12:50–13:05</td><td class="slot break">Break</td><td class="slot">King&#x27;s Trust <span class="lead">(Lorelle)</span></td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">13:05–13:45</td><td class="slot">Food Technology</td><td class="slot">King&#x27;s Trust <span class="lead">(Lorelle)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">13:45–14:00</td><td class="slot lesson">Lesson — TBC</td><td class="slot">Food Technology</td><td class="note-col"><span class="muted">—</span></td></tr>
-        </tbody>
-      </table>
-    </details>
+  <style>
+    #tab-monday:checked ~ .tab-panels #panel-monday { display: block; }
+    #tab-tuesday:checked ~ .tab-panels #panel-tuesday { display: block; }
+    #tab-wednesday:checked ~ .tab-panels #panel-wednesday { display: block; }
+    #tab-thursday:checked ~ .tab-panels #panel-thursday { display: block; }
+    #tab-friday:checked ~ .tab-panels #panel-friday { display: block; }
+  </style>
+  <div class="day-tabs">
+    <input type="radio" name="day-tab" id="tab-monday" class="tab-input" checked>
+    <input type="radio" name="day-tab" id="tab-tuesday" class="tab-input">
+    <input type="radio" name="day-tab" id="tab-wednesday" class="tab-input">
+    <input type="radio" name="day-tab" id="tab-thursday" class="tab-input">
+    <input type="radio" name="day-tab" id="tab-friday" class="tab-input">
+    <div class="tab-bar" role="tablist"><label for="tab-monday" class="day-tab-btn" role="tab">Mon</label><label for="tab-tuesday" class="day-tab-btn" role="tab">Tue</label><label for="tab-wednesday" class="day-tab-btn" role="tab">Wed</label><label for="tab-thursday" class="day-tab-btn" role="tab">Thu</label><label for="tab-friday" class="day-tab-btn" role="tab">Fri</label></div>
+    <div class="tab-panels">
+      
+      <section class="day-panel" id="panel-monday" role="tabpanel">
+        <p class="day-meta">Students from 08:50, latest 09:05 · finish <strong>15:00</strong></p>
+        <div class="table-wrap">
+          <table class="timeline-table">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">KS3</th>
+                <th scope="col">KS4</th>
+                <th scope="col">Stagger</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="time-col">08:50–09:05</td><td class="slot arrival">Arrival</td><td class="slot arrival">Arrival</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:05–09:15</td><td class="slot checks">Checks / late arrivals</td><td class="slot checks">Checks / late arrivals</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:15–09:50</td><td class="slot reset">Reset <span class="lead">(Lorelle)</span></td><td class="slot reset">Reset <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:50–10:25</td><td class="slot core english">English <span class="lead">(Lorelle)</span></td><td class="slot core english">English <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">10:25–10:40</td><td class="slot">Citizenship <span class="lead">(Lloyd)</span></td><td class="slot break">Break</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">10:40–11:20</td><td class="slot">Art</td><td class="slot core maths">Maths <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">11:20–11:35</td><td class="slot break">Break</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">11:35–12:15</td><td class="slot core maths">Maths <span class="lead">(Lorelle)</span></td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">12:15–12:30</td><td class="slot lesson">Lesson — TBC</td><td class="slot break">Lunch</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">12:30–12:45</td><td class="slot break">Lunch</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">12:45–13:45</td><td class="slot pe">PE (50 min + 10 min change) <span class="lead">(Laurent)</span></td><td class="slot pe">PE (50 min + 10 min change) <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">13:45–14:25</td><td class="slot break">Break</td><td class="slot">DofE <span class="lead">(Lloyd)</span></td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">14:25–14:40</td><td class="slot break">Break</td><td class="slot break">Break</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">14:40–15:00</td><td class="slot">Food Technology</td><td class="slot">King&#x27;s Trust <span class="lead">(Lorelle)</span></td><td class="note-col"><span class="muted">—</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="day-panel" id="panel-tuesday" role="tabpanel">
+        <p class="day-meta">Students from 08:50, latest 09:05 · finish <strong>15:00</strong></p>
+        <div class="table-wrap">
+          <table class="timeline-table">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">KS3</th>
+                <th scope="col">KS4</th>
+                <th scope="col">Stagger</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="time-col">08:50–09:05</td><td class="slot arrival">Arrival</td><td class="slot arrival">Arrival</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:05–09:15</td><td class="slot checks">Checks / late arrivals</td><td class="slot checks">Checks / late arrivals</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:15–09:50</td><td class="slot reset">Reset <span class="lead">(Lorelle)</span></td><td class="slot reset">Reset <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:50–10:25</td><td class="slot assembly">Assembly</td><td class="slot assembly">Assembly</td><td class="note-col">Assembly (35 min)</td></tr><tr><td class="time-col">10:25–11:00</td><td class="slot core english">English <span class="lead">(Lorelle)</span></td><td class="slot core english">English <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">11:00–11:15</td><td class="slot">Art</td><td class="slot break">Break</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">11:15–11:55</td><td class="slot lesson">Lesson — TBC</td><td class="slot core maths">Maths <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">11:55–12:10</td><td class="slot break">Break</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">12:10–12:35</td><td class="slot core maths">Maths <span class="lead">(Lorelle)</span></td><td class="slot">DofE <span class="lead">(Lloyd)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">12:35–12:50</td><td class="slot lesson">Lesson — TBC</td><td class="slot break">Lunch</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">12:50–13:05</td><td class="slot break">Lunch</td><td class="slot">Citizenship <span class="lead">(Lloyd)</span></td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">13:05–14:05</td><td class="slot pe">PE (50 min + 10 min change) <span class="lead">(Laurent)</span></td><td class="slot pe">PE (50 min + 10 min change) <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">14:05–14:20</td><td class="slot break">Break</td><td class="slot">Food Technology</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">14:20–15:00</td><td class="slot">Food Technology</td><td class="slot">King&#x27;s Trust <span class="lead">(Lorelle)</span></td><td class="note-col"><span class="muted">—</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="day-panel" id="panel-wednesday" role="tabpanel">
+        <p class="day-meta">Students from 10:00 · finish <strong>15:00</strong></p>
+        <div class="table-wrap">
+          <table class="timeline-table">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">KS3</th>
+                <th scope="col">KS4</th>
+                <th scope="col">Stagger</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="time-col">10:00–10:35</td><td class="slot reset">Reset <span class="lead">(Lorelle)</span></td><td class="slot reset">Reset <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">10:35–11:10</td><td class="slot core english">English <span class="lead">(Lorelle)</span></td><td class="slot core english">English <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">11:10–11:40</td><td class="slot">Art</td><td class="slot break">Break</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">11:40–11:55</td><td class="slot lesson">Lesson — TBC</td><td class="slot core maths">Maths <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">11:55–12:10</td><td class="slot break">Break</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">12:10–12:50</td><td class="slot core maths">Maths <span class="lead">(Lorelle)</span></td><td class="slot lesson">Lesson — TBC</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">12:50–13:05</td><td class="slot lesson">Lesson — TBC</td><td class="slot break">Lunch</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">13:05–13:20</td><td class="slot break">Lunch</td><td class="slot">Citizenship <span class="lead">(Lloyd)</span></td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">13:20–13:55</td><td class="slot">Citizenship <span class="lead">(Lloyd)</span></td><td class="slot">Food Technology</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">13:55–14:10</td><td class="slot break">Break</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">14:10–14:45</td><td class="slot">Food Technology</td><td class="slot">DofE <span class="lead">(Lloyd)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">14:45–15:00</td><td class="slot lesson">Lesson — TBC</td><td class="slot break">Break</td><td class="note-col">KS4 break / KS3 in lesson</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="day-panel" id="panel-thursday" role="tabpanel">
+        <p class="day-meta">Students from 08:50, latest 09:05 · finish <strong>14:00</strong></p>
+        <div class="table-wrap">
+          <table class="timeline-table">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">KS3</th>
+                <th scope="col">KS4</th>
+                <th scope="col">Stagger</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="time-col">08:50–09:05</td><td class="slot arrival">Arrival</td><td class="slot arrival">Arrival</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:05–09:15</td><td class="slot checks">Checks / late arrivals</td><td class="slot checks">Checks / late arrivals</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:15–09:50</td><td class="slot reset">Reset <span class="lead">(Lorelle)</span></td><td class="slot reset">Reset <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:50–10:20</td><td class="slot core english">English <span class="lead">(Lorelle)</span></td><td class="slot core english">English <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">10:20–10:35</td><td class="slot">Citizenship <span class="lead">(Lloyd)</span></td><td class="slot break">Break</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">10:35–11:10</td><td class="slot lesson">Lesson — TBC</td><td class="slot core maths">Maths <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">11:10–11:25</td><td class="slot break">Break</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">11:25–11:55</td><td class="slot core maths">Maths <span class="lead">(Lorelle)</span></td><td class="slot">DofE <span class="lead">(Lloyd)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">11:55–12:10</td><td class="slot">Art</td><td class="slot break">Lunch</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">12:10–12:25</td><td class="slot break">Lunch</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">12:25–13:25</td><td class="slot pe">PE (50 min + 10 min change) <span class="lead">(Laurent)</span></td><td class="slot pe">PE (50 min + 10 min change) <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">13:25–13:40</td><td class="slot break">Break</td><td class="slot">King&#x27;s Trust <span class="lead">(Lorelle)</span></td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">13:40–14:00</td><td class="slot">Food Technology</td><td class="slot">Food Technology <span class="lead">(Lorelle)</span></td><td class="note-col"><span class="muted">—</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="day-panel" id="panel-friday" role="tabpanel">
+        <p class="day-meta">Students from 08:50, latest 09:05 · finish <strong>14:00</strong></p>
+        <div class="table-wrap">
+          <table class="timeline-table">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">KS3</th>
+                <th scope="col">KS4</th>
+                <th scope="col">Stagger</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="time-col">08:50–09:05</td><td class="slot arrival">Arrival</td><td class="slot arrival">Arrival</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:05–09:15</td><td class="slot checks">Checks / late arrivals</td><td class="slot checks">Checks / late arrivals</td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:15–09:50</td><td class="slot reset">Reset <span class="lead">(Lorelle)</span></td><td class="slot reset">Reset <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">09:50–10:20</td><td class="slot core english">English <span class="lead">(Lorelle)</span></td><td class="slot core english">English <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">10:20–10:35</td><td class="slot">Art</td><td class="slot break">Break</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">10:35–11:10</td><td class="slot lesson">Lesson — TBC</td><td class="slot core maths">Maths <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">11:10–11:25</td><td class="slot break">Break</td><td class="slot lesson">Lesson — TBC</td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">11:25–11:55</td><td class="slot core maths">Maths <span class="lead">(Lorelle)</span></td><td class="slot">DofE <span class="lead">(Lloyd)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">11:55–12:10</td><td class="slot lesson">Lesson — TBC</td><td class="slot break">Lunch</td><td class="note-col">KS4 break / KS3 in lesson</td></tr><tr><td class="time-col">12:10–12:25</td><td class="slot break">Lunch</td><td class="slot">Citizenship <span class="lead">(Lloyd)</span></td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">12:25–13:25</td><td class="slot pe">PE (50 min + 10 min change) <span class="lead">(Laurent)</span></td><td class="slot pe">PE (50 min + 10 min change) <span class="lead">(Laurent)</span></td><td class="note-col"><span class="muted">—</span></td></tr><tr><td class="time-col">13:25–13:40</td><td class="slot break">Break</td><td class="slot">King&#x27;s Trust <span class="lead">(Lorelle)</span></td><td class="note-col">KS3 break / KS4 in lesson</td></tr><tr><td class="time-col">13:40–14:00</td><td class="slot">Food Technology</td><td class="slot">Food Technology</td><td class="note-col"><span class="muted">—</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
 </body>
 </html>
