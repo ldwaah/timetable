@@ -54,27 +54,6 @@ def compare_cell_html(row: dict, stage: str, *, show_staff: bool = True) -> str:
     return f'<td class="{cls}"><span class="slot-label">{label_html}</span></td>'
 
 
-def day_arrival_hint(day: dict) -> str:
-    arrival = f'from {day["arrival_from"]}'
-    if day.get("arrival_latest"):
-        arrival += f', latest {day["arrival_latest"]}'
-    return arrival
-
-
-def break_hints(week: dict, stage: str) -> str:
-    parts = []
-    for key in DAY_ORDER:
-        day = week["days"][key]
-        slots = [
-            f'{r["start"]}–{r["end"]}'
-            for r in day["rows"]
-            if r[stage] == "Break"
-        ]
-        if slots:
-            parts.append(f'{day["label"][:3]}: {" & ".join(slots)}')
-    return " · ".join(parts)
-
-
 def render_day_tab_inputs(default_key: str = "monday") -> str:
     parts = []
     for key in DAY_ORDER:
@@ -98,24 +77,20 @@ def render_day_tab_bar() -> str:
 def render_student_day_panel(week: dict, day_key: str) -> str:
     day = week["days"][day_key]
     rows_html = []
-    for i, row in enumerate(day["rows"], 1):
+    for row in day["rows"]:
         rows_html.append(
             "<tr>"
-            f'<td class="period-col">{i}</td>'
             f'<td class="time-col">{esc(row["start"])}–{esc(row["end"])}</td>'
             f"{compare_cell_html(row, 'ks3')}"
             f"{compare_cell_html(row, 'ks4')}"
             "</tr>"
         )
-    arrival = day_arrival_hint(day)
     return f"""
       <section class="day-panel" id="panel-{day_key}" role="tabpanel" aria-labelledby="tab-{day_key}">
-        <p class="day-meta">Students {esc(arrival)} · finish <strong>{esc(day["finish"])}</strong></p>
         <div class="table-wrap">
           <table class="day-grid">
             <thead>
               <tr>
-                <th scope="col">#</th>
                 <th scope="col">Time</th>
                 <th scope="col">KS3</th>
                 <th scope="col">KS4</th>
@@ -176,7 +151,7 @@ def group_sessions_by_day(sessions: list[dict]) -> dict[str, list[dict]]:
     return grouped
 
 
-def render_person_day_panel(day_key: str, day_label: str, sessions: list[dict]) -> str:
+def render_person_day_panel(day_key: str, sessions: list[dict]) -> str:
     if sessions:
         rows_html = []
         for s in sessions:
@@ -192,7 +167,6 @@ def render_person_day_panel(day_key: str, day_label: str, sessions: list[dict]) 
         body = '<tr><td colspan="3" class="muted">No sessions</td></tr>'
     return f"""
       <section class="day-panel" id="panel-{day_key}" role="tabpanel">
-        <p class="day-meta">{esc(day_label)}</p>
         <div class="table-wrap">
           <table class="person-grid">
             <thead>
@@ -212,8 +186,7 @@ def render_person_day_tabs(week: dict, sessions: list[dict]) -> str:
     grouped = group_sessions_by_day(sessions)
     panels = []
     for key in DAY_ORDER:
-        day_label = week["days"][key]["label"]
-        panels.append(render_person_day_panel(key, day_label, grouped[key]))
+        panels.append(render_person_day_panel(key, grouped[key]))
     panel_css = "\n    ".join(
         f"#tab-{key}:checked ~ .tab-panels #panel-{key} {{ display: block; }}"
         for key in DAY_ORDER
@@ -232,7 +205,6 @@ def render_person_day_tabs(week: dict, sessions: list[dict]) -> str:
 
 
 def render_staff_person_page(week: dict, name: str, sessions: list[dict]) -> str:
-    staff = week["staff"]
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -246,7 +218,6 @@ def render_staff_person_page(week: dict, name: str, sessions: list[dict]) -> str
     <a class="back" href="../staff-timetable.html">← Staff timetable</a>
     <h1>{esc(name)}</h1>
   </div>
-  <p class="hints">On site from {esc(staff["start"])}. Teaching assignments by day.</p>
   {render_person_day_tabs(week, sessions)}
 </body>
 </html>
@@ -254,7 +225,6 @@ def render_staff_person_page(week: dict, name: str, sessions: list[dict]) -> str
 
 
 def render_staff_day_panel(week: dict, day_key: str) -> str:
-    meta = week["meta"]
     day = week["days"][day_key]
     rows_html = []
     for row in day["rows"]:
@@ -263,25 +233,15 @@ def render_staff_day_panel(week: dict, day_key: str) -> str:
         s4 = row.get("staff_ks4")
         k3_disp = esc(ks3) + (f' <span class="lead">({esc(s3)})</span>' if s3 else "")
         k4_disp = esc(ks4) + (f' <span class="lead">({esc(s4)})</span>' if s4 else "")
-        note = ""
-        if ks3 in ("Break", "Lunch") and ks4 not in ("Break", "Lunch"):
-            note = "KS3 break / KS4 in lesson"
-        elif ks4 in ("Break", "Lunch") and ks3 not in ("Break", "Lunch"):
-            note = "KS4 break / KS3 in lesson"
-        elif ks3 == ks4 == "Assembly":
-            note = f"Assembly ({meta['assembly_minutes']} min)"
         rows_html.append(
             f"<tr>"
             f'<td class="time-col">{esc(row["start"])}–{esc(row["end"])}</td>'
             f'<td class="{cell_class(ks3, row.get("kind", ""))}">{k3_disp}</td>'
             f'<td class="{cell_class(ks4, row.get("kind", ""))}">{k4_disp}</td>'
-            f'<td class="note-col">{esc(note) if note else "<span class=\"muted\">—</span>"}</td>'
             f"</tr>"
         )
-    arrival = day_arrival_hint(day)
     return f"""
       <section class="day-panel" id="panel-{day_key}" role="tabpanel">
-        <p class="day-meta">Students {esc(arrival)} · finish <strong>{esc(day["finish"])}</strong></p>
         <div class="table-wrap">
           <table class="timeline-table">
             <thead>
@@ -289,7 +249,6 @@ def render_staff_day_panel(week: dict, day_key: str) -> str:
                 <th scope="col">Time</th>
                 <th scope="col">KS3</th>
                 <th scope="col">KS4</th>
-                <th scope="col">Stagger</th>
               </tr>
             </thead>
             <tbody>
@@ -358,14 +317,6 @@ DAY_TAB_CSS = """
     .tab-panels { position: relative; }
 
     .day-panel { display: none; }
-
-    .day-meta {
-      font-size: 0.85rem;
-      color: #8b949e;
-      margin-bottom: 0.75rem;
-    }
-
-    .day-meta strong { color: #58a6ff; font-weight: 600; }
 """
 
 SHARED_STUDENT_CSS = """
@@ -398,43 +349,6 @@ SHARED_STUDENT_CSS = """
       color: #f0f6fc;
     }
 
-    .hints {
-      margin-bottom: 1.25rem;
-      font-size: 0.88rem;
-      color: #8b949e;
-      line-height: 1.55;
-    }
-
-    .hints strong { color: #c9d1d9; font-weight: 500; }
-
-    .legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem 1.25rem;
-      margin-bottom: 1.25rem;
-      font-size: 0.85rem;
-      color: #8b949e;
-    }
-
-    .legend span::before {
-      content: "";
-      display: inline-block;
-      width: 0.65rem;
-      height: 0.65rem;
-      border-radius: 3px;
-      margin-right: 0.35rem;
-      vertical-align: middle;
-    }
-
-    .legend .l-lesson::before { background: #30363d; }
-    .legend .l-maths::before { background: #1f6feb; }
-    .legend .l-english::before { background: #9e6a03; }
-    .legend .l-break::before { background: #238636; }
-    .legend .l-assembly::before { background: #a371f7; }
-    .legend .l-reset::before { background: #79c0ff; }
-    .legend .l-arrival::before { background: #58a6ff; }
-    .legend .l-pe::before { background: #238636; }
-
     .table-wrap {
       overflow-x: auto;
       border: 1px solid #30363d;
@@ -463,13 +377,6 @@ SHARED_STUDENT_CSS = """
       font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.03em;
-    }
-
-    .period-col {
-      color: #484f58;
-      font-size: 0.75rem;
-      text-align: center;
-      width: 2rem;
     }
 
     .time-col {
@@ -541,15 +448,6 @@ STAFF_CSS = """
       color: #f0f6fc;
     }
 
-    .hints {
-      margin-bottom: 1.25rem;
-      font-size: 0.88rem;
-      color: #8b949e;
-      line-height: 1.55;
-    }
-
-    .hints strong { color: #c9d1d9; font-weight: 500; }
-
     .staff-links {
       display: flex;
       flex-wrap: wrap;
@@ -569,65 +467,7 @@ STAFF_CSS = """
 
     .staff-links a:hover { background: #21262d; text-decoration: underline; }
 
-    .week-table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #161b22;
-      border: 1px solid #30363d;
-      border-radius: 12px;
-      overflow: hidden;
-      margin-bottom: 2rem;
-    }
-
-    .week-table caption {
-      padding: 0.75rem 1rem;
-      text-align: left;
-      font-weight: 600;
-      color: #f0f6fc;
-      background: #1c2128;
-      border-bottom: 1px solid #30363d;
-    }
-
-    .week-table th,
-    .week-table td {
-      padding: 0.85rem 1rem;
-      text-align: left;
-      border-bottom: 1px solid #21262d;
-    }
-
-    .week-table th {
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: #8b949e;
-      background: #1c2128;
-    }
-
-    .week-table tr:last-child td { border-bottom: none; }
-
-    .week-table td:first-child {
-      font-weight: 500;
-      color: #f0f6fc;
-      width: 22%;
-    }
-
-    .week-table .staff-start { color: #a371f7; font-weight: 600; }
-    .week-table .student-window { color: #8b949e; font-size: 0.9rem; }
-    .week-table .student-window em {
-      font-style: normal;
-      color: #58a6ff;
-      font-weight: 500;
-    }
-    .week-table .finish { color: #58a6ff; font-weight: 600; }
-    .week-table .detention { color: #f85149; font-weight: 600; font-size: 0.9rem; }
     .muted { color: #484f58; }
-
-    h2.section-title {
-      font-size: 1.1rem;
-      margin-bottom: 1rem;
-      color: #f0f6fc;
-    }
 
     .table-wrap {
       overflow-x: auto;
@@ -658,7 +498,6 @@ STAFF_CSS = """
     }
 
     .time-col { color: #8b949e; white-space: nowrap; width: 8.5rem; }
-    .note-col { color: #8b949e; font-size: 0.8rem; }
     .lead { color: #a371f7; font-size: 0.8rem; font-weight: 500; }
     .slot.break { color: #3fb950; }
     .slot.assembly { color: #d2a8ff; }
@@ -687,7 +526,6 @@ STAFF_PERSON_CSS = (
     .top { margin-bottom: 1rem; }
     a.back { color: #58a6ff; text-decoration: none; font-size: 0.9rem; }
     h1 { margin-top: 0.75rem; font-size: 1.4rem; color: #f0f6fc; }
-    .hints { font-size: 0.85rem; color: #8b949e; margin-bottom: 1rem; }
     .table-wrap {
       overflow-x: auto;
       border: 1px solid #30363d;
@@ -718,11 +556,6 @@ STAFF_PERSON_CSS = (
 
 
 def build_student_html(week: dict) -> str:
-    meta = week["meta"]
-    ks3_breaks = break_hints(week, "ks3")
-    ks4_breaks = break_hints(week, "ks4")
-    lunch_line = meta.get("lunch_time", "12:15–12:30")
-
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -737,33 +570,6 @@ def build_student_html(week: dict) -> str:
     <h1>Student timetable</h1>
   </div>
 
-  <p class="hints">
-    Pick a day below — <strong>KS3 and KS4 side by side</strong> for that day only.
-    Mon/Tue/Thu/Fri from <strong>08:50</strong> (latest <strong>09:05</strong>); Wed from <strong>10:00</strong>.
-    Finish Mon–Wed <strong>15:00</strong>; Thu–Fri <strong>14:00</strong>.
-    Checks <strong>{esc(meta["checks_window"])}</strong>, then Reset ({meta["reset_minutes"]} min).
-    Tue: Reset → Assembly ({meta["assembly_minutes"]} min) → English.
-    Lunch <strong>{esc(lunch_line)}</strong> (both KS3 &amp; KS4). Breaks staggered between key stages.
-  </p>
-
-  <div class="legend" aria-hidden="true">
-    <span class="l-english">English</span>
-    <span class="l-maths">Maths</span>
-    <span class="l-pe">PE</span>
-    <span class="l-lesson">Other lessons</span>
-    <span class="l-break">Break / Lunch</span>
-    <span class="l-assembly">Assembly</span>
-    <span class="l-reset">Reset</span>
-    <span class="l-arrival">Arrival</span>
-  </div>
-
-  <p class="legend" style="margin-top:-0.75rem">
-    <strong style="color:#f0f6fc">Example breaks — KS3:</strong> {esc(ks3_breaks)}.
-    <strong style="color:#f0f6fc">KS4:</strong> {esc(ks4_breaks)}.
-    <strong style="color:#f0f6fc">Breaks — KS3:</strong> {esc(ks3_breaks)}.
-    <strong style="color:#f0f6fc">KS4:</strong> {esc(ks4_breaks)}.
-  </p>
-
   {render_student_day_views(week)}
 </body>
 </html>
@@ -771,44 +577,10 @@ def build_student_html(week: dict) -> str:
 
 
 def build_staff_html(week: dict) -> str:
-    meta = week["meta"]
-    staff = week["staff"]
-    det = staff["detentions"]
-    people = staff.get("people", [])
-
-    overview_rows = []
-    for key in DAY_ORDER:
-        d = week["days"][key]
-        arrival = f'from <em>{esc(d["arrival_from"])}</em>'
-        if d.get("arrival_latest"):
-            arrival += f', latest <em>{esc(d["arrival_latest"])}</em>'
-        if key == "monday":
-            det_cell = f'<td class="detention">Detentions {esc(det["monday"])}</td>'
-        elif key == "friday":
-            det_cell = f'<td class="detention">Detentions {esc(det["friday"])}</td>'
-        else:
-            det_cell = '<td class="muted">—</td>'
-        staff_note = ""
-        if key == "wednesday" and d.get("staff_meeting"):
-            staff_note = f'<br><span class="muted">Staff meeting {esc(d["staff_meeting"])} (students from {esc(d["arrival_from"])})</span>'
-        overview_rows.append(
-            f"<tr><td>{esc(d['label'])}</td>"
-            f'<td class="staff-start">{esc(staff["start"])}{staff_note}</td>'
-            f'<td class="student-window">{arrival}</td>'
-            f'<td class="finish">{esc(d["finish"])}</td>'
-            f"{det_cell}</tr>"
-        )
-
+    people = week["staff"].get("people", [])
     person_links = "".join(
         f'<a href="staff/{esc(name.lower())}.html">{esc(name)}</a>' for name in people
     )
-
-    assign = staff.get("assignments", {})
-    assign_lines = []
-    for subject, stages in assign.items():
-        parts = [f"{k.upper()}: {v}" for k, v in stages.items()]
-        assign_lines.append(f"<li><strong>{esc(subject)}</strong> — {esc(', '.join(parts))}</li>")
-    assign_list = "<ul class=\"assign-list\">" + "".join(assign_lines) + "</ul>"
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -816,10 +588,7 @@ def build_staff_html(week: dict) -> str:
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Staff timetable</title>
-  <style>{DAY_TAB_CSS}{STAFF_CSS}
-    .assign-list {{ margin: 0.35rem 0 0 1.1rem; font-size: 0.85rem; color: #8b949e; }}
-    .assign-list li {{ margin: 0.2rem 0; }}
-  </style>
+  <style>{DAY_TAB_CSS}{STAFF_CSS}</style>
 </head>
 <body>
   <div class="top">
@@ -827,36 +596,10 @@ def build_staff_html(week: dict) -> str:
     <h1>Staff timetable</h1>
   </div>
 
-  <p class="hints">
-    Pick a day — KS3 / KS4 timeline with staff in parentheses.
-    Staff from <strong>{esc(staff["start"])}</strong>.
-    Students Mon/Tue/Thu/Fri <strong>08:50–09:05</strong>; Wed <strong>10:00</strong>.
-    Finish Mon–Wed <strong>15:00</strong>; Thu–Fri <strong>14:00</strong>.
-    Checks {esc(meta["checks_window"])}, Reset {meta["reset_minutes"]} min; Tue assembly {meta["assembly_minutes"]} min.
-    Leads: {", ".join(f"{esc(s)} ({esc(', '.join(f'{k.upper()}: {v}' for k, v in stages.items()))})" for s, stages in assign.items())}.
-  </p>
-
   <nav class="staff-links" aria-label="Individual staff timetables">
     {person_links}
   </nav>
 
-  <table class="week-table">
-    <caption>Weekly times</caption>
-    <thead>
-      <tr>
-        <th scope="col">Day</th>
-        <th scope="col">Staff start</th>
-        <th scope="col">Students</th>
-        <th scope="col">Finish</th>
-        <th scope="col">Detentions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {''.join(overview_rows)}
-    </tbody>
-  </table>
-
-  <h2 class="section-title">Daily timeline (KS3 / KS4 — names in parentheses)</h2>
   {render_staff_day_tabs(week)}
 </body>
 </html>
