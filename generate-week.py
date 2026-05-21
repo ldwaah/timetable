@@ -47,8 +47,17 @@ def pe(s: str = "12:30") -> dict:
 
 def am_pshe_block() -> list[dict]:
     return [
-        row("10:35", "11:15", "PSHE", "PSHE", kind="lesson", staff_ks3="Sacha", staff_ks4="Sacha"),
+        row("10:35", "11:15", "Lesson — TBC", "Lesson — TBC", kind="lesson"),
         row("11:15", "11:30", "Break", "Break", kind="lesson"),
+        row("11:30", "12:15", "Maths", "Maths", kind="lesson", staff_ks3="Lorelle", staff_ks4="Laurent"),
+    ]
+
+
+def am_thu_pshe_block() -> list[dict]:
+    return [
+        row("10:35", "10:50", "Lesson — TBC", "Break", kind="lesson"),
+        row("10:50", "11:15", "Lesson — TBC", "PSHE", kind="lesson", staff_ks4="Sacha"),
+        row("11:15", "11:30", "Break", "PSHE", kind="lesson", staff_ks4="Sacha"),
         row("11:30", "12:15", "Maths", "Maths", kind="lesson", staff_ks3="Lorelle", staff_ks4="Laurent"),
     ]
 
@@ -181,7 +190,7 @@ def build() -> dict:
                     row("12:30", "13:10", "Maths", "Citizenship", kind="lesson", staff_ks3="Lorelle", staff_ks4="Lloyd"),
                     row("13:10", "13:15", "Maths", "Lesson — TBC", kind="lesson", staff_ks3="Lorelle"),
                     row("13:15", "13:30", "Break", "Break", kind="lesson"),
-                    row("13:30", "14:10", "Lesson — TBC", "DofE", kind="lesson", staff_ks4="Lloyd"),
+                    row("13:30", "14:10", "PSHE", "DofE", kind="lesson", staff_ks3="Sacha", staff_ks4="Lloyd"),
                     row("14:10", "14:25", "Break", "DofE", kind="lesson", staff_ks4="Lloyd"),
                     row("14:25", "15:00", "Food Technology", "Food Technology", kind="lesson"),
                 ],
@@ -191,7 +200,7 @@ def build() -> dict:
                 "arrival_from": "08:50",
                 "arrival_latest": "09:05",
                 "finish": "14:00",
-                "rows": [*acr(), eng(), *am_core_block(), lunch(), pe(), *pm_short_vocational()],
+                "rows": [*acr(), eng(), *am_thu_pshe_block(), lunch(), pe(), *pm_short_vocational()],
             },
             "friday": {
                 "label": "Friday",
