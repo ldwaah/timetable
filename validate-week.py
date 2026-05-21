@@ -9,6 +9,7 @@ DURATIONS = {
     "Maths": 45,
     "Art": 40,
     "Citizenship": 40,
+    "PSHE": 40,
     "DofE": 40,
     "King's Trust": 60,
     "Food Technology": 60,
@@ -99,6 +100,51 @@ def validate(rows: list[dict], finish: str, dk: str) -> list[str]:
     return issues
 
 
+SKIP_STAFF = {"Break", "Lunch", "Arrival", "Checks / late arrivals"}
+
+
+def staff_conflicts(rows: list[dict], dk: str) -> list[str]:
+    issues = []
+    for r in rows:
+        s3, s4 = r.get("staff_ks3"), r.get("staff_ks4")
+        if (
+            s3
+            and s4
+            and s3 == s4
+            and r["ks3"] not in SKIP_STAFF
+            and r["ks4"] not in SKIP_STAFF
+            and r["ks3"] != r["ks4"]
+        ):
+            issues.append(
+                f"{dk} {r['start']}-{r['end']}: {s3} double-booked ({r['ks3']} + {r['ks4']})"
+            )
+
+    per: dict[str, list[tuple[int, int, str, str, str, str]]] = {}
+    for r in rows:
+        start, end = t2m(r["start"]), t2m(r["end"])
+        for stage in ("ks3", "ks4"):
+            sk = f"staff_{stage}"
+            if sk not in r:
+                continue
+            subj = r[stage]
+            if subj in SKIP_STAFF:
+                continue
+            person = r[sk]
+            per.setdefault(person, []).append(
+                (start, end, stage, subj, r["start"], r["end"])
+            )
+    for person, slots in per.items():
+        slots.sort()
+        for i, a in enumerate(slots):
+            for b in slots[i + 1 :]:
+                if a[0] < b[1] and b[0] < a[1] and a[3] != b[3]:
+                    issues.append(
+                        f"{dk} {person}: {a[4]}-{a[5]} {a[2]}:{a[3]} overlaps "
+                        f"{b[4]}-{b[5]} {b[2]}:{b[3]}"
+                    )
+    return issues
+
+
 def main() -> int:
     with open("data/week.json", encoding="utf-8") as f:
         week = json.load(f)
@@ -106,6 +152,7 @@ def main() -> int:
     issues = []
     for dk, day in week["days"].items():
         issues.extend(validate(day["rows"], day["finish"], dk))
+        issues.extend(staff_conflicts(day["rows"], dk))
         if dk == "wednesday" and not day.get("staff_meeting"):
             issues.append("wednesday: missing staff_meeting")
         if dk in ("monday", "tuesday", "thursday", "friday") and day.get("arrival_from") != "08:50":

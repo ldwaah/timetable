@@ -53,44 +53,28 @@
         },
         {
           "start": "10:35",
-          "end": "10:50",
-          "ks3": "Lesson \u2014 TBC",
-          "ks4": "Break",
-          "kind": "lesson"
-        },
-        {
-          "start": "10:50",
           "end": "11:15",
-          "ks3": "Lesson \u2014 TBC",
-          "ks4": "Maths",
+          "ks3": "PSHE",
+          "ks4": "PSHE",
           "kind": "lesson",
-          "staff_ks4": "Laurent"
+          "staff_ks3": "Sacha",
+          "staff_ks4": "Sacha"
         },
         {
           "start": "11:15",
           "end": "11:30",
           "ks3": "Break",
-          "ks4": "Maths",
-          "kind": "lesson",
-          "staff_ks4": "Laurent"
+          "ks4": "Break",
+          "kind": "lesson"
         },
         {
           "start": "11:30",
-          "end": "11:35",
+          "end": "12:15",
           "ks3": "Maths",
           "ks4": "Maths",
           "kind": "lesson",
           "staff_ks3": "Lorelle",
           "staff_ks4": "Laurent"
-        },
-        {
-          "start": "11:35",
-          "end": "12:15",
-          "ks3": "Maths",
-          "ks4": "DofE",
-          "kind": "lesson",
-          "staff_ks3": "Lorelle",
-          "staff_ks4": "Lloyd"
         },
         {
           "start": "12:15",
@@ -333,10 +317,9 @@
         {
           "start": "13:30",
           "end": "14:10",
-          "ks3": "Citizenship",
+          "ks3": "Lesson \u2014 TBC",
           "ks4": "DofE",
           "kind": "lesson",
-          "staff_ks3": "Lloyd",
           "staff_ks4": "Lloyd"
         },
         {
@@ -610,6 +593,10 @@
       },
       "Food Technology": {
         "ks3": "Sacha"
+      },
+      "PSHE": {
+        "ks3": "Sacha",
+        "ks4": "Sacha"
       }
     }
   }

@@ -45,8 +45,16 @@ def pe(s: str = "12:30") -> dict:
     return row(s, m2t(t2m(s) + 60), PE, PE, kind="pe", staff_ks3="Laurent", staff_ks4="Laurent")
 
 
+def am_pshe_block() -> list[dict]:
+    return [
+        row("10:35", "11:15", "PSHE", "PSHE", kind="lesson", staff_ks3="Sacha", staff_ks4="Sacha"),
+        row("11:15", "11:30", "Break", "Break", kind="lesson"),
+        row("11:30", "12:15", "Maths", "Maths", kind="lesson", staff_ks3="Lorelle", staff_ks4="Laurent"),
+    ]
+
+
 def am_core_block() -> list[dict]:
-    """After English: staggered citizenship/art pattern + maths (Mon/Thu/Fri template)."""
+    """After English: staggered citizenship/art pattern + maths (Thu template)."""
     return [
         row("10:35", "10:50", "Citizenship", "Break", kind="lesson", staff_ks3="Lloyd"),
         row("10:50", "11:15", "Citizenship", "Maths", kind="lesson", staff_ks3="Lloyd", staff_ks4="Laurent"),
@@ -138,7 +146,7 @@ def build() -> dict:
                 "arrival_from": "08:50",
                 "arrival_latest": "09:05",
                 "finish": "15:00",
-                "rows": [*acr(), eng(), *am_core_block(), lunch(), pe(), *pm_long_mon()],
+                "rows": [*acr(), eng(), *am_pshe_block(), lunch(), pe(), *pm_long_mon()],
             },
             "tuesday": {
                 "label": "Tuesday",
@@ -173,7 +181,7 @@ def build() -> dict:
                     row("12:30", "13:10", "Maths", "Citizenship", kind="lesson", staff_ks3="Lorelle", staff_ks4="Lloyd"),
                     row("13:10", "13:15", "Maths", "Lesson — TBC", kind="lesson", staff_ks3="Lorelle"),
                     row("13:15", "13:30", "Break", "Break", kind="lesson"),
-                    row("13:30", "14:10", "Citizenship", "DofE", kind="lesson", staff_ks3="Lloyd", staff_ks4="Lloyd"),
+                    row("13:30", "14:10", "Lesson — TBC", "DofE", kind="lesson", staff_ks4="Lloyd"),
                     row("14:10", "14:25", "Break", "DofE", kind="lesson", staff_ks4="Lloyd"),
                     row("14:25", "15:00", "Food Technology", "Food Technology", kind="lesson"),
                 ],
@@ -203,7 +211,7 @@ def build() -> dict:
         "staff": {
             "start": "08:30",
             "detentions": {"monday": "15:00–15:30", "friday": "14:00–15:00"},
-            "people": ["Lorelle", "Lloyd", "Laurent"],
+            "people": ["Lorelle", "Lloyd", "Laurent", "Sacha"],
             "assignments": {
                 "Reset": {"ks3": "Lorelle", "ks4": "Laurent"},
                 "King's Trust": {"ks4": "Lorelle"},
@@ -212,6 +220,9 @@ def build() -> dict:
                 "Maths": {"ks3": "Lorelle", "ks4": "Laurent"},
                 "English": {"ks3": "Lorelle", "ks4": "Laurent"},
                 "PE": {"ks3": "Laurent", "ks4": "Laurent"},
+                "Art": {"ks3": "Sacha"},
+                "Food Technology": {"ks3": "Sacha"},
+                "PSHE": {"ks3": "Sacha", "ks4": "Sacha"},
             },
         },
     }
