@@ -28,6 +28,10 @@ def cell_class(label: str, kind: str) -> str:
         return "slot break"
     if label == "Arrival":
         return "slot arrival"
+    if label == "Maths":
+        return "slot core maths"
+    if label == "English":
+        return "slot core english"
     if "Lesson" in label:
         return "slot lesson"
     return "slot"
@@ -197,6 +201,8 @@ SHARED_STUDENT_CSS = """
     }
 
     .legend .l-lesson::before { background: #30363d; }
+    .legend .l-maths::before { background: #1f6feb; }
+    .legend .l-english::before { background: #9e6a03; }
     .legend .l-break::before { background: #238636; }
     .legend .l-assembly::before { background: #a371f7; }
     .legend .l-arrival::before { background: #58a6ff; }
@@ -256,6 +262,10 @@ SHARED_STUDENT_CSS = """
     .slot-label { font-weight: 500; color: #e6edf3; }
 
     .slot.lesson .slot-label { color: #c9d1d9; }
+    .slot.core.maths { background: #1c2d4a; }
+    .slot.core.maths .slot-label { color: #79c0ff; font-weight: 600; }
+    .slot.core.english { background: #3d2e12; }
+    .slot.core.english .slot-label { color: #e3b341; font-weight: 600; }
     .slot.break { background: #132d1b; }
     .slot.break .slot-label { color: #3fb950; }
     .slot.assembly { background: #2d1f4a; }
@@ -424,6 +434,8 @@ STAFF_CSS = """
     .slot.assembly { color: #d2a8ff; }
     .slot.arrival { color: #58a6ff; }
     .slot.lesson { color: #c9d1d9; }
+    .slot.core.maths { color: #79c0ff; font-weight: 600; }
+    .slot.core.english { color: #e3b341; font-weight: 600; }
     .muted { color: #484f58; }
 """
 
@@ -455,9 +467,12 @@ def build_student_html(week: dict) -> str:
     Finish Mon–Wed <strong>15:00</strong>; Thu–Fri <strong>14:00</strong>.
     Assembly <strong>Tuesday 09:05–09:40</strong> ({meta["assembly_minutes"]} min, whole school).
     Two breaks and one lunch per day (15 min each); KS3 and KS4 staggered.
+    <strong>Maths &amp; English:</strong> English in the first teaching block; Maths in the block after the first break (between-breaks window). Not scheduled post-lunch.
   </aside>
 
   <div class="legend" aria-hidden="true">
+    <span class="l-english">English</span>
+    <span class="l-maths">Maths</span>
     <span class="l-lesson">Lesson — TBC</span>
     <span class="l-break">Break / Lunch</span>
     <span class="l-assembly">Assembly</span>
@@ -524,7 +539,8 @@ def build_staff_html(week: dict) -> str:
     Wednesday from <span class="student-time">10:00</span>.
     School finish Mon–Wed <span class="student-time">15:00</span>; Thu–Fri <span class="student-time">14:00</span>.
     Assembly <span class="student-time">Tuesday</span> ({meta["assembly_minutes"]} min).
-    Staff lessons/roles <span class="muted">TBC</span>.
+    <strong>Core subjects:</strong> English — first teaching block; Maths — after first break (between-breaks). KS3/KS4 times differ where breaks are staggered.
+    Staff roles <span class="muted">TBC</span>.
   </aside>
 
   <table class="week-table">
