@@ -1,0 +1,128 @@
+{
+  "meta": {
+    "assembly_day": "tuesday",
+    "assembly_minutes": 35,
+    "assembly_note": "35 minutes (mid-range of 30–40; fits Tuesday morning after arrival)",
+    "break_minutes": 15,
+    "lunch_minutes": 15
+  },
+  "days": {
+    "monday": {
+      "label": "Monday",
+      "arrival_from": "08:50",
+      "arrival_latest": "09:05",
+      "finish": "15:00",
+      "lesson_start": "09:05",
+      "rows": [
+        { "start": "08:50", "end": "09:05", "ks3": "Arrival", "ks4": "Arrival", "kind": "arrival" },
+        { "start": "09:05", "end": "09:45", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "09:45", "end": "10:00", "ks3": "Lesson — TBC", "ks4": "Break", "kind": "lesson" },
+        { "start": "10:00", "end": "10:40", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "10:40", "end": "10:55", "ks3": "Break", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "10:55", "end": "11:35", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "11:35", "end": "11:50", "ks3": "Lesson — TBC", "ks4": "Lunch", "kind": "lesson" },
+        { "start": "11:50", "end": "12:05", "ks3": "Lunch", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "12:05", "end": "12:45", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "12:45", "end": "13:00", "ks3": "Break", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "13:00", "end": "13:40", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "13:40", "end": "13:55", "ks3": "Lesson — TBC", "ks4": "Break", "kind": "lesson" },
+        { "start": "13:55", "end": "15:00", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" }
+      ]
+    },
+    "tuesday": {
+      "label": "Tuesday",
+      "arrival_from": "08:50",
+      "arrival_latest": "09:05",
+      "finish": "15:00",
+      "lesson_start": "09:05",
+      "rows": [
+        { "start": "08:50", "end": "09:05", "ks3": "Arrival", "ks4": "Arrival", "kind": "arrival" },
+        { "start": "09:05", "end": "09:40", "ks3": "Assembly", "ks4": "Assembly", "kind": "assembly" },
+        { "start": "09:40", "end": "10:20", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "10:20", "end": "10:35", "ks3": "Lesson — TBC", "ks4": "Break", "kind": "lesson" },
+        { "start": "10:35", "end": "11:15", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "11:15", "end": "11:30", "ks3": "Break", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "11:30", "end": "12:10", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "12:10", "end": "12:25", "ks3": "Lesson — TBC", "ks4": "Lunch", "kind": "lesson" },
+        { "start": "12:25", "end": "12:40", "ks3": "Lunch", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "12:40", "end": "13:20", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "13:20", "end": "13:35", "ks3": "Break", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "13:35", "end": "14:15", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "14:15", "end": "14:30", "ks3": "Lesson — TBC", "ks4": "Break", "kind": "lesson" },
+        { "start": "14:30", "end": "15:00", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" }
+      ]
+    },
+    "wednesday": {
+      "label": "Wednesday",
+      "arrival_from": "10:00",
+      "arrival_latest": null,
+      "finish": "15:00",
+      "lesson_start": "10:00",
+      "rows": [
+        { "start": "10:00", "end": "10:40", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "10:40", "end": "10:55", "ks3": "Lesson — TBC", "ks4": "Break", "kind": "lesson" },
+        { "start": "10:55", "end": "11:35", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "11:35", "end": "11:50", "ks3": "Break", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "11:50", "end": "12:30", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "12:30", "end": "12:45", "ks3": "Lesson — TBC", "ks4": "Lunch", "kind": "lesson" },
+        { "start": "12:45", "end": "13:00", "ks3": "Lunch", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "13:00", "end": "13:40", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "13:40", "end": "13:55", "ks3": "Break", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "13:55", "end": "14:35", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "14:35", "end": "14:50", "ks3": "Lesson — TBC", "ks4": "Break", "kind": "lesson" },
+        { "start": "14:50", "end": "15:00", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" }
+      ]
+    },
+    "thursday": {
+      "label": "Thursday",
+      "arrival_from": "08:50",
+      "arrival_latest": "09:05",
+      "finish": "14:00",
+      "lesson_start": "09:05",
+      "rows": [
+        { "start": "08:50", "end": "09:05", "ks3": "Arrival", "ks4": "Arrival", "kind": "arrival" },
+        { "start": "09:05", "end": "09:40", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "09:40", "end": "09:55", "ks3": "Lesson — TBC", "ks4": "Break", "kind": "lesson" },
+        { "start": "09:55", "end": "10:30", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "10:30", "end": "10:45", "ks3": "Break", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "10:45", "end": "11:20", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "11:20", "end": "11:35", "ks3": "Lesson — TBC", "ks4": "Lunch", "kind": "lesson" },
+        { "start": "11:35", "end": "11:50", "ks3": "Lunch", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "11:50", "end": "12:25", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "12:25", "end": "12:40", "ks3": "Break", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "12:40", "end": "13:15", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "13:15", "end": "13:30", "ks3": "Lesson — TBC", "ks4": "Break", "kind": "lesson" },
+        { "start": "13:30", "end": "14:00", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" }
+      ]
+    },
+    "friday": {
+      "label": "Friday",
+      "arrival_from": "08:50",
+      "arrival_latest": "09:05",
+      "finish": "14:00",
+      "lesson_start": "09:05",
+      "rows": [
+        { "start": "08:50", "end": "09:05", "ks3": "Arrival", "ks4": "Arrival", "kind": "arrival" },
+        { "start": "09:05", "end": "09:40", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "09:40", "end": "09:55", "ks3": "Lesson — TBC", "ks4": "Break", "kind": "lesson" },
+        { "start": "09:55", "end": "10:30", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "10:30", "end": "10:45", "ks3": "Break", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "10:45", "end": "11:20", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "11:20", "end": "11:35", "ks3": "Lesson — TBC", "ks4": "Lunch", "kind": "lesson" },
+        { "start": "11:35", "end": "11:50", "ks3": "Lunch", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "11:50", "end": "12:25", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "12:25", "end": "12:40", "ks3": "Break", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "12:40", "end": "13:15", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" },
+        { "start": "13:15", "end": "13:30", "ks3": "Lesson — TBC", "ks4": "Break", "kind": "lesson" },
+        { "start": "13:30", "end": "14:00", "ks3": "Lesson — TBC", "ks4": "Lesson — TBC", "kind": "lesson" }
+      ]
+    }
+  },
+  "staff": {
+    "start": "08:30",
+    "detentions": {
+      "monday": "15:00–15:30",
+      "friday": "14:00–15:00"
+    }
+  }
+}
