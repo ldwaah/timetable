@@ -546,7 +546,7 @@ def render_person_day_panel(day_key: str, sessions: list[dict], *, is_off_day: b
     if sessions:
         rows_html = []
         for s in sessions:
-            is_ppa = s["subject"] == "PPA"
+            is_ppa = s["subject"].startswith("PPA")
             subj_cls = "subject-col ppa" if is_ppa else "subject-col"
             rows_html.append(
                 "<tr>"
@@ -1317,6 +1317,10 @@ def main() -> None:
             key=lambda s: (DAY_ORDER.index(s["day_key"]), s["time"]),
         )
         combined = merge_staff_sessions(combined)
+        if initials == "SA":
+            for s in combined:
+                if s["subject"] == "PPA":
+                    s["subject"] = "PPA / On-call / Centre Duties"
         slug = staff_slug(initials)
         page = render_staff_person_page(week, initials, combined)
         (STAFF_DIR / f"{slug}.html").write_text(page, encoding="utf-8")
