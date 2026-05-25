@@ -711,7 +711,7 @@ def get_staff_location(subject: str, stage: str, day_key: str) -> str:
 
     if "student searches" in low:
         return "Foyer"
-    if "ppa / on-call" in low or "centre duties" in low:
+    if "on-call" in low or "centre duties" in low:
         return "Foyer"
     if low == "student support":
         return ""
@@ -1436,8 +1436,8 @@ FAQ_ITEMS: dict[str, dict[str, str]] = {
         "a": "Whole School Support is essentially supporting all staff and all students during unstructured times. To supervise students.",
     },
     "ppa_oncall": {
-        "q": "What is PPA / On-call / Centre Duties?",
-        "a": "Planning, Preparation and Assessment time combined with being available on-call for incidents and overseeing general centre operations from the Main Foyer.",
+        "q": "What is On-call / Centre Duties?",
+        "a": "Being available on-call for incidents and overseeing general centre operations from the Main Foyer.",
     },
     "ppa": {
         "q": "What is PPA?",
@@ -1850,7 +1850,7 @@ def main() -> None:
         if initials in ("SA", "LD"):
             for s in combined:
                 if s["subject"] == "PPA":
-                    s["subject"] = "PPA / On-call / Centre Duties"
+                    s["subject"] = "On-call / Centre Duties"
         if initials == "LG":
             for s in combined:
                 if s["subject"] == "PPA" and (
