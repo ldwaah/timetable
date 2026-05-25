@@ -921,10 +921,11 @@ def render_staff_person_page(week: dict, initials: str, sessions: list[dict]) ->
 </head>
 <body>
   <div class="top">
-    <a class="back" href="../staff-timetable.html">← Staff timetable</a>
+    <a class="back" href="../staff-timetable.html">\u2190 Staff timetable</a>
     <h1>{esc(display)}</h1>
   </div>
   {render_person_day_tabs(week, sessions, off_days=off)}
+  {render_faq_section(initials)}
 </body>
 </html>
 """
@@ -1371,6 +1372,105 @@ document.addEventListener('click', function(e) {
 </script>
 """
 
+FAQ_CSS = """
+    .faq-section {
+      margin-top: 2rem;
+      border-top: 1px solid #21262d;
+      padding-top: 1.5rem;
+    }
+    .faq-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+    }
+    .faq-section details {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      transition: border-color 0.15s;
+    }
+    .faq-section details[open] {
+      border-color: #58a6ff;
+    }
+    .faq-section summary {
+      cursor: pointer;
+      padding: 0.65rem 0.85rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #e6edf3;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .faq-section summary::-webkit-details-marker { display: none; }
+    .faq-section summary::before {
+      content: '▸';
+      color: #8b949e;
+      font-size: 0.75rem;
+      transition: transform 0.15s;
+    }
+    .faq-section details[open] summary::before {
+      transform: rotate(90deg);
+    }
+    .faq-section .faq-answer {
+      padding: 0 0.85rem 0.75rem 1.6rem;
+      font-size: 0.82rem;
+      color: #8b949e;
+      line-height: 1.5;
+    }
+"""
+
+FAQ_ITEMS: dict[str, dict[str, str]] = {
+    "student_support": {
+        "q": "What is Student Support?",
+        "a": "Student Support is in the form of mentoring, in-class or out-of-class support of students. This is assigned to you by SLT.",
+    },
+    "whole_school_support": {
+        "q": "What is Whole School Support?",
+        "a": "Whole School Support is essentially supporting all staff and all students during unstructured times. To supervise students.",
+    },
+    "ppa_oncall": {
+        "q": "What is PPA / On-call / Centre Duties?",
+        "a": "Planning, Preparation and Assessment time combined with being available on-call for incidents and overseeing general centre operations from the Main Foyer.",
+    },
+    "ppa": {
+        "q": "What is PPA?",
+        "a": "Planning, Preparation and Assessment \u2014 time allocated for lesson planning and administrative tasks.",
+    },
+}
+
+FAQ_PER_STAFF: dict[str, list[str]] = {
+    "LD": ["ppa_oncall", "whole_school_support"],
+    "SA": ["ppa_oncall", "whole_school_support"],
+    "LG": ["ppa", "whole_school_support"],
+    "LI": ["ppa", "whole_school_support"],
+    "JC": ["student_support", "whole_school_support"],
+    "JM": ["student_support", "whole_school_support"],
+    "HK": ["student_support", "whole_school_support"],
+}
+
+
+def render_faq_section(initials: str) -> str:
+    keys = FAQ_PER_STAFF.get(initials, ["whole_school_support"])
+    items_html = []
+    for key in keys:
+        item = FAQ_ITEMS[key]
+        items_html.append(
+            f'<details><summary>{esc(item["q"])}</summary>'
+            f'<div class="faq-answer">{esc(item["a"])}</div></details>'
+        )
+    return f"""
+  <section class="faq-section">
+    <h2 class="faq-title">Glossary</h2>
+    {''.join(items_html)}
+  </section>"""
+
+
 STAFF_PERSON_CSS = (
     DAY_TAB_CSS
     + """
@@ -1415,6 +1515,7 @@ STAFF_PERSON_CSS = (
     .location-col { color: #a371f7; font-size: 0.8rem; font-weight: 500; }
     .muted { color: #484f58; text-align: center; }
 """
+    + FAQ_CSS
 )
 
 
@@ -1772,6 +1873,14 @@ def main() -> None:
                     s["subject"] = "Student Support"
                     if initials == "JC":
                         s["location"] = "Foyer"
+        if initials == "HK":
+            for s in combined:
+                if "reset" in s["subject"].lower():
+                    s["location"] = "Main Room" if s["day_key"] == "wednesday" else "Boardroom"
+        if initials == "JM":
+            for s in combined:
+                if "reset" in s["subject"].lower():
+                    s["location"] = "Computer Suite" if s["day_key"] == "wednesday" else "URFUTURE"
         slug = staff_slug(initials)
         page = render_staff_person_page(week, initials, combined)
         (STAFF_DIR / f"{slug}.html").write_text(page, encoding="utf-8")

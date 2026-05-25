@@ -988,6 +988,15 @@
           "subject": "Beauty / Enrichment",
           "stage": "KS4"
         }
+      ],
+      "LI": [
+        {
+          "days": ["tuesday"],
+          "start": "09:15",
+          "end": "09:45",
+          "subject": "Supporting Assembly",
+          "stage": "All"
+        }
       ]
     }
   }
