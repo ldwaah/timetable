@@ -400,8 +400,6 @@ def render_student_ks_day_panel(week: dict, day_key: str, stage: str) -> str:
         if not staff and supervision:
             staff = _supervision_text(supervision, all_staff, day_key=day_key)
         location = get_location(label, stage, day_key, row.get("kind", ""))
-        if day_key == "wednesday" and stage == "ks3" and label.startswith("Break") and row["start"] == "13:10":
-            location = ""
         cls = cell_class(label, row.get("kind", ""))
         rows_html.append(
             f'<tr class="{cls}">'
@@ -1935,13 +1933,6 @@ def main() -> None:
             for s in combined:
                 if "reset" in s["subject"].lower():
                     s["location"] = "Computer Suite" if s["day_key"] == "wednesday" else "URFUTURE"
-        if initials not in SLT_MEMBERS:
-            for s in combined:
-                if (s["day_key"] == "wednesday"
-                        and "break supervision" in s["subject"].lower()
-                        and "ks3" in s["subject"].lower()
-                        and s["time"].startswith("13:10")):
-                    s["location"] = ""
         for s in combined:
             if s["subject"] == "PPA" or s["subject"].startswith("PPA"):
                 s["subject"] = ""
