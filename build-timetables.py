@@ -35,6 +35,30 @@ def _is_break_or_lunch(label: str) -> bool:
     return label in ("Break", "Lunch") or "Toilet Break" in label
 
 
+def _row_ks_identical(row: dict) -> bool:
+    """True when KS3 and KS4 carry the same label, staff, and supervision."""
+    if (row.get("ks3", "—") or "—").lower() != (row.get("ks4", "—") or "—").lower():
+        return False
+    if row.get("staff_ks3") != row.get("staff_ks4"):
+        return False
+    if row.get("supervision_ks3") != row.get("supervision_ks4"):
+        return False
+    return True
+
+
+def _row_flz_matches_ks(row: dict) -> bool:
+    """True when FLZ label and staff match KS3 (for spanning all three columns)."""
+    flz = row.get("flz")
+    ks3 = row.get("ks3", "—")
+    if not flz or flz == "—":
+        return ks3 == "—"
+    if flz.lower() != ks3.lower():
+        return False
+    if row.get("staff_flz") != row.get("staff_ks3"):
+        return False
+    return True
+
+
 def add_supervision(week: dict) -> None:
     """Tag every break/lunch row with the staff available for supervision."""
     all_staff = week["staff"].get("people", [])
@@ -114,6 +138,7 @@ def compare_cell_html(
     *,
     show_staff: bool = True,
     all_staff: list[str] | None = None,
+    colspan: int = 1,
 ) -> str:
     label = row.get(stage, "—")
     staff = row.get(f"staff_{stage}") if show_staff else None
@@ -128,7 +153,8 @@ def compare_cell_html(
         label_html = f'{esc(label)}<span class="slot-staff">{esc(sup)}</span>'
     if note and label != "—":
         label_html += f'<span class="slot-note">{esc(note)}</span>'
-    return f'<td class="{cls}"><span class="slot-label">{label_html}</span></td>'
+    cs = f' colspan="{colspan}"' if colspan > 1 else ""
+    return f'<td{cs} class="{cls}"><span class="slot-label">{label_html}</span></td>'
 
 
 def render_day_tab_inputs(default_key: str = "monday") -> str:
@@ -167,15 +193,30 @@ def render_student_day_panel(week: dict, day_key: str) -> str:
     hint_html = render_searches_hint(day)
     rows_html = []
     for row in rows:
-        flz_cell = compare_cell_html(row, "flz", all_staff=all_staff) if has_flz else ""
-        rows_html.append(
-            "<tr>"
-            f'<td class="time-col">{esc(row["start"])}\u2013{esc(row["end"])}</td>'
-            f"{compare_cell_html(row, 'ks3', all_staff=all_staff)}"
-            f"{compare_cell_html(row, 'ks4', all_staff=all_staff)}"
-            f"{flz_cell}"
-            "</tr>"
-        )
+        time_cell = f'<td class="time-col">{esc(row["start"])}\u2013{esc(row["end"])}</td>'
+        merge_ks = _row_ks_identical(row)
+        merge_flz = merge_ks and has_flz and _row_flz_matches_ks(row)
+        if merge_flz:
+            rows_html.append(
+                f"<tr>{time_cell}"
+                f"{compare_cell_html(row, 'ks3', all_staff=all_staff, colspan=3)}"
+                "</tr>"
+            )
+        elif merge_ks:
+            flz_cell = compare_cell_html(row, "flz", all_staff=all_staff) if has_flz else ""
+            rows_html.append(
+                f"<tr>{time_cell}"
+                f"{compare_cell_html(row, 'ks3', all_staff=all_staff, colspan=2)}"
+                f"{flz_cell}</tr>"
+            )
+        else:
+            flz_cell = compare_cell_html(row, "flz", all_staff=all_staff) if has_flz else ""
+            rows_html.append(
+                f"<tr>{time_cell}"
+                f"{compare_cell_html(row, 'ks3', all_staff=all_staff)}"
+                f"{compare_cell_html(row, 'ks4', all_staff=all_staff)}"
+                f"{flz_cell}</tr>"
+            )
     flz_th = '<th scope="col">FLZ</th>' if has_flz else ""
     return f"""
       <section class="day-panel" id="panel-{day_key}" role="tabpanel" aria-labelledby="tab-{day_key}">
@@ -445,14 +486,29 @@ def render_staff_day_panel(week: dict, day_key: str) -> str:
             sf = row.get("staff_flz")
             flz_disp = esc(flz) + (f' <span class="lead">({esc(sf)})</span>' if sf else "")
             flz_html = f'<td class="{cell_class(flz, row.get("kind", ""))}">{flz_disp}</td>'
-        rows_html.append(
-            f"<tr>"
-            f'<td class="time-col">{esc(row["start"])}–{esc(row["end"])}</td>'
-            f'<td class="{cell_class(ks3, row.get("kind", ""))}">{k3_disp}</td>'
-            f'<td class="{cell_class(ks4, row.get("kind", ""))}">{k4_disp}</td>'
-            f"{flz_html}"
-            f"</tr>"
-        )
+        merge_ks = _row_ks_identical(row)
+        merge_all = merge_ks and has_flz and _row_flz_matches_ks(row)
+        time_cell = f'<td class="time-col">{esc(row["start"])}–{esc(row["end"])}</td>'
+        ks3_cls = cell_class(ks3, row.get("kind", ""))
+        if merge_all:
+            rows_html.append(
+                f"<tr>{time_cell}"
+                f'<td colspan="3" class="{ks3_cls}">{k3_disp}</td>'
+                f"</tr>"
+            )
+        elif merge_ks:
+            rows_html.append(
+                f"<tr>{time_cell}"
+                f'<td colspan="2" class="{ks3_cls}">{k3_disp}</td>'
+                f"{flz_html}</tr>"
+            )
+        else:
+            rows_html.append(
+                f"<tr>{time_cell}"
+                f'<td class="{ks3_cls}">{k3_disp}</td>'
+                f'<td class="{cell_class(ks4, row.get("kind", ""))}">{k4_disp}</td>'
+                f"{flz_html}</tr>"
+            )
     flz_th = '<th scope="col">FLZ</th>' if has_flz else ""
     return f"""
       <section class="day-panel" id="panel-{day_key}" role="tabpanel">
@@ -620,6 +676,8 @@ SHARED_STUDENT_CSS = """
       margin-top: 0.2rem;
     }
 
+    .day-grid td[colspan] { text-align: center; }
+
     .slot.core.maths .slot-staff { color: #58a6ff; }
     .slot.core.english .slot-staff { color: #d4a72c; }
 
@@ -742,6 +800,7 @@ STAFF_CSS = """
     .slot.meeting { color: #d2a8ff; font-weight: 600; }
     .slot.staff-dev { color: #56d364; font-weight: 600; }
     .slot-note { display: block; font-size: 0.65rem; font-style: italic; color: #6e7681; margin-top: 0.15rem; font-weight: 400; }
+    .timeline-table td[colspan] { text-align: center; }
 """
 
 SEARCHES_HINT_CSS = """
