@@ -818,6 +818,8 @@ def get_staff_location(subject: str, stage: str, day_key: str) -> str:
         return "Art Room"
     if low == "food technology":
         return "Cooking Room"
+    if "beauty" in low or "enrichment" in low:
+        return "Art Room"
     if "sports leaders" in low or "vocational" in low:
         return "Sports Hall"
 

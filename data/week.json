@@ -926,10 +926,7 @@
       },
       "LG": {
         "monday":    { "start": "12:30", "end": "13:10" },
-        "tuesday":   { "start": "13:20", "end": "14:00" },
-        "wednesday": { "start": "14:15", "end": "14:45" },
-        "thursday":  { "start": "13:20", "end": "14:00" },
-        "friday":    { "start": "13:20", "end": "14:00" }
+        "wednesday": { "start": "14:15", "end": "14:45" }
       },
       "LI": {
         "monday":    { "start": "11:35", "end": "12:15" },
@@ -966,6 +963,20 @@
           "end": "11:20",
           "subject": "KS3 Support",
           "stage": "KS3"
+        },
+        {
+          "days": ["monday", "tuesday"],
+          "start": "13:20",
+          "end": "14:45",
+          "subject": "Beauty / Enrichment",
+          "stage": "KS4"
+        },
+        {
+          "days": ["thursday", "friday"],
+          "start": "13:10",
+          "end": "14:00",
+          "subject": "Beauty / Enrichment",
+          "stage": "KS4"
         }
       ]
     }
