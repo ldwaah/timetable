@@ -274,12 +274,22 @@
         },
         {
           "start": "12:30",
+          "end": "13:00",
+          "ks3": "Line Management (LI)",
+          "ks4": "Line Management (SA)",
+          "kind": "meeting",
+          "staff_only": true,
+          "staff_ks3": "SA",
+          "staff_ks4": "LI"
+        },
+        {
+          "start": "12:30",
           "end": "13:10",
           "ks3": "SEMH / AQA",
           "ks4": "SEMH / AQA",
           "kind": "lesson",
-          "staff_ks3": "LG",
-          "staff_ks4": "LI"
+          "staff_ks3": "JC",
+          "staff_ks4": "LG"
         },
         {
           "start": "13:10",
@@ -307,16 +317,6 @@
           "kind": "lesson",
           "staff_ks3": "LG / JC",
           "staff_ks4": "LG / JC"
-        },
-        {
-          "start": "15:00",
-          "end": "15:30",
-          "ks3": "Line Management (LI)",
-          "ks4": "Line Management (SA)",
-          "kind": "meeting",
-          "staff_only": true,
-          "staff_ks3": "SA",
-          "staff_ks4": "LI"
         }
       ]
     },
