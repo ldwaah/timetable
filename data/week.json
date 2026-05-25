@@ -796,7 +796,12 @@
         "friday": { "start": "08:30", "end": "15:00" }
       },
       "JM": { "start": "09:00", "end": "14:00" },
-      "HK": { "start": "09:00", "end": "13:00" }
+      "HK": { "start": "09:00", "end": "13:00" },
+      "JC": {
+        "monday": { "start": "11:00", "end": "15:00" },
+        "tuesday": { "start": "11:00", "end": "15:00" },
+        "thursday": { "start": "11:00", "end": "15:00" }
+      }
     },
     "off_days": {
       "JC": ["wednesday", "friday"],

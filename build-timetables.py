@@ -48,7 +48,7 @@ STAFF_WORKING_HOURS: dict[str, dict[str, tuple[str, str]]] = {
         "friday": ("08:30", "15:00"),
     },
     "JC": {
-        "monday": ("11:00", "15:30"), "tuesday": ("11:00", "15:00"),
+        "monday": ("11:00", "15:00"), "tuesday": ("11:00", "15:00"),
         "thursday": ("11:00", "15:00"),
     },
     "JM": {
@@ -847,7 +847,7 @@ def render_person_day_panel(day_key: str, sessions: list[dict], *, is_off_day: b
         for s in sessions:
             is_ppa = s["subject"].startswith("PPA")
             subj_cls = "subject-col ppa" if is_ppa else "subject-col"
-            location = get_staff_location(s["subject"], s["stage"], day_key)
+            location = s.get("location") or get_staff_location(s["subject"], s["stage"], day_key)
             rows_html.append(
                 "<tr>"
                 f'<td class="time-col">{esc(s["time"])}</td>'
@@ -1753,10 +1753,12 @@ def main() -> None:
             for s in combined:
                 if s["subject"] == "PPA":
                     s["subject"] = "PPA / On-call / Centre Duties"
-        if initials in ("HK", "JM"):
+        if initials in ("HK", "JM", "JC"):
             for s in combined:
                 if s["subject"] == "PPA":
                     s["subject"] = "Student Support"
+                    if initials == "JC":
+                        s["location"] = "Foyer"
         slug = staff_slug(initials)
         page = render_staff_person_page(week, initials, combined)
         (STAFF_DIR / f"{slug}.html").write_text(page, encoding="utf-8")
