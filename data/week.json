@@ -941,6 +941,17 @@
         "thursday":  { "start": "12:30", "end": "13:00" },
         "friday":    { "start": "11:35", "end": "12:15" }
       }
+    },
+    "slot_overrides": {
+      "LG": [
+        {
+          "days": ["monday", "tuesday", "thursday", "friday"],
+          "start": "11:05",
+          "end": "11:20",
+          "subject": "KS3 Support",
+          "stage": "KS3"
+        }
+      ]
     }
   }
 }

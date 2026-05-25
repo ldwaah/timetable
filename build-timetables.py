@@ -104,6 +104,8 @@ def get_location(label: str, stage: str, day_key: str, kind: str) -> str:
     if not label or label == "—":
         return ""
     low = label.lower()
+    if kind == "searches" or "student searches" in low:
+        return "Boardroom"
     if kind == "arrival" or "arrival" in low:
         return "Foyer"
     if kind == "checks" or "checks" in low:
@@ -703,6 +705,8 @@ def get_staff_location(subject: str, stage: str, day_key: str) -> str:
     """Derive a room/location for a staff timetable entry."""
     low = subject.lower()
 
+    if "student searches" in low:
+        return "Boardroom"
     if "ppa / on-call" in low or "centre duties" in low:
         return "Foyer"
     if low == "ppa":
@@ -1715,6 +1719,15 @@ def main() -> None:
     for initials in week["staff"].get("people", []):
         person_sessions = sessions.get(initials, [])
         person_sessions = filter_by_working_hours(person_sessions, initials)
+        for ovr in week["staff"].get("slot_overrides", {}).get(initials, []):
+            for day_key in ovr["days"]:
+                person_sessions.append({
+                    "day": day_labels.get(day_key, day_key.capitalize()),
+                    "day_key": day_key,
+                    "time": f'{ovr["start"]}\u2013{ovr["end"]}',
+                    "stage": ovr.get("stage", "\u2014"),
+                    "subject": ovr["subject"],
+                })
         sorted_sessions = sorted(
             person_sessions,
             key=lambda s: (DAY_ORDER.index(s["day_key"]), s["time"]),
