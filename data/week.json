@@ -297,18 +297,18 @@
           "start": "13:25",
           "end": "14:05",
           "ks3": "PSHE",
-          "ks4": "DofE",
+          "ks4": "PSHE",
           "kind": "lesson",
           "staff_ks3": "Sacha",
-          "staff_ks4": "Lloyd"
+          "staff_ks4": "Lorelle"
         },
         {
           "start": "14:05",
           "end": "14:20",
           "ks3": "Lesson — TBC",
-          "ks4": "DofE",
+          "ks4": "PSHE",
           "kind": "lesson",
-          "staff_ks4": "Lloyd"
+          "staff_ks4": "Lorelle"
         },
         {
           "start": "14:20",
@@ -475,10 +475,10 @@
         {
           "start": "11:25",
           "end": "12:15",
-          "ks3": "SEMH / AQA",
+          "ks3": "PSHE",
           "ks4": "SEMH / AQA",
           "kind": "lesson",
-          "staff_ks3": "Lorelle",
+          "staff_ks3": "Sacha",
           "staff_ks4": "Laurent"
         },
         {
