@@ -378,9 +378,9 @@
         {
           "start": "11:10",
           "end": "11:25",
-          "ks3": "Toilet Break / Upstairs Only",
-          "ks4": "Toilet Break / Upstairs Only",
-          "kind": "lesson"
+          "ks3": "Break — Main Room",
+          "ks4": "Break — Computer Room",
+          "kind": "break"
         },
         {
           "start": "11:25",
@@ -857,7 +857,8 @@
         "lunch": ["LG", "JM"]
       },
       "wednesday": {
-        "toilet_break": ["SA", "LD"],
+        "ks3_break": ["SA"],
+        "ks4_break": ["LD"],
         "lunch": ["LI", "HK"],
         "break": ["LD", "LI"]
       },

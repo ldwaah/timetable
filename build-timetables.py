@@ -31,7 +31,7 @@ STAFF_WORKING_HOURS: dict[str, dict[str, tuple[str, str]]] = {
         "friday": ("08:30", "15:00"),
     },
     "LG": {
-        "monday": ("08:30", "15:30"), "tuesday": ("08:30", "15:30"),
+        "monday": ("08:30", "15:00"), "tuesday": ("08:30", "15:00"),
         "wednesday": ("08:30", "15:00"), "thursday": ("08:30", "15:00"),
         "friday": ("08:30", "15:00"),
     },
@@ -90,7 +90,11 @@ def _parse_staff(staff_str: str | None) -> set[str]:
 
 
 def _is_break_or_lunch(label: str) -> bool:
-    return label in ("Break", "Lunch") or "Toilet Break" in label
+    if label == "Lunch":
+        return True
+    if label.startswith("Break") or "Toilet Break" in label:
+        return True
+    return False
 
 
 def _row_ks_identical(row: dict) -> bool:
@@ -147,12 +151,16 @@ def add_supervision(week: dict) -> None:
             ks4_is_break = _is_break_or_lunch(row.get("ks4", ""))
             if not ks3_is_break and not ks4_is_break:
                 continue
-            key = _rota_key_for_row(row)
-            assigned = day_rota.get(key, [])
-            if ks3_is_break:
-                row["supervision_ks3"] = assigned
-            if ks4_is_break:
-                row["supervision_ks4"] = assigned
+            if ks3_is_break and ks4_is_break and row.get("ks3") != row.get("ks4"):
+                row["supervision_ks3"] = day_rota.get("ks3_break", [])
+                row["supervision_ks4"] = day_rota.get("ks4_break", [])
+            else:
+                key = _rota_key_for_row(row)
+                assigned = day_rota.get(key, [])
+                if ks3_is_break:
+                    row["supervision_ks3"] = assigned
+                if ks4_is_break:
+                    row["supervision_ks4"] = assigned
 
 
 def _supervision_text(free: list[str], all_staff: list[str]) -> str:
@@ -181,7 +189,7 @@ def cell_class(label: str, kind: str) -> str:
         return "slot reset"
     if kind == "checks" or "Checks" in label:
         return "slot checks"
-    if label in ("Break", "Lunch") or "Toilet Break" in label:
+    if label == "Lunch" or label.startswith("Break") or "Toilet Break" in label:
         return "slot break"
     if label == "Arrival":
         return "slot arrival"
@@ -479,6 +487,11 @@ def collect_staff_sessions(week: dict) -> dict[str, list[dict]]:
                 supervision = row.get(f"supervision_{stage}")
                 if supervision:
                     stage_label = "KS3" if stage == "ks3" else "KS4"
+                    break_label = row.get(stage, "")
+                    if "\u2014" in break_label:
+                        sup_subject = f"Supervision ({break_label.split('\u2014')[1].strip()})"
+                    else:
+                        sup_subject = "Supervision"
                     for person in supervision:
                         if day_key in off_days.get(person, []):
                             continue
@@ -486,9 +499,9 @@ def collect_staff_sessions(week: dict) -> dict[str, list[dict]]:
                             {
                                 "day": day["label"],
                                 "day_key": day_key,
-                                "time": f'{row["start"]}–{row["end"]}',
+                                "time": f'{row["start"]}\u2013{row["end"]}',
                                 "stage": stage_label,
-                                "subject": "Supervision",
+                                "subject": sup_subject,
                             }
                         )
             flz_staff = row.get("staff_flz")

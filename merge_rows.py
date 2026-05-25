@@ -9,9 +9,17 @@ SKIP_MERGE_LABELS = frozenset(
 )
 
 
+def _skip_merge(label: str) -> bool:
+    if label in SKIP_MERGE_LABELS:
+        return True
+    if label.startswith("Break") or "Toilet Break" in label:
+        return True
+    return False
+
+
 def stage_slot_key(row: dict, stage: str) -> tuple[str, str | None] | None:
     label = row[stage]
-    if label in SKIP_MERGE_LABELS:
+    if _skip_merge(label):
         return None
     return (label, row.get(f"staff_{stage}"))
 
@@ -29,8 +37,8 @@ def other_stage_compatible(prev: dict, curr: dict, merged_stage: str) -> bool:
     if p == c:
         return True
     if merged_stage == "ks4":
-        return p in SKIP_MERGE_LABELS or c in SKIP_MERGE_LABELS
-    if p in SKIP_MERGE_LABELS or c in SKIP_MERGE_LABELS:
+        return _skip_merge(p) or _skip_merge(c)
+    if _skip_merge(p) or _skip_merge(c):
         return False
     return True
 
