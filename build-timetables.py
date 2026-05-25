@@ -24,6 +24,47 @@ INITIALS_TO_NAME: dict[str, str] = {
     "HK": "Hisham",
 }
 
+STAFF_WORKING_HOURS: dict[str, dict[str, tuple[str, str]]] = {
+    "LD": {
+        "monday": ("08:30", "15:30"), "tuesday": ("08:30", "15:30"),
+        "wednesday": ("08:30", "15:00"), "thursday": ("08:30", "15:00"),
+        "friday": ("08:30", "15:00"),
+    },
+    "LG": {
+        "monday": ("08:30", "15:30"), "tuesday": ("08:30", "15:30"),
+        "wednesday": ("08:30", "15:00"), "thursday": ("08:30", "15:00"),
+        "friday": ("08:30", "15:00"),
+    },
+    "LI": {
+        "monday": ("08:30", "15:30"), "tuesday": ("08:30", "15:30"),
+        "wednesday": ("08:30", "15:00"), "thursday": ("08:30", "15:00"),
+        "friday": ("08:30", "15:00"),
+    },
+    "SA": {
+        "tuesday": ("08:30", "15:30"),
+        "wednesday": ("08:30", "15:00"), "thursday": ("08:30", "15:00"),
+        "friday": ("08:30", "15:00"),
+    },
+    "JC": {
+        "monday": ("11:00", "15:30"), "tuesday": ("11:00", "15:30"),
+        "thursday": ("11:00", "15:00"),
+    },
+    "JM": {
+        "monday": ("09:00", "14:00"), "tuesday": ("09:00", "14:00"),
+        "wednesday": ("09:00", "14:00"), "thursday": ("09:00", "14:00"),
+        "friday": ("09:00", "14:00"),
+    },
+    "HK": {
+        "monday": ("09:00", "13:00"), "tuesday": ("09:00", "13:00"),
+        "wednesday": ("09:00", "13:00"), "thursday": ("09:00", "13:00"),
+        "friday": ("09:00", "13:00"),
+    },
+}
+
+
+def _minutes_to_time(mins: int) -> str:
+    return f"{mins // 60:02d}:{mins % 60:02d}"
+
 
 def _time_minutes(t: str) -> int:
     """Convert HH:MM to minutes since midnight."""
@@ -304,6 +345,69 @@ def compute_ppa_sessions(week: dict) -> dict[str, list[dict]]:
     return ppa
 
 
+def fill_ppa_gaps(
+    sessions: list[dict], initials: str, day_labels: dict[str, str],
+) -> list[dict]:
+    """Create PPA sessions for every gap within a staff member's working hours."""
+    hours = STAFF_WORKING_HOURS.get(initials, {})
+    grouped = group_sessions_by_day(sessions)
+    ppa_sessions: list[dict] = []
+
+    for day_key in DAY_ORDER:
+        day_hours = hours.get(day_key)
+        if not day_hours:
+            continue
+
+        work_start = _time_minutes(day_hours[0])
+        work_end = _time_minutes(day_hours[1])
+
+        intervals: list[tuple[int, int]] = []
+        for s in grouped.get(day_key, []):
+            parts = s["time"].split("\u2013")
+            intervals.append((_time_minutes(parts[0]), _time_minutes(parts[1])))
+
+        intervals.sort()
+        merged_intervals: list[tuple[int, int]] = []
+        for start, end in intervals:
+            if merged_intervals and start <= merged_intervals[-1][1]:
+                merged_intervals[-1] = (merged_intervals[-1][0], max(merged_intervals[-1][1], end))
+            else:
+                merged_intervals.append((start, end))
+
+        cursor = work_start
+        for s_start, s_end in merged_intervals:
+            if s_end <= work_start or s_start >= work_end:
+                continue
+            clamped_start = max(s_start, work_start)
+            if clamped_start > cursor:
+                ppa_sessions.append({
+                    "day": day_labels.get(day_key, day_key.capitalize()),
+                    "day_key": day_key,
+                    "time": f"{_minutes_to_time(cursor)}\u2013{_minutes_to_time(clamped_start)}",
+                    "stage": "\u2014",
+                    "subject": "PPA",
+                })
+            cursor = max(cursor, min(s_end, work_end))
+
+        if cursor < work_end:
+            ppa_sessions.append({
+                "day": day_labels.get(day_key, day_key.capitalize()),
+                "day_key": day_key,
+                "time": f"{_minutes_to_time(cursor)}\u2013{_minutes_to_time(work_end)}",
+                "stage": "\u2014",
+                "subject": "PPA",
+            })
+
+    return ppa_sessions
+
+
+def group_sessions_by_day(sessions: list[dict]) -> dict[str, list[dict]]:
+    grouped: dict[str, list[dict]] = {key: [] for key in DAY_ORDER}
+    for s in sessions:
+        grouped[s["day_key"]].append(s)
+    return grouped
+
+
 def merge_staff_sessions(sessions: list[dict]) -> list[dict]:
     if not sessions:
         return []
@@ -421,13 +525,6 @@ def dedup_person_sessions(sessions: list[dict]) -> list[dict]:
         out.append(dict(curr))
         i += 1
     return out
-
-
-def group_sessions_by_day(sessions: list[dict]) -> dict[str, list[dict]]:
-    grouped: dict[str, list[dict]] = {key: [] for key in DAY_ORDER}
-    for s in sessions:
-        grouped[s["day_key"]].append(s)
-    return grouped
 
 
 def render_person_day_panel(day_key: str, sessions: list[dict]) -> str:
@@ -1181,18 +1278,21 @@ def main() -> None:
 
     STAFF_DIR.mkdir(exist_ok=True)
     sessions = collect_staff_sessions(week)
-    ppa_sessions = compute_ppa_sessions(week)
-    hours: dict = week["staff"].get("hours", {})
+    day_labels = {k: v["label"] for k, v in week["days"].items()}
     for initials in week["staff"].get("people", []):
         person_sessions = sessions.get(initials, [])
-        person_ppa = merge_staff_sessions(ppa_sessions.get(initials, []))
-        combined = sorted(
-            person_sessions + person_ppa,
+        sorted_sessions = sorted(
+            person_sessions,
             key=lambda s: (DAY_ORDER.index(s["day_key"]), s["time"]),
         )
-        combined = dedup_person_sessions(combined)
+        deduped = dedup_person_sessions(sorted_sessions)
+        merged = merge_staff_sessions(deduped)
+        ppa_gaps = fill_ppa_gaps(merged, initials, day_labels)
+        combined = sorted(
+            merged + ppa_gaps,
+            key=lambda s: (DAY_ORDER.index(s["day_key"]), s["time"]),
+        )
         combined = merge_staff_sessions(combined)
-        combined = filter_by_hours(combined, hours, initials)
         slug = staff_slug(initials)
         page = render_staff_person_page(week, initials, combined)
         (STAFF_DIR / f"{slug}.html").write_text(page, encoding="utf-8")
