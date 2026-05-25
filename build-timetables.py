@@ -1758,7 +1758,7 @@ def main() -> None:
         if initials == "LG":
             for s in combined:
                 if s["subject"] == "PPA" and s["time"] == "11:35\u201312:15":
-                    s["subject"] = "PPA and Lunch"
+                    s["subject"] = "PPA / Lunch"
         if initials in ("HK", "JM", "JC"):
             for s in combined:
                 if s["subject"] == "PPA":
