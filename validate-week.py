@@ -3,7 +3,7 @@
 import json
 import sys
 
-PE = "PE (50 min + 10 min change)"
+PE = "PE"
 DURATIONS = {
     "English": 45,
     "Maths": 40,
@@ -14,13 +14,18 @@ DURATIONS = {
     "SEMH / AQA": 40,
     "King's Trust": 60,
     "Food Technology": 60,
-    PE: 60,
     "Reset": 30,
     "Assembly": 35,
     "Break": 15,
     "Lunch": 15,
     "Arrival": 15,
     "Checks / late arrivals": 10,
+}
+PE_DURATIONS = {
+    "monday": 85,
+    "tuesday": 85,
+    "thursday": 40,
+    "friday": 40,
 }
 SHORT_DAY_VOCATIONAL = 30
 
@@ -70,10 +75,9 @@ def validate(rows: list[dict], finish: str, dk: str) -> list[str]:
 
     for stage in ("ks3", "ks4"):
         slots = break_slots(rows, stage)
-        min_breaks = 1 if short else 2
-        if len(slots) < min_breaks or len(slots) > 2:
+        if len(slots) < 1 or len(slots) > 2:
             issues.append(
-                f"{dk} {stage}: expected {min_breaks}-2 breaks, got {len(slots)} {slots}"
+                f"{dk} {stage}: expected 1-2 breaks, got {len(slots)} {slots}"
             )
         for s, e in slots:
             if t2m(e) - t2m(s) != 15:
@@ -105,12 +109,15 @@ def validate(rows: list[dict], finish: str, dk: str) -> list[str]:
                 continue
             if dk == "tuesday" and label == "DofE" and total == 50:
                 continue
-            if dk in ("monday", "tuesday") and label == "Food Technology" and total == 35:
-                continue
-            if dk in ("monday", "tuesday") and label == "King's Trust" and total == 35:
-                continue
             if total != need:
                 issues.append(f"{dk} {stage} {label}: {total}min not {need}min")
+
+    pe_exp = PE_DURATIONS.get(dk)
+    if pe_exp:
+        for stage in ("ks3", "ks4"):
+            pe_total = totals(rows, stage, PE)
+            if pe_total and pe_total != pe_exp:
+                issues.append(f"{dk} {stage} PE: {pe_total}min not {pe_exp}min")
 
     return issues
 
@@ -176,8 +183,8 @@ def main() -> int:
             issues.append("wednesday: students must start 10:00")
         if dk in ("monday", "tuesday", "wednesday") and day["finish"] != "15:00":
             issues.append(f"{dk}: finish must be 15:00")
-        if dk in ("thursday", "friday") and day["finish"] not in ("14:00", "14:40"):
-            issues.append(f"{dk}: finish must be 14:00 or 14:40")
+        if dk in ("thursday", "friday") and day["finish"] != "14:00":
+            issues.append(f"{dk}: finish must be 14:00")
         if dk == "wednesday" and totals(day["rows"], "ks3", PE):
             issues.append("wednesday: PE must not run on Wednesday")
 

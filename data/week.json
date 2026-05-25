@@ -5,12 +5,13 @@
     "break_minutes": 15,
     "lunch_minutes": 15,
     "lunch_time": "12:15–12:30",
-    "pe_label": "PE (50 min + 10 min change)",
-    "pe_minutes": 60,
+    "pe_label": "PE",
+    "pe_minutes_mon_tue": 85,
+    "pe_minutes_thu_fri": 40,
     "reset_minutes": 30,
     "checks_window": "09:05–09:15",
     "core_placement": "Reset — first teaching block after checks; Maths then English; Tuesday: Assembly → Maths → English (no Reset)",
-    "short_day_note": "Thu/Fri: Food Technology and King's Trust are 30-minute sessions after PE (14:00 finish)"
+    "short_day_note": "Thu/Fri: PE 13:20–14:00 is last student slot (14:00 finish); Mon/Tue: PE 13:20–14:45 then Pause & Progress"
   },
   "days": {
     "monday": {
@@ -90,27 +91,19 @@
         },
         {
           "start": "13:10",
-          "end": "14:10",
-          "ks3": "PE (50 min + 10 min change)",
-          "ks4": "PE (50 min + 10 min change)",
+          "end": "13:20",
+          "ks3": "Transition",
+          "ks4": "Transition",
+          "kind": "transition"
+        },
+        {
+          "start": "13:20",
+          "end": "14:45",
+          "ks3": "PE",
+          "ks4": "PE",
           "kind": "pe",
           "staff_ks3": "Laurent",
           "staff_ks4": "Laurent"
-        },
-        {
-          "start": "14:10",
-          "end": "14:25",
-          "ks3": "Break",
-          "ks4": "Break",
-          "kind": "lesson"
-        },
-        {
-          "start": "14:25",
-          "end": "14:45",
-          "ks3": "Food Technology",
-          "ks4": "King's Trust",
-          "kind": "lesson",
-          "staff_ks4": "Lorelle"
         },
         {
           "start": "14:45",
@@ -198,27 +191,19 @@
         },
         {
           "start": "13:10",
-          "end": "14:10",
-          "ks3": "PE (50 min + 10 min change)",
-          "ks4": "PE (50 min + 10 min change)",
+          "end": "13:20",
+          "ks3": "Transition",
+          "ks4": "Transition",
+          "kind": "transition"
+        },
+        {
+          "start": "13:20",
+          "end": "14:45",
+          "ks3": "PE",
+          "ks4": "PE",
           "kind": "pe",
           "staff_ks3": "Laurent",
           "staff_ks4": "Laurent"
-        },
-        {
-          "start": "14:10",
-          "end": "14:25",
-          "ks3": "Break",
-          "ks4": "Break",
-          "kind": "lesson"
-        },
-        {
-          "start": "14:25",
-          "end": "14:45",
-          "ks3": "Food Technology",
-          "ks4": "King's Trust",
-          "kind": "lesson",
-          "staff_ks4": "Lorelle"
         },
         {
           "start": "14:45",
@@ -322,7 +307,7 @@
       "label": "Thursday",
       "arrival_from": "08:50",
       "arrival_latest": "09:05",
-      "finish": "14:40",
+      "finish": "14:00",
       "rows": [
         {
           "start": "08:50",
@@ -403,20 +388,19 @@
         },
         {
           "start": "13:10",
-          "end": "14:10",
-          "ks3": "PE (50 min + 10 min change)",
-          "ks4": "PE (50 min + 10 min change)",
+          "end": "13:20",
+          "ks3": "Transition",
+          "ks4": "Transition",
+          "kind": "transition"
+        },
+        {
+          "start": "13:20",
+          "end": "14:00",
+          "ks3": "PE",
+          "ks4": "PE",
           "kind": "pe",
           "staff_ks3": "Laurent",
           "staff_ks4": "Laurent"
-        },
-        {
-          "start": "14:10",
-          "end": "14:40",
-          "ks3": "Food Technology",
-          "ks4": "King's Trust",
-          "kind": "lesson",
-          "staff_ks4": "Lorelle"
         }
       ]
     },
@@ -424,7 +408,7 @@
       "label": "Friday",
       "arrival_from": "08:50",
       "arrival_latest": "09:05",
-      "finish": "14:40",
+      "finish": "14:00",
       "rows": [
         {
           "start": "08:50",
@@ -505,19 +489,19 @@
         },
         {
           "start": "13:10",
-          "end": "14:10",
-          "ks3": "PE (50 min + 10 min change)",
-          "ks4": "PE (50 min + 10 min change)",
+          "end": "13:20",
+          "ks3": "Transition",
+          "ks4": "Transition",
+          "kind": "transition"
+        },
+        {
+          "start": "13:20",
+          "end": "14:00",
+          "ks3": "PE",
+          "ks4": "PE",
           "kind": "pe",
           "staff_ks3": "Laurent",
           "staff_ks4": "Laurent"
-        },
-        {
-          "start": "14:10",
-          "end": "14:40",
-          "ks3": "Food Technology",
-          "ks4": "Lesson — TBC",
-          "kind": "lesson"
         }
       ]
     }

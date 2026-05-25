@@ -41,6 +41,8 @@ def cell_class(label: str, kind: str) -> str:
         return "slot core english"
     if kind == "pe" or label.startswith("PE"):
         return "slot pe"
+    if kind == "transition" or label == "Transition":
+        return "slot transition"
     if "Lesson" in label:
         return "slot lesson"
     return "slot"
@@ -442,6 +444,8 @@ SHARED_STUDENT_CSS = """
     .slot.arrival .slot-label { color: #58a6ff; }
     .slot.pe { background: #132d1b; }
     .slot.pe .slot-label { color: #3fb950; font-weight: 600; }
+    .slot.transition { background: #21262d; }
+    .slot.transition .slot-label { color: #8b949e; font-style: italic; }
 """
 
 STAFF_CSS = """
