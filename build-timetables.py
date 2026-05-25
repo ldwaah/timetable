@@ -38,10 +38,12 @@ def _is_break_or_lunch(label: str) -> bool:
 def add_supervision(week: dict) -> None:
     """Tag every break/lunch row with the staff available for supervision."""
     all_staff = week["staff"].get("people", [])
+    off_days: dict[str, list[str]] = week["staff"].get("off_days", {})
     for day_key in DAY_ORDER:
         day = week["days"].get(day_key)
         if not day:
             continue
+        unavailable = {s for s, days in off_days.items() if day_key in days}
         for row in day["rows"]:
             ks3_is_break = _is_break_or_lunch(row.get("ks3", ""))
             ks4_is_break = _is_break_or_lunch(row.get("ks4", ""))
@@ -52,7 +54,7 @@ def add_supervision(week: dict) -> None:
                 teaching |= _parse_staff(row.get("staff_ks3"))
             if not ks4_is_break:
                 teaching |= _parse_staff(row.get("staff_ks4"))
-            free = [s for s in all_staff if s not in teaching]
+            free = [s for s in all_staff if s not in teaching and s not in unavailable]
             if ks3_is_break:
                 row["supervision_ks3"] = free
             if ks4_is_break:
@@ -231,6 +233,7 @@ def merge_staff_sessions(sessions: list[dict]) -> list[dict]:
 
 def collect_staff_sessions(week: dict) -> dict[str, list[dict]]:
     sessions: dict[str, list[dict]] = {}
+    off_days: dict[str, list[str]] = week["staff"].get("off_days", {})
     for day_key in DAY_ORDER:
         day = week["days"][day_key]
         for row in display_rows(day):
@@ -250,6 +253,8 @@ def collect_staff_sessions(week: dict) -> dict[str, list[dict]]:
                 if supervision:
                     stage_label = "KS3" if stage == "ks3" else "KS4"
                     for person in supervision:
+                        if day_key in off_days.get(person, []):
+                            continue
                         sessions.setdefault(person, []).append(
                             {
                                 "day": day["label"],

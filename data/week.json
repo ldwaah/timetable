@@ -81,7 +81,7 @@
           "ks3": "Break",
           "ks4": "Personal Development",
           "kind": "lesson",
-          "staff_ks4": "LG"
+          "staff_ks4": "JC"
         },
         {
           "start": "11:20",
@@ -636,6 +636,10 @@
   },
   "staff": {
     "start": "08:30",
+    "off_days": {
+      "JC": ["wednesday", "friday"],
+      "SA": ["monday"]
+    },
     "detentions": {
       "monday": "15:00–15:30",
       "friday": "14:00–15:00"
