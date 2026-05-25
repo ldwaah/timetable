@@ -717,10 +717,58 @@ def get_staff_location(subject: str, stage: str, day_key: str) -> str:
         return "Foyer"
     if "staff briefing" in low or "set up" in low:
         return "Foyer"
-    if "assembly" in low:
-        return "Sports Hall"
     if "pause" in low and "progress" in low:
         return "Foyer"
+
+    if day_key == "wednesday":
+        if "assembly" in low:
+            return "Gym"
+        if "break supervision" in low or ("break" in low and "supervision" in low):
+            if "main foyer" in low or "foyer" in low:
+                return "Foyer"
+            if "ks3" in low or stage == "KS3":
+                return "Main Room"
+            if "ks4" in low or stage == "KS4":
+                return "Computer Suite"
+            return "Main Room"
+        if "lunch supervision" in low or ("lunch" in low and "supervision" in low):
+            if "ks3" in low or stage == "KS3":
+                return "Main Room"
+            if "ks4" in low or stage == "KS4":
+                return "Computer Suite"
+            return "Main Room"
+        if low == "lunch":
+            if stage == "KS3":
+                return "Main Room"
+            if stage == "KS4":
+                return "Computer Suite"
+            return "Main Room"
+        if low.startswith("break"):
+            if stage == "KS3":
+                return "Main Room"
+            return "Computer Suite"
+        if low == "gym" or low == "pe" or low.startswith("pe"):
+            return "Gym"
+        if "sports leaders" in low or "vocational" in low:
+            return "Gym"
+        if stage == "FLZ" or "flz" in low:
+            return "Gym"
+        if "reset" in low:
+            if stage == "KS3" or stage == "All":
+                return "Main Room"
+            if stage == "KS4":
+                return "Computer Suite"
+            return "Main Room"
+        if "team meeting" in low or "thrive" in low:
+            return "Main Room"
+        if stage in ("KS3", "All"):
+            return "Main Room"
+        if stage == "KS4":
+            return "Computer Suite"
+        return "Main Room"
+
+    if "assembly" in low:
+        return "Sports Hall"
 
     if "break supervision" in low or "break" in low and "supervision" in low:
         if "main foyer" in low or "foyer" in low:
@@ -731,12 +779,6 @@ def get_staff_location(subject: str, stage: str, day_key: str) -> str:
             return "Boardroom"
         if "computer room" in low:
             return "Computer Room"
-        if day_key == "wednesday":
-            if "ks3" in low:
-                return "Boardroom"
-            if "ks4" in low:
-                return "Computer Room"
-            return "Boardroom"
         return "Outside"
 
     if "lunch supervision" in low or ("lunch" in low and "supervision" in low):
@@ -754,10 +796,6 @@ def get_staff_location(subject: str, stage: str, day_key: str) -> str:
         return ""
 
     if low.startswith("break"):
-        if day_key == "wednesday":
-            if stage == "KS3":
-                return "Boardroom"
-            return "Computer Room"
         return "Outside"
 
     if low == "gym":
