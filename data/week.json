@@ -9,7 +9,7 @@
     "pe_minutes": 60,
     "reset_minutes": 30,
     "checks_window": "09:05–09:15",
-    "core_placement": "Reset — first teaching block after checks; Maths then English; Tuesday: Reset → Maths → English → Assembly",
+    "core_placement": "Reset — first teaching block after checks; Maths then English; Tuesday: Assembly → Maths → English (no Reset)",
     "short_day_note": "Thu/Fri: Food Technology and King's Trust are 30-minute sessions after PE (14:00 finish)"
   },
   "days": {
@@ -83,7 +83,14 @@
         },
         {
           "start": "12:30",
-          "end": "13:30",
+          "end": "13:10",
+          "ks3": "SEMH / AQA",
+          "ks4": "SEMH / AQA",
+          "kind": "lesson"
+        },
+        {
+          "start": "13:10",
+          "end": "14:10",
           "ks3": "PE (50 min + 10 min change)",
           "ks4": "PE (50 min + 10 min change)",
           "kind": "pe",
@@ -91,33 +98,25 @@
           "staff_ks4": "Laurent"
         },
         {
-          "start": "13:30",
-          "end": "13:45",
+          "start": "14:10",
+          "end": "14:25",
           "ks3": "Break",
-          "ks4": "King's Trust",
-          "kind": "lesson",
-          "staff_ks4": "Lorelle"
-        },
-        {
-          "start": "13:45",
-          "end": "14:30",
-          "ks3": "Food Technology",
-          "ks4": "King's Trust",
-          "kind": "lesson",
-          "staff_ks4": "Lorelle"
-        },
-        {
-          "start": "14:30",
-          "end": "14:45",
-          "ks3": "Food Technology",
           "ks4": "Break",
           "kind": "lesson"
         },
         {
+          "start": "14:25",
+          "end": "14:45",
+          "ks3": "Food Technology",
+          "ks4": "King's Trust",
+          "kind": "lesson",
+          "staff_ks4": "Lorelle"
+        },
+        {
           "start": "14:45",
           "end": "15:00",
-          "ks3": "Lesson — TBC",
-          "ks4": "Lesson — TBC",
+          "ks3": "Pause & Progress",
+          "ks4": "Pause & Progress",
           "kind": "lesson"
         }
       ]
@@ -145,11 +144,9 @@
         {
           "start": "09:15",
           "end": "09:45",
-          "ks3": "Reset",
-          "ks4": "Reset",
-          "kind": "reset",
-          "staff_ks3": "Lorelle",
-          "staff_ks4": "Laurent"
+          "ks3": "Assembly",
+          "ks4": "Assembly",
+          "kind": "assembly"
         },
         {
           "start": "09:45",
@@ -178,17 +175,12 @@
         },
         {
           "start": "11:25",
-          "end": "12:00",
-          "ks3": "Assembly",
-          "ks4": "Assembly",
-          "kind": "assembly"
-        },
-        {
-          "start": "12:00",
           "end": "12:15",
-          "ks3": "Lesson — TBC",
-          "ks4": "Lesson — TBC",
-          "kind": "lesson"
+          "ks3": "Art",
+          "ks4": "DofE",
+          "kind": "lesson",
+          "staff_ks3": "Sacha",
+          "staff_ks4": "Lloyd"
         },
         {
           "start": "12:15",
@@ -199,7 +191,14 @@
         },
         {
           "start": "12:30",
-          "end": "13:30",
+          "end": "13:10",
+          "ks3": "SEMH / AQA",
+          "ks4": "SEMH / AQA",
+          "kind": "lesson"
+        },
+        {
+          "start": "13:10",
+          "end": "14:10",
           "ks3": "PE (50 min + 10 min change)",
           "ks4": "PE (50 min + 10 min change)",
           "kind": "pe",
@@ -207,25 +206,25 @@
           "staff_ks4": "Laurent"
         },
         {
-          "start": "13:30",
-          "end": "14:30",
+          "start": "14:10",
+          "end": "14:25",
+          "ks3": "Break",
+          "ks4": "Break",
+          "kind": "lesson"
+        },
+        {
+          "start": "14:25",
+          "end": "14:45",
           "ks3": "Food Technology",
           "ks4": "King's Trust",
           "kind": "lesson",
           "staff_ks4": "Lorelle"
         },
         {
-          "start": "14:30",
-          "end": "14:45",
-          "ks3": "Break",
-          "ks4": "Break",
-          "kind": "lesson"
-        },
-        {
           "start": "14:45",
           "end": "15:00",
-          "ks3": "Lesson — TBC",
-          "ks4": "Lesson — TBC",
+          "ks3": "Pause & Progress",
+          "ks4": "Pause & Progress",
           "kind": "lesson"
         }
       ]
@@ -281,10 +280,9 @@
         {
           "start": "12:30",
           "end": "13:10",
-          "ks3": "Art",
+          "ks3": "Lesson — TBC",
           "ks4": "Citizenship",
           "kind": "lesson",
-          "staff_ks3": "Sacha",
           "staff_ks4": "Lloyd"
         },
         {
@@ -324,7 +322,7 @@
       "label": "Thursday",
       "arrival_from": "08:50",
       "arrival_latest": "09:05",
-      "finish": "14:00",
+      "finish": "14:40",
       "rows": [
         {
           "start": "08:50",
@@ -398,7 +396,14 @@
         },
         {
           "start": "12:30",
-          "end": "13:30",
+          "end": "13:10",
+          "ks3": "SEMH / AQA",
+          "ks4": "SEMH / AQA",
+          "kind": "lesson"
+        },
+        {
+          "start": "13:10",
+          "end": "14:10",
           "ks3": "PE (50 min + 10 min change)",
           "ks4": "PE (50 min + 10 min change)",
           "kind": "pe",
@@ -406,8 +411,8 @@
           "staff_ks4": "Laurent"
         },
         {
-          "start": "13:30",
-          "end": "14:00",
+          "start": "14:10",
+          "end": "14:40",
           "ks3": "Food Technology",
           "ks4": "King's Trust",
           "kind": "lesson",
@@ -419,7 +424,7 @@
       "label": "Friday",
       "arrival_from": "08:50",
       "arrival_latest": "09:05",
-      "finish": "14:00",
+      "finish": "14:40",
       "rows": [
         {
           "start": "08:50",
@@ -472,10 +477,9 @@
         {
           "start": "11:25",
           "end": "12:05",
-          "ks3": "Art",
+          "ks3": "Lesson — TBC",
           "ks4": "Citizenship",
           "kind": "lesson",
-          "staff_ks3": "Sacha",
           "staff_ks4": "Lloyd"
         },
         {
@@ -494,7 +498,14 @@
         },
         {
           "start": "12:30",
-          "end": "13:30",
+          "end": "13:10",
+          "ks3": "SEMH / AQA",
+          "ks4": "SEMH / AQA",
+          "kind": "lesson"
+        },
+        {
+          "start": "13:10",
+          "end": "14:10",
           "ks3": "PE (50 min + 10 min change)",
           "ks4": "PE (50 min + 10 min change)",
           "kind": "pe",
@@ -502,8 +513,8 @@
           "staff_ks4": "Laurent"
         },
         {
-          "start": "13:30",
-          "end": "14:00",
+          "start": "14:10",
+          "end": "14:40",
           "ks3": "Food Technology",
           "ks4": "Lesson — TBC",
           "kind": "lesson"

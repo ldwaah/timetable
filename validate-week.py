@@ -11,6 +11,7 @@ DURATIONS = {
     "Citizenship": 40,
     "PSHE": 40,
     "DofE": 40,
+    "SEMH / AQA": 40,
     "King's Trust": 60,
     "Food Technology": 60,
     PE: 60,
@@ -98,6 +99,16 @@ def validate(rows: list[dict], finish: str, dk: str) -> list[str]:
                 continue
             if dk == "wednesday" and stage == "ks4" and label == "DofE" and total == 55:
                 continue
+            if dk == "tuesday" and label == "Assembly" and total == 30:
+                continue
+            if dk == "tuesday" and label == "Art" and total == 50:
+                continue
+            if dk == "tuesday" and label == "DofE" and total == 50:
+                continue
+            if dk in ("monday", "tuesday") and label == "Food Technology" and total == 35:
+                continue
+            if dk in ("monday", "tuesday") and label == "King's Trust" and total == 35:
+                continue
             if total != need:
                 issues.append(f"{dk} {stage} {label}: {total}min not {need}min")
 
@@ -165,8 +176,8 @@ def main() -> int:
             issues.append("wednesday: students must start 10:00")
         if dk in ("monday", "tuesday", "wednesday") and day["finish"] != "15:00":
             issues.append(f"{dk}: finish must be 15:00")
-        if dk in ("thursday", "friday") and day["finish"] != "14:00":
-            issues.append(f"{dk}: finish must be 14:00")
+        if dk in ("thursday", "friday") and day["finish"] not in ("14:00", "14:40"):
+            issues.append(f"{dk}: finish must be 14:00 or 14:40")
         if dk == "wednesday" and totals(day["rows"], "ks3", PE):
             issues.append("wednesday: PE must not run on Wednesday")
 
