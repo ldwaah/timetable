@@ -1317,7 +1317,7 @@ def main() -> None:
             key=lambda s: (DAY_ORDER.index(s["day_key"]), s["time"]),
         )
         combined = merge_staff_sessions(combined)
-        if initials == "SA":
+        if initials in ("SA", "LD"):
             for s in combined:
                 if s["subject"] == "PPA":
                     s["subject"] = "PPA / On-call / Centre Duties"
