@@ -281,10 +281,11 @@
         {
           "start": "12:30",
           "end": "13:10",
-          "ks3": "Lesson — TBC",
-          "ks4": "Citizenship",
+          "ks3": "PSHE",
+          "ks4": "PSHE",
           "kind": "lesson",
-          "staff_ks4": "Lloyd"
+          "staff_ks3": "Sacha",
+          "staff_ks4": "Sacha"
         },
         {
           "start": "13:10",
