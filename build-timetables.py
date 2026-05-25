@@ -116,6 +116,8 @@ def get_location(label: str, stage: str, day_key: str, kind: str) -> str:
         return "Foyer"
     if "line management" in low and day_key != "wednesday":
         return "Foyer"
+    if "slt meeting" in low:
+        return "Foyer"
 
     if day_key == "wednesday":
         if kind == "assembly" or low == "assembly":
@@ -730,6 +732,8 @@ def get_staff_location(subject: str, stage: str, day_key: str) -> str:
     if "pause" in low and "progress" in low:
         return "Foyer"
     if "line management" in low and day_key != "wednesday":
+        return "Foyer"
+    if "slt meeting" in low:
         return "Foyer"
 
     if day_key == "wednesday":

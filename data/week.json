@@ -292,6 +292,16 @@
           "staff_ks4": "LG"
         },
         {
+          "start": "13:00",
+          "end": "14:00",
+          "ks3": "SLT Meeting",
+          "ks4": "SLT Meeting",
+          "kind": "meeting",
+          "staff_only": true,
+          "staff_ks3": "LD / SA",
+          "staff_ks4": "LD / SA"
+        },
+        {
           "start": "13:10",
           "end": "13:20",
           "ks3": "Transition / Expectations",
