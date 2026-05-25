@@ -13,7 +13,7 @@ DURATIONS = {
     "DofE": 40,
     "SEMH / AQA": 40,
     "King's Trust": 60,
-    "Food Technology": 60,
+    "Food Technology": 50,
     "Reset": 30,
     "Assembly": 35,
     "Break": 15,
