@@ -95,6 +95,8 @@ def validate(rows: list[dict], finish: str, dk: str) -> list[str]:
                 need = SHORT_DAY_VOCATIONAL
             if dk in ("wednesday", "thursday") and label == "Food Technology" and total in (35, 40, 50, 60):
                 continue
+            if dk == "thursday" and label == "Citizenship" and total == 50:
+                continue
             if dk == "wednesday" and label == "Maths" and total == 50:
                 continue
             if dk == "wednesday" and label == "English" and total == 50:
