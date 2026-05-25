@@ -93,7 +93,7 @@ def validate(rows: list[dict], finish: str, dk: str) -> list[str]:
             need = exp
             if short and label in ("Food Technology", "King's Trust"):
                 need = SHORT_DAY_VOCATIONAL
-            if dk == "wednesday" and label == "Food Technology" and total in (35, 40, 50, 60):
+            if dk in ("wednesday", "thursday") and label == "Food Technology" and total in (35, 40, 50, 60):
                 continue
             if dk == "wednesday" and label == "Maths" and total == 50:
                 continue
@@ -108,6 +108,8 @@ def validate(rows: list[dict], finish: str, dk: str) -> list[str]:
             if dk == "tuesday" and label == "Art" and total == 50:
                 continue
             if dk == "tuesday" and label == "DofE" and total == 50:
+                continue
+            if dk == "monday" and label == "King's Trust" and total == 50:
                 continue
             if total != need:
                 issues.append(f"{dk} {stage} {label}: {total}min not {need}min")

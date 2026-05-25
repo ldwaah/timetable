@@ -72,8 +72,9 @@
           "start": "11:25",
           "end": "12:15",
           "ks3": "Lesson — TBC",
-          "ks4": "Lesson — TBC",
-          "kind": "lesson"
+          "ks4": "King's Trust",
+          "kind": "lesson",
+          "staff_ks4": "Lorelle"
         },
         {
           "start": "12:15",
@@ -297,8 +298,8 @@
         {
           "start": "14:20",
           "end": "15:00",
-          "ks3": "Food Technology",
-          "ks4": "Food Technology",
+          "ks3": "Lesson — TBC",
+          "ks4": "Lesson — TBC",
           "kind": "lesson"
         }
       ]
@@ -359,18 +360,12 @@
         },
         {
           "start": "11:25",
-          "end": "12:05",
-          "ks3": "Lesson — TBC",
-          "ks4": "PSHE",
-          "kind": "lesson",
-          "staff_ks4": "Sacha"
-        },
-        {
-          "start": "12:05",
           "end": "12:15",
-          "ks3": "Lesson — TBC",
-          "ks4": "Lesson — TBC",
-          "kind": "lesson"
+          "ks3": "Food Technology",
+          "ks4": "Food Technology",
+          "kind": "lesson",
+          "staff_ks3": "Sacha",
+          "staff_ks4": "Sacha"
         },
         {
           "start": "12:15",
@@ -549,7 +544,8 @@
         "ks3": "Sacha"
       },
       "Food Technology": {
-        "ks3": "Sacha"
+        "ks3": "Sacha",
+        "ks4": "Sacha"
       },
       "PSHE": {
         "ks3": "Sacha",
