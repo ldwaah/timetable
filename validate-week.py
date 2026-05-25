@@ -6,7 +6,7 @@ import sys
 PE = "PE (50 min + 10 min change)"
 DURATIONS = {
     "English": 45,
-    "Maths": 45,
+    "Maths": 40,
     "Art": 40,
     "Citizenship": 40,
     "PSHE": 40,
@@ -14,7 +14,7 @@ DURATIONS = {
     "King's Trust": 60,
     "Food Technology": 60,
     PE: 60,
-    "Reset": 35,
+    "Reset": 30,
     "Assembly": 35,
     "Break": 15,
     "Lunch": 15,
@@ -88,9 +88,13 @@ def validate(rows: list[dict], finish: str, dk: str) -> list[str]:
             need = exp
             if short and label in ("Food Technology", "King's Trust"):
                 need = SHORT_DAY_VOCATIONAL
-            if dk == "wednesday" and label == "Food Technology" and total in (35, 50, 60):
+            if dk == "wednesday" and label == "Food Technology" and total in (35, 40, 50, 60):
                 continue
-            if dk == "wednesday" and stage == "ks4" and label == "Maths" and total == 40:
+            if dk == "wednesday" and label == "Maths" and total == 50:
+                continue
+            if dk == "wednesday" and label == "English" and total == 50:
+                continue
+            if dk == "wednesday" and label == "Reset" and total == 20:
                 continue
             if dk == "wednesday" and stage == "ks4" and label == "DofE" and total == 55:
                 continue
