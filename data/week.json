@@ -22,17 +22,13 @@
       "rows": [
         {
           "start": "08:50",
-          "end": "09:05",
-          "ks3": "Arrival",
-          "ks4": "Arrival",
-          "kind": "arrival"
-        },
-        {
-          "start": "09:05",
           "end": "09:15",
-          "ks3": "Checks / late arrivals",
-          "ks4": "Checks / late arrivals",
-          "kind": "checks"
+          "ks3": "Student Searches",
+          "ks4": "Student Searches",
+          "kind": "searches",
+          "staff_ks3": "LG / LD",
+          "staff_ks4": "LG / LD",
+          "note": "LI covers LD in absence"
         },
         {
           "start": "09:15",
@@ -69,7 +65,7 @@
           "start": "11:05",
           "end": "11:20",
           "ks3": "Break",
-          "ks4": "King's Trust",
+          "ks4": "Personal Development",
           "kind": "lesson",
           "staff_ks4": "LG"
         },
@@ -143,17 +139,13 @@
       "rows": [
         {
           "start": "08:50",
-          "end": "09:05",
-          "ks3": "Arrival",
-          "ks4": "Arrival",
-          "kind": "arrival"
-        },
-        {
-          "start": "09:05",
           "end": "09:15",
-          "ks3": "Checks / late arrivals",
-          "ks4": "Checks / late arrivals",
-          "kind": "checks"
+          "ks3": "Student Searches",
+          "ks4": "Student Searches",
+          "kind": "searches",
+          "staff_ks3": "SA / LD",
+          "staff_ks4": "SA / LD",
+          "note": "LI covers LD in absence"
         },
         {
           "start": "09:15",
@@ -190,7 +182,7 @@
           "start": "11:05",
           "end": "11:20",
           "ks3": "Break",
-          "ks4": "DofE",
+          "ks4": "Personal Development",
           "kind": "lesson",
           "staff_ks4": "LD"
         },
@@ -263,6 +255,17 @@
       "finish": "15:00",
       "staff_meeting": "09:00–10:00",
       "rows": [
+        {
+          "start": "08:50",
+          "end": "09:15",
+          "ks3": "Student Searches",
+          "ks4": "Student Searches",
+          "kind": "searches",
+          "staff_ks3": "SA / LD",
+          "staff_ks4": "SA / LD",
+          "staff_only": true,
+          "note": "LI covers LD in absence — students arrive 10:00"
+        },
         {
           "start": "10:00",
           "end": "10:20",
@@ -366,17 +369,13 @@
       "rows": [
         {
           "start": "08:50",
-          "end": "09:05",
-          "ks3": "Arrival",
-          "ks4": "Arrival",
-          "kind": "arrival"
-        },
-        {
-          "start": "09:05",
           "end": "09:15",
-          "ks3": "Checks / late arrivals",
-          "ks4": "Checks / late arrivals",
-          "kind": "checks"
+          "ks3": "Student Searches",
+          "ks4": "Student Searches",
+          "kind": "searches",
+          "staff_ks3": "SA / LD",
+          "staff_ks4": "SA / LD",
+          "note": "LI covers LD in absence"
         },
         {
           "start": "09:15",
@@ -413,7 +412,7 @@
           "start": "11:05",
           "end": "11:20",
           "ks3": "Break",
-          "ks4": "Citizenship",
+          "ks4": "Personal Development",
           "kind": "lesson",
           "staff_ks4": "JC / LD"
         },
@@ -478,17 +477,13 @@
       "rows": [
         {
           "start": "08:50",
-          "end": "09:05",
-          "ks3": "Arrival",
-          "ks4": "Arrival",
-          "kind": "arrival"
-        },
-        {
-          "start": "09:05",
           "end": "09:15",
-          "ks3": "Checks / late arrivals",
-          "ks4": "Checks / late arrivals",
-          "kind": "checks"
+          "ks3": "Student Searches",
+          "ks4": "Student Searches",
+          "kind": "searches",
+          "staff_ks3": "SA / LD",
+          "staff_ks4": "SA / LD",
+          "note": "LI covers LD in absence"
         },
         {
           "start": "09:15",
@@ -525,7 +520,7 @@
           "start": "11:05",
           "end": "11:20",
           "ks3": "Break",
-          "ks4": "SEMH / AQA",
+          "ks4": "Personal Development",
           "kind": "lesson",
           "staff_ks4": "LI"
         },
