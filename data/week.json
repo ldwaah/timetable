@@ -40,8 +40,8 @@
           "ks3": "Reset",
           "ks4": "Reset",
           "kind": "reset",
-          "staff_ks3": "Lorelle",
-          "staff_ks4": "Laurent"
+          "staff_ks3": "LG",
+          "staff_ks4": "LI"
         },
         {
           "start": "09:45",
@@ -49,8 +49,8 @@
           "ks3": "Maths",
           "ks4": "Maths",
           "kind": "lesson",
-          "staff_ks3": "Lorelle",
-          "staff_ks4": "Laurent"
+          "staff_ks3": "LG",
+          "staff_ks4": "LI"
         },
         {
           "start": "10:25",
@@ -58,8 +58,8 @@
           "ks3": "English",
           "ks4": "English",
           "kind": "lesson",
-          "staff_ks3": "Lorelle",
-          "staff_ks4": "Laurent"
+          "staff_ks3": "LG",
+          "staff_ks4": "LI"
         },
         {
           "start": "11:05",
@@ -67,7 +67,7 @@
           "ks3": "Break",
           "ks4": "King's Trust",
           "kind": "lesson",
-          "staff_ks4": "Lorelle"
+          "staff_ks4": "LG"
         },
         {
           "start": "11:20",
@@ -75,7 +75,7 @@
           "ks3": "Group Mentoring",
           "ks4": "Break",
           "kind": "lesson",
-          "staff_ks3": "Jeff"
+          "staff_ks3": "JC"
         },
         {
           "start": "11:35",
@@ -83,8 +83,8 @@
           "ks3": "Group Mentoring",
           "ks4": "King's Trust",
           "kind": "lesson",
-          "staff_ks3": "Jeff",
-          "staff_ks4": "Lorelle"
+          "staff_ks3": "JC",
+          "staff_ks4": "LG"
         },
         {
           "start": "12:15",
@@ -99,8 +99,8 @@
           "ks3": "SEMH / AQA",
           "ks4": "Sports Leaders / Vocational",
           "kind": "lesson",
-          "staff_ks3": "Jeff",
-          "staff_ks4": "Laurent"
+          "staff_ks3": "JC",
+          "staff_ks4": "LI"
         },
         {
           "start": "13:10",
@@ -108,8 +108,8 @@
           "ks3": "Transition / Expectations",
           "ks4": "Transition / Expectations",
           "kind": "transition",
-          "staff_ks3": "Laurent / Jeff",
-          "staff_ks4": "Laurent / Jeff"
+          "staff_ks3": "LI / JC",
+          "staff_ks4": "LI / JC"
         },
         {
           "start": "13:20",
@@ -117,8 +117,8 @@
           "ks3": "PE",
           "ks4": "PE",
           "kind": "pe",
-          "staff_ks3": "Laurent",
-          "staff_ks4": "Laurent"
+          "staff_ks3": "LI",
+          "staff_ks4": "LI"
         },
         {
           "start": "14:45",
@@ -126,8 +126,8 @@
           "ks3": "Pause & Progress",
           "ks4": "Pause & Progress",
           "kind": "lesson",
-          "staff_ks3": "Lorelle / Jeff",
-          "staff_ks4": "Lorelle / Jeff"
+          "staff_ks3": "LG / JC",
+          "staff_ks4": "LG / JC"
         }
       ]
     },
@@ -157,8 +157,8 @@
           "ks3": "Assembly",
           "ks4": "Assembly",
           "kind": "assembly",
-          "staff_ks3": "Sacha / Lorelle",
-          "staff_ks4": "Sacha / Lorelle"
+          "staff_ks3": "SA / LG",
+          "staff_ks4": "SA / LG"
         },
         {
           "start": "09:45",
@@ -166,8 +166,8 @@
           "ks3": "Maths",
           "ks4": "Maths",
           "kind": "lesson",
-          "staff_ks3": "Lorelle",
-          "staff_ks4": "Laurent"
+          "staff_ks3": "LG",
+          "staff_ks4": "LI"
         },
         {
           "start": "10:25",
@@ -175,8 +175,8 @@
           "ks3": "English",
           "ks4": "English",
           "kind": "lesson",
-          "staff_ks3": "Lorelle",
-          "staff_ks4": "Laurent"
+          "staff_ks3": "LG",
+          "staff_ks4": "LI"
         },
         {
           "start": "11:05",
@@ -184,7 +184,7 @@
           "ks3": "Break",
           "ks4": "DofE",
           "kind": "lesson",
-          "staff_ks4": "Lloyd"
+          "staff_ks4": "LD"
         },
         {
           "start": "11:20",
@@ -192,7 +192,7 @@
           "ks3": "Art",
           "ks4": "Break",
           "kind": "lesson",
-          "staff_ks3": "Sacha"
+          "staff_ks3": "SA"
         },
         {
           "start": "11:35",
@@ -200,8 +200,8 @@
           "ks3": "Art",
           "ks4": "DofE",
           "kind": "lesson",
-          "staff_ks3": "Sacha",
-          "staff_ks4": "Lloyd"
+          "staff_ks3": "SA",
+          "staff_ks4": "LD"
         },
         {
           "start": "12:15",
@@ -216,8 +216,8 @@
           "ks3": "SEMH / AQA",
           "ks4": "SEMH / AQA",
           "kind": "lesson",
-          "staff_ks3": "Lorelle",
-          "staff_ks4": "Laurent"
+          "staff_ks3": "LG",
+          "staff_ks4": "LI"
         },
         {
           "start": "13:10",
@@ -225,8 +225,8 @@
           "ks3": "Transition / Expectations",
           "ks4": "Transition / Expectations",
           "kind": "transition",
-          "staff_ks3": "Laurent / Jeff",
-          "staff_ks4": "Laurent / Jeff"
+          "staff_ks3": "LI / JC",
+          "staff_ks4": "LI / JC"
         },
         {
           "start": "13:20",
@@ -234,8 +234,8 @@
           "ks3": "PE",
           "ks4": "PE",
           "kind": "pe",
-          "staff_ks3": "Laurent",
-          "staff_ks4": "Laurent"
+          "staff_ks3": "LI",
+          "staff_ks4": "LI"
         },
         {
           "start": "14:45",
@@ -243,8 +243,8 @@
           "ks3": "Pause & Progress",
           "ks4": "Pause & Progress",
           "kind": "lesson",
-          "staff_ks3": "Lorelle / Jeff",
-          "staff_ks4": "Lorelle / Jeff"
+          "staff_ks3": "LG / JC",
+          "staff_ks4": "LG / JC"
         }
       ]
     },
@@ -261,8 +261,8 @@
           "ks3": "Reset",
           "ks4": "Reset",
           "kind": "reset",
-          "staff_ks3": "Lorelle",
-          "staff_ks4": "Laurent"
+          "staff_ks3": "LG",
+          "staff_ks4": "LI"
         },
         {
           "start": "10:20",
@@ -270,8 +270,8 @@
           "ks3": "Maths",
           "ks4": "Maths",
           "kind": "lesson",
-          "staff_ks3": "Lorelle",
-          "staff_ks4": "Laurent"
+          "staff_ks3": "LG",
+          "staff_ks4": "LI"
         },
         {
           "start": "11:10",
@@ -286,8 +286,8 @@
           "ks3": "English",
           "ks4": "English",
           "kind": "lesson",
-          "staff_ks3": "Lorelle",
-          "staff_ks4": "Laurent"
+          "staff_ks3": "LG",
+          "staff_ks4": "LI"
         },
         {
           "start": "12:15",
@@ -302,8 +302,8 @@
           "ks3": "PSHE",
           "ks4": "PSHE",
           "kind": "lesson",
-          "staff_ks3": "Sacha",
-          "staff_ks4": "Lorelle"
+          "staff_ks3": "SA",
+          "staff_ks4": "LG"
         },
         {
           "start": "13:10",
@@ -318,8 +318,8 @@
           "ks3": "SEMH / AQA",
           "ks4": "Citizenship",
           "kind": "lesson",
-          "staff_ks3": "Lorelle",
-          "staff_ks4": "Lloyd / Laurent"
+          "staff_ks3": "LG",
+          "staff_ks4": "LD / LI"
         },
         {
           "start": "14:05",
@@ -327,8 +327,8 @@
           "ks3": "Transition / Expectations",
           "ks4": "Transition / Expectations",
           "kind": "transition",
-          "staff_ks3": "Laurent / Sacha",
-          "staff_ks4": "Laurent / Sacha"
+          "staff_ks3": "LI / SA",
+          "staff_ks4": "LI / SA"
         },
         {
           "start": "14:15",
@@ -336,8 +336,8 @@
           "ks3": "Gym",
           "ks4": "Gym",
           "kind": "pe",
-          "staff_ks3": "Laurent / Sacha",
-          "staff_ks4": "Laurent / Sacha"
+          "staff_ks3": "LI / SA",
+          "staff_ks4": "LI / SA"
         },
         {
           "start": "14:45",
@@ -345,8 +345,8 @@
           "ks3": "Pause & Progress",
           "ks4": "Pause & Progress",
           "kind": "lesson",
-          "staff_ks3": "Lorelle / Sacha",
-          "staff_ks4": "Lorelle / Sacha"
+          "staff_ks3": "LG / SA",
+          "staff_ks4": "LG / SA"
         }
       ]
     },
@@ -376,8 +376,8 @@
           "ks3": "Reset",
           "ks4": "Reset",
           "kind": "reset",
-          "staff_ks3": "Lorelle",
-          "staff_ks4": "Laurent"
+          "staff_ks3": "LG",
+          "staff_ks4": "LI"
         },
         {
           "start": "09:45",
@@ -385,8 +385,8 @@
           "ks3": "Maths",
           "ks4": "Maths",
           "kind": "lesson",
-          "staff_ks3": "Lorelle",
-          "staff_ks4": "Laurent"
+          "staff_ks3": "LG",
+          "staff_ks4": "LI"
         },
         {
           "start": "10:25",
@@ -394,8 +394,8 @@
           "ks3": "English",
           "ks4": "English",
           "kind": "lesson",
-          "staff_ks3": "Lorelle",
-          "staff_ks4": "Laurent"
+          "staff_ks3": "LG",
+          "staff_ks4": "LI"
         },
         {
           "start": "11:05",
@@ -403,7 +403,7 @@
           "ks3": "Break",
           "ks4": "Citizenship",
           "kind": "lesson",
-          "staff_ks4": "Jeff / Lloyd"
+          "staff_ks4": "JC / LD"
         },
         {
           "start": "11:20",
@@ -411,7 +411,7 @@
           "ks3": "Food Technology",
           "ks4": "Break",
           "kind": "lesson",
-          "staff_ks3": "Sacha"
+          "staff_ks3": "SA"
         },
         {
           "start": "11:35",
@@ -419,8 +419,8 @@
           "ks3": "Food Technology",
           "ks4": "Citizenship",
           "kind": "lesson",
-          "staff_ks3": "Sacha",
-          "staff_ks4": "Jeff / Lloyd"
+          "staff_ks3": "SA",
+          "staff_ks4": "JC / LD"
         },
         {
           "start": "12:15",
@@ -435,8 +435,8 @@
           "ks3": "SEMH / AQA",
           "ks4": "SEMH / AQA",
           "kind": "lesson",
-          "staff_ks3": "Lorelle",
-          "staff_ks4": "Laurent"
+          "staff_ks3": "LG",
+          "staff_ks4": "LI"
         },
         {
           "start": "13:10",
@@ -444,8 +444,8 @@
           "ks3": "Transition / Expectations",
           "ks4": "Transition / Expectations",
           "kind": "transition",
-          "staff_ks3": "Laurent / Jeff",
-          "staff_ks4": "Laurent / Jeff"
+          "staff_ks3": "LI / JC",
+          "staff_ks4": "LI / JC"
         },
         {
           "start": "13:20",
@@ -453,8 +453,8 @@
           "ks3": "PE",
           "ks4": "PE",
           "kind": "pe",
-          "staff_ks3": "Laurent",
-          "staff_ks4": "Laurent"
+          "staff_ks3": "LI",
+          "staff_ks4": "LI"
         }
       ]
     },
@@ -484,8 +484,8 @@
           "ks3": "Reset",
           "ks4": "Reset",
           "kind": "reset",
-          "staff_ks3": "Lorelle",
-          "staff_ks4": "Laurent"
+          "staff_ks3": "LG",
+          "staff_ks4": "LI"
         },
         {
           "start": "09:45",
@@ -493,8 +493,8 @@
           "ks3": "Maths",
           "ks4": "Maths",
           "kind": "lesson",
-          "staff_ks3": "Lorelle",
-          "staff_ks4": "Laurent"
+          "staff_ks3": "LG",
+          "staff_ks4": "LI"
         },
         {
           "start": "10:25",
@@ -502,8 +502,8 @@
           "ks3": "English",
           "ks4": "English",
           "kind": "lesson",
-          "staff_ks3": "Lorelle",
-          "staff_ks4": "Laurent"
+          "staff_ks3": "LG",
+          "staff_ks4": "LI"
         },
         {
           "start": "11:05",
@@ -511,7 +511,7 @@
           "ks3": "Break",
           "ks4": "SEMH / AQA",
           "kind": "lesson",
-          "staff_ks4": "Laurent"
+          "staff_ks4": "LI"
         },
         {
           "start": "11:20",
@@ -519,7 +519,7 @@
           "ks3": "PSHE",
           "ks4": "Break",
           "kind": "lesson",
-          "staff_ks3": "Sacha"
+          "staff_ks3": "SA"
         },
         {
           "start": "11:35",
@@ -527,8 +527,8 @@
           "ks3": "PSHE",
           "ks4": "SEMH / AQA",
           "kind": "lesson",
-          "staff_ks3": "Sacha",
-          "staff_ks4": "Laurent"
+          "staff_ks3": "SA",
+          "staff_ks4": "LI"
         },
         {
           "start": "12:15",
@@ -543,8 +543,8 @@
           "ks3": "SEMH / AQA",
           "ks4": "Sports Leaders / Vocational",
           "kind": "lesson",
-          "staff_ks3": "Lorelle",
-          "staff_ks4": "Laurent"
+          "staff_ks3": "LG",
+          "staff_ks4": "LI"
         },
         {
           "start": "13:10",
@@ -552,8 +552,8 @@
           "ks3": "Transition / Expectations",
           "ks4": "Transition / Expectations",
           "kind": "transition",
-          "staff_ks3": "Laurent / Lorelle",
-          "staff_ks4": "Laurent / Lorelle"
+          "staff_ks3": "LI / LG",
+          "staff_ks4": "LI / LG"
         },
         {
           "start": "13:20",
@@ -561,8 +561,8 @@
           "ks3": "PE",
           "ks4": "PE",
           "kind": "pe",
-          "staff_ks3": "Laurent",
-          "staff_ks4": "Laurent"
+          "staff_ks3": "LI",
+          "staff_ks4": "LI"
         }
       ]
     }
@@ -574,56 +574,58 @@
       "friday": "14:00–15:00"
     },
     "people": [
-      "Lorelle",
-      "Lloyd",
-      "Laurent",
-      "Sacha",
-      "Jeff"
+      "LG",
+      "LD",
+      "LI",
+      "SA",
+      "JC",
+      "JM",
+      "HK"
     ],
     "assignments": {
       "Reset": {
-        "ks3": "Lorelle",
-        "ks4": "Laurent"
+        "ks3": "LG",
+        "ks4": "LI"
       },
       "King's Trust": {
-        "ks4": "Lorelle"
+        "ks4": "LG"
       },
       "DofE": {
-        "ks4": "Lloyd"
+        "ks4": "LD"
       },
       "Citizenship": {
-        "ks3": "Lloyd",
-        "ks4": "Lloyd"
+        "ks3": "LD",
+        "ks4": "LD"
       },
       "Maths": {
-        "ks3": "Lorelle",
-        "ks4": "Laurent"
+        "ks3": "LG",
+        "ks4": "LI"
       },
       "English": {
-        "ks3": "Lorelle",
-        "ks4": "Laurent"
+        "ks3": "LG",
+        "ks4": "LI"
       },
       "PE": {
-        "ks3": "Laurent",
-        "ks4": "Laurent"
+        "ks3": "LI",
+        "ks4": "LI"
       },
       "Art": {
-        "ks3": "Sacha"
+        "ks3": "SA"
       },
       "Food Technology": {
-        "ks3": "Sacha",
-        "ks4": "Sacha"
+        "ks3": "SA",
+        "ks4": "SA"
       },
       "PSHE": {
-        "ks3": "Sacha",
-        "ks4": "Lorelle"
+        "ks3": "SA",
+        "ks4": "LG"
       },
       "Group Mentoring": {
-        "ks3": "Jeff"
+        "ks3": "JC"
       },
       "SEMH / AQA": {
-        "ks3": "Lorelle",
-        "ks4": "Laurent"
+        "ks3": "LG",
+        "ks4": "LI"
       }
     }
   }

@@ -14,6 +14,16 @@ DATA_PATH = ROOT / "data" / "week.json"
 STAFF_DIR = ROOT / "staff"
 DAY_ORDER = ("monday", "tuesday", "wednesday", "thursday", "friday")
 
+INITIALS_TO_NAME: dict[str, str] = {
+    "LG": "Lorelle",
+    "LD": "Lloyd",
+    "LI": "Laurent",
+    "SA": "Sacha",
+    "JC": "Jeff",
+    "JM": "Janet",
+    "HK": "Hisham",
+}
+
 
 def load_week() -> dict:
     with DATA_PATH.open(encoding="utf-8") as f:
@@ -232,19 +242,21 @@ def render_person_day_tabs(week: dict, sessions: list[dict]) -> str:
   </div>"""
 
 
-def render_staff_person_page(week: dict, name: str, sessions: list[dict]) -> str:
+def render_staff_person_page(week: dict, initials: str, sessions: list[dict]) -> str:
+    full_name = INITIALS_TO_NAME.get(initials, initials)
+    display = f"{initials} ({full_name})"
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{esc(name)} — staff timetable</title>
+  <title>{esc(display)} — staff timetable</title>
   <style>{STAFF_PERSON_CSS}</style>
 </head>
 <body>
   <div class="top">
     <a class="back" href="../staff-timetable.html">← Staff timetable</a>
-    <h1>{esc(name)}</h1>
+    <h1>{esc(display)}</h1>
   </div>
   {render_person_day_tabs(week, sessions)}
 </body>
@@ -606,10 +618,15 @@ def build_student_html(week: dict) -> str:
 """
 
 
+def staff_slug(initials: str) -> str:
+    return INITIALS_TO_NAME.get(initials, initials).lower()
+
+
 def build_staff_html(week: dict) -> str:
     people = week["staff"].get("people", [])
     person_links = "".join(
-        f'<a href="staff/{esc(name.lower())}.html">{esc(name)}</a>' for name in people
+        f'<a href="staff/{esc(staff_slug(initials))}.html">{esc(initials)}</a>'
+        for initials in people
     )
 
     return f"""<!DOCTYPE html>
@@ -646,9 +663,9 @@ def main() -> None:
 
     STAFF_DIR.mkdir(exist_ok=True)
     sessions = collect_staff_sessions(week)
-    for name in week["staff"].get("people", []):
-        slug = name.lower()
-        page = render_staff_person_page(week, name, sessions.get(name, []))
+    for initials in week["staff"].get("people", []):
+        slug = staff_slug(initials)
+        page = render_staff_person_page(week, initials, sessions.get(initials, []))
         (STAFF_DIR / f"{slug}.html").write_text(page, encoding="utf-8")
 
     print("Wrote student-timetable.html, staff-timetable.html, and staff/*.html")
