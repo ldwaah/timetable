@@ -232,7 +232,7 @@ def compute_ppa_sessions(week: dict) -> dict[str, list[dict]]:
         for row in rows:
             if row.get("kind") in skip_kinds:
                 continue
-            if row.get("staff_only"):
+            if row.get("all_staff"):
                 continue
 
             ks3_label = row.get("ks3", "")

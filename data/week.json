@@ -145,6 +145,15 @@
           "kind": "lesson",
           "staff_ks3": "LG / JC",
           "staff_ks4": "LG / JC"
+        },
+        {
+          "start": "15:00",
+          "end": "15:30",
+          "ks3": "Detentions",
+          "ks4": "Detentions",
+          "kind": "detentions",
+          "staff_only": true,
+          "all_staff": true
         }
       ]
     },
@@ -659,6 +668,15 @@
           "kind": "pe",
           "staff_ks3": "LI",
           "staff_ks4": "LI"
+        },
+        {
+          "start": "14:00",
+          "end": "15:00",
+          "ks3": "Detentions",
+          "ks4": "Detentions",
+          "kind": "detentions",
+          "staff_only": true,
+          "all_staff": true
         }
       ]
     }
