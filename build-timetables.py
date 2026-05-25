@@ -1892,6 +1892,8 @@ def main() -> None:
             for s in combined:
                 if "reset" in s["subject"].lower():
                     s["location"] = "Computer Suite" if s["day_key"] == "wednesday" else "URFUTURE"
+        if initials in ("LI", "LG"):
+            combined = [s for s in combined if s["subject"] != "PPA / Lunch"]
         slug = staff_slug(initials)
         page = render_staff_person_page(week, initials, combined)
         (STAFF_DIR / f"{slug}.html").write_text(page, encoding="utf-8")
