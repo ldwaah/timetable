@@ -213,6 +213,65 @@ def render_student_day_views(week: dict) -> str:
   </div>"""
 
 
+def compute_ppa_sessions(week: dict) -> dict[str, list[dict]]:
+    """Identify teaching-period gaps for each staff member and return PPA sessions."""
+    all_staff = week["staff"].get("people", [])
+    off_days: dict[str, list[str]] = week["staff"].get("off_days", {})
+    ppa: dict[str, list[dict]] = {s: [] for s in all_staff}
+
+    for day_key in DAY_ORDER:
+        day = week["days"][day_key]
+        working = [s for s in all_staff if day_key not in off_days.get(s, [])]
+        rows = day["rows"]
+        skip_kinds = {"arrival", "checks", "searches"}
+
+        for row in rows:
+            if row.get("kind") in skip_kinds:
+                continue
+            if row.get("staff_only"):
+                continue
+
+            ks3_label = row.get("ks3", "")
+            ks4_label = row.get("ks4", "")
+            ks3_is_break = _is_break_or_lunch(ks3_label)
+            ks4_is_break = _is_break_or_lunch(ks4_label)
+
+            if ks3_is_break and ks4_is_break:
+                continue
+
+            assigned: set[str] = set()
+
+            for stage in ("ks3", "ks4"):
+                staff_str = row.get(f"staff_{stage}")
+                if staff_str:
+                    assigned |= _parse_staff(staff_str)
+
+            flz_staff = row.get("staff_flz")
+            if flz_staff:
+                assigned |= _parse_staff(flz_staff)
+
+            if ks3_is_break or ks4_is_break:
+                teaching: set[str] = set()
+                if not ks3_is_break:
+                    teaching |= _parse_staff(row.get("staff_ks3"))
+                if not ks4_is_break:
+                    teaching |= _parse_staff(row.get("staff_ks4"))
+                supervision = {s for s in working if s not in teaching}
+                assigned |= supervision
+
+            for person in working:
+                if person not in assigned:
+                    ppa[person].append({
+                        "day": day["label"],
+                        "day_key": day_key,
+                        "time": f'{row["start"]}–{row["end"]}',
+                        "stage": "—",
+                        "subject": "PPA",
+                    })
+
+    return ppa
+
+
 def merge_staff_sessions(sessions: list[dict]) -> list[dict]:
     if not sessions:
         return []
@@ -240,15 +299,16 @@ def collect_staff_sessions(week: dict) -> dict[str, list[dict]]:
             for stage in ("ks3", "ks4"):
                 staff = row.get(f"staff_{stage}")
                 if staff:
-                    sessions.setdefault(staff, []).append(
-                        {
-                            "day": day["label"],
-                            "day_key": day_key,
-                            "time": f'{row["start"]}–{row["end"]}',
-                            "stage": "KS3" if stage == "ks3" else "KS4",
-                            "subject": row[stage],
-                        }
-                    )
+                    for initials in (s.strip() for s in staff.split("/")):
+                        sessions.setdefault(initials, []).append(
+                            {
+                                "day": day["label"],
+                                "day_key": day_key,
+                                "time": f'{row["start"]}–{row["end"]}',
+                                "stage": "KS3" if stage == "ks3" else "KS4",
+                                "subject": row[stage],
+                            }
+                        )
                 supervision = row.get(f"supervision_{stage}")
                 if supervision:
                     stage_label = "KS3" if stage == "ks3" else "KS4"
@@ -293,11 +353,13 @@ def render_person_day_panel(day_key: str, sessions: list[dict]) -> str:
     if sessions:
         rows_html = []
         for s in sessions:
+            is_ppa = s["subject"] == "PPA"
+            subj_cls = "subject-col ppa" if is_ppa else "subject-col"
             rows_html.append(
                 "<tr>"
                 f'<td class="time-col">{esc(s["time"])}</td>'
                 f'<td>{esc(s["stage"])}</td>'
-                f'<td class="subject-col">{esc(s["subject"])}</td>'
+                f'<td class="{subj_cls}">{esc(s["subject"])}</td>'
                 "</tr>"
             )
         body = "".join(rows_html)
@@ -810,6 +872,7 @@ STAFF_PERSON_CSS = (
     }
     .time-col { color: #8b949e; white-space: nowrap; }
     .subject-col { color: #f0f6fc; font-weight: 500; }
+    .subject-col.ppa { color: #d2a8ff; font-style: italic; }
     .muted { color: #484f58; text-align: center; }
 """
 )
@@ -911,9 +974,16 @@ def main() -> None:
 
     STAFF_DIR.mkdir(exist_ok=True)
     sessions = collect_staff_sessions(week)
+    ppa_sessions = compute_ppa_sessions(week)
     for initials in week["staff"].get("people", []):
+        person_sessions = sessions.get(initials, [])
+        person_ppa = merge_staff_sessions(ppa_sessions.get(initials, []))
+        combined = sorted(
+            person_sessions + person_ppa,
+            key=lambda s: (DAY_ORDER.index(s["day_key"]), s["time"]),
+        )
         slug = staff_slug(initials)
-        page = render_staff_person_page(week, initials, sessions.get(initials, []))
+        page = render_staff_person_page(week, initials, combined)
         (STAFF_DIR / f"{slug}.html").write_text(page, encoding="utf-8")
 
     print("Wrote student-timetable.html, staff-timetable.html, and staff/*.html")
