@@ -1448,7 +1448,7 @@ FAQ_ITEMS: dict[str, dict[str, str]] = {
 def render_faq_section_all() -> str:
     """Render glossary with ALL FAQ items for the main staff page."""
     items_html = []
-    for key in ("student_support", "whole_school_support", "ppa", "ppa_oncall"):
+    for key in ("student_support", "whole_school_support", "ppa_oncall"):
         item = FAQ_ITEMS[key]
         items_html.append(
             f'<details><summary>{esc(item["q"])}</summary>'
@@ -1892,12 +1892,11 @@ def main() -> None:
             for s in combined:
                 if "reset" in s["subject"].lower():
                     s["location"] = "Computer Suite" if s["day_key"] == "wednesday" else "URFUTURE"
-        if initials in ("LI", "LG"):
-            for s in combined:
-                if s["subject"] == "PPA / Lunch":
-                    s["subject"] = ""
-                    s["stage"] = ""
-                    s["location"] = ""
+        for s in combined:
+            if s["subject"] == "PPA" or s["subject"].startswith("PPA"):
+                s["subject"] = ""
+                s["stage"] = ""
+                s["location"] = ""
         slug = staff_slug(initials)
         page = render_staff_person_page(week, initials, combined)
         (STAFF_DIR / f"{slug}.html").write_text(page, encoding="utf-8")
