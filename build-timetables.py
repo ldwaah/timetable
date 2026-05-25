@@ -25,6 +25,22 @@ INITIALS_TO_NAME: dict[str, str] = {
 }
 
 
+def _time_minutes(t: str) -> int:
+    """Convert HH:MM to minutes since midnight."""
+    h, m = t.split(":")
+    return int(h) * 60 + int(m)
+
+
+def _staff_working_at(hours: dict, person: str, start: str, end: str) -> bool:
+    """Return True if person is working during the given slot."""
+    if person not in hours:
+        return True
+    p_start = _time_minutes(hours[person]["start"])
+    p_end = _time_minutes(hours[person]["end"])
+    slot_start = _time_minutes(start)
+    return p_start <= slot_start < p_end
+
+
 def _parse_staff(staff_str: str | None) -> set[str]:
     if not staff_str:
         return set()
@@ -63,6 +79,7 @@ def add_supervision(week: dict) -> None:
     """Tag every break/lunch row with the staff available for supervision."""
     all_staff = week["staff"].get("people", [])
     off_days: dict[str, list[str]] = week["staff"].get("off_days", {})
+    hours: dict = week["staff"].get("hours", {})
     for day_key in DAY_ORDER:
         day = week["days"].get(day_key)
         if not day:
@@ -78,7 +95,12 @@ def add_supervision(week: dict) -> None:
                 teaching |= _parse_staff(row.get("staff_ks3"))
             if not ks4_is_break:
                 teaching |= _parse_staff(row.get("staff_ks4"))
-            free = [s for s in all_staff if s not in teaching and s not in unavailable]
+            free = [
+                s for s in all_staff
+                if s not in teaching
+                and s not in unavailable
+                and _staff_working_at(hours, s, row["start"], row["end"])
+            ]
             if ks3_is_break:
                 row["supervision_ks3"] = free
             if ks4_is_break:
@@ -1133,6 +1155,21 @@ def build_staff_html(week: dict) -> str:
 """
 
 
+def filter_by_hours(sessions: list[dict], hours: dict, initials: str) -> list[dict]:
+    """Remove sessions outside a staff member's working hours."""
+    if initials not in hours:
+        return sessions
+    p_start = _time_minutes(hours[initials]["start"])
+    p_end = _time_minutes(hours[initials]["end"])
+    filtered = []
+    for s in sessions:
+        slot_start = _time_minutes(s["time"].split("–")[0])
+        if slot_start < p_start or slot_start >= p_end:
+            continue
+        filtered.append(s)
+    return filtered
+
+
 def main() -> None:
     week = load_week()
     if "rows" not in week["days"]["monday"]:
@@ -1145,6 +1182,7 @@ def main() -> None:
     STAFF_DIR.mkdir(exist_ok=True)
     sessions = collect_staff_sessions(week)
     ppa_sessions = compute_ppa_sessions(week)
+    hours: dict = week["staff"].get("hours", {})
     for initials in week["staff"].get("people", []):
         person_sessions = sessions.get(initials, [])
         person_ppa = merge_staff_sessions(ppa_sessions.get(initials, []))
@@ -1154,6 +1192,7 @@ def main() -> None:
         )
         combined = dedup_person_sessions(combined)
         combined = merge_staff_sessions(combined)
+        combined = filter_by_hours(combined, hours, initials)
         slug = staff_slug(initials)
         page = render_staff_person_page(week, initials, combined)
         (STAFF_DIR / f"{slug}.html").write_text(page, encoding="utf-8")
