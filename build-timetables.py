@@ -156,13 +156,15 @@ def render_student_day_panel(week: dict, day_key: str) -> str:
     day = week["days"][day_key]
     all_staff = week["staff"].get("people", [])
     rows = display_rows(day, include_staff_only=False)
+    rows = [r for r in rows if r.get("kind") != "searches"]
     has_flz = any(row.get("flz") for row in rows)
+    hint_html = render_searches_hint(day)
     rows_html = []
     for row in rows:
         flz_cell = compare_cell_html(row, "flz", all_staff=all_staff) if has_flz else ""
         rows_html.append(
             "<tr>"
-            f'<td class="time-col">{esc(row["start"])}–{esc(row["end"])}</td>'
+            f'<td class="time-col">{esc(row["start"])}\u2013{esc(row["end"])}</td>'
             f"{compare_cell_html(row, 'ks3', all_staff=all_staff)}"
             f"{compare_cell_html(row, 'ks4', all_staff=all_staff)}"
             f"{flz_cell}"
@@ -171,6 +173,7 @@ def render_student_day_panel(week: dict, day_key: str) -> str:
     flz_th = '<th scope="col">FLZ</th>' if has_flz else ""
     return f"""
       <section class="day-panel" id="panel-{day_key}" role="tabpanel" aria-labelledby="tab-{day_key}">
+        {hint_html}
         <div class="table-wrap">
           <table class="day-grid">
             <thead>
@@ -360,7 +363,9 @@ def render_staff_day_panel(week: dict, day_key: str) -> str:
     day = week["days"][day_key]
     all_staff = week["staff"].get("people", [])
     rows = display_rows(day, include_staff_only=True)
+    rows = [r for r in rows if r.get("kind") != "searches"]
     has_flz = any(row.get("flz") for row in rows)
+    hint_html = render_searches_hint(day)
     rows_html = []
     for row in rows:
         ks3, ks4 = row["ks3"], row["ks4"]
@@ -395,6 +400,7 @@ def render_staff_day_panel(week: dict, day_key: str) -> str:
     flz_th = '<th scope="col">FLZ</th>' if has_flz else ""
     return f"""
       <section class="day-panel" id="panel-{day_key}" role="tabpanel">
+        {hint_html}
         <div class="table-wrap">
           <table class="timeline-table">
             <thead>
@@ -680,6 +686,85 @@ STAFF_CSS = """
     .slot-note { display: block; font-size: 0.65rem; font-style: italic; color: #6e7681; margin-top: 0.15rem; font-weight: 400; }
 """
 
+SEARCHES_HINT_CSS = """
+    .searches-hint {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+    .searches-hint-btn {
+      background: #1c2128;
+      border: 1px solid #30363d;
+      color: #f78166;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .searches-hint-btn:hover {
+      background: #2d1f1f;
+      border-color: #f78166;
+    }
+    .searches-hint-icon {
+      font-size: 0.85rem;
+      line-height: 1;
+    }
+    .searches-hint-popup {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      margin-top: 0.35rem;
+      background: #1c2128;
+      border: 1px solid #f78166;
+      border-radius: 8px;
+      padding: 0.6rem 0.85rem;
+      min-width: 15rem;
+      z-index: 10;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    .searches-hint.open .searches-hint-popup {
+      display: block;
+    }
+    .searches-hint-title {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #f78166;
+      margin-bottom: 0.25rem;
+    }
+    .searches-hint-staff {
+      font-size: 0.78rem;
+      color: #e6edf3;
+    }
+    .searches-hint-note {
+      font-size: 0.68rem;
+      color: #8b949e;
+      font-style: italic;
+      margin-top: 0.2rem;
+    }
+"""
+
+SEARCHES_HINT_JS = """
+<script>
+document.addEventListener('click', function(e) {
+  var btn = e.target.closest('.searches-hint-btn');
+  if (btn) {
+    e.stopPropagation();
+    btn.parentElement.classList.toggle('open');
+    return;
+  }
+  document.querySelectorAll('.searches-hint.open').forEach(function(el) {
+    el.classList.remove('open');
+  });
+});
+</script>
+"""
+
 STAFF_PERSON_CSS = (
     DAY_TAB_CSS
     + """
@@ -725,6 +810,33 @@ STAFF_PERSON_CSS = (
 )
 
 
+def extract_searches(day: dict) -> dict | None:
+    for row in day["rows"]:
+        if row.get("kind") == "searches":
+            return row
+    return None
+
+
+def render_searches_hint(day: dict) -> str:
+    row = extract_searches(day)
+    if not row:
+        return ""
+    time_range = f'{row["start"]}\u2013{row["end"]}'
+    staff = row.get("staff_ks3", "")
+    note = row.get("note", "")
+    note_html = f'<div class="searches-hint-note">{esc(note)}</div>' if note else ""
+    return (
+        f'<div class="searches-hint">'
+        f'<button class="searches-hint-btn" aria-label="Student searches info">'
+        f'<span class="searches-hint-icon">\u2139\uFE0F</span> Searches</button>'
+        f'<div class="searches-hint-popup">'
+        f'<div class="searches-hint-title">Student Searches {esc(time_range)}</div>'
+        f'<div class="searches-hint-staff">{esc(staff)}</div>'
+        f'{note_html}'
+        f'</div></div>'
+    )
+
+
 def build_student_html(week: dict) -> str:
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -732,15 +844,16 @@ def build_student_html(week: dict) -> str:
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student timetable</title>
-  <style>{DAY_TAB_CSS}{SHARED_STUDENT_CSS}</style>
+  <style>{DAY_TAB_CSS}{SHARED_STUDENT_CSS}{SEARCHES_HINT_CSS}</style>
 </head>
 <body>
   <div class="top">
-    <a class="back" href="index.html">← Back</a>
+    <a class="back" href="index.html">\u2190 Back</a>
     <h1>Student timetable</h1>
   </div>
 
   {render_student_day_views(week)}
+  {SEARCHES_HINT_JS}
 </body>
 </html>
 """
@@ -763,11 +876,11 @@ def build_staff_html(week: dict) -> str:
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Staff timetable</title>
-  <style>{DAY_TAB_CSS}{STAFF_CSS}</style>
+  <style>{DAY_TAB_CSS}{STAFF_CSS}{SEARCHES_HINT_CSS}</style>
 </head>
 <body>
   <div class="top">
-    <a class="back" href="index.html">← Back</a>
+    <a class="back" href="index.html">\u2190 Back</a>
     <h1>Staff timetable</h1>
   </div>
 
@@ -776,6 +889,7 @@ def build_staff_html(week: dict) -> str:
   </nav>
 
   {render_staff_day_tabs(week)}
+  {SEARCHES_HINT_JS}
 </body>
 </html>
 """

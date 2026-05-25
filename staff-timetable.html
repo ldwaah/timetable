@@ -136,6 +136,67 @@
     .slot.core.english { color: #e3b341; font-weight: 600; }
     .slot.pe { color: #3fb950; font-weight: 600; }
     .slot-note { display: block; font-size: 0.65rem; font-style: italic; color: #6e7681; margin-top: 0.15rem; font-weight: 400; }
+
+    .searches-hint {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+    .searches-hint-btn {
+      background: #1c2128;
+      border: 1px solid #30363d;
+      color: #f78166;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .searches-hint-btn:hover {
+      background: #2d1f1f;
+      border-color: #f78166;
+    }
+    .searches-hint-icon {
+      font-size: 0.85rem;
+      line-height: 1;
+    }
+    .searches-hint-popup {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      margin-top: 0.35rem;
+      background: #1c2128;
+      border: 1px solid #f78166;
+      border-radius: 8px;
+      padding: 0.6rem 0.85rem;
+      min-width: 15rem;
+      z-index: 10;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    .searches-hint.open .searches-hint-popup {
+      display: block;
+    }
+    .searches-hint-title {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #f78166;
+      margin-bottom: 0.25rem;
+    }
+    .searches-hint-staff {
+      font-size: 0.78rem;
+      color: #e6edf3;
+    }
+    .searches-hint-note {
+      font-size: 0.68rem;
+      color: #8b949e;
+      font-style: italic;
+      margin-top: 0.2rem;
+    }
 </style>
 </head>
 <body>
@@ -166,6 +227,7 @@
     <div class="tab-panels">
       
       <section class="day-panel" id="panel-monday" role="tabpanel">
+        <div class="searches-hint"><button class="searches-hint-btn" aria-label="Student searches info"><span class="searches-hint-icon">ℹ️</span> Searches</button><div class="searches-hint-popup"><div class="searches-hint-title">Student Searches 08:50–09:15</div><div class="searches-hint-staff">LG / LD</div><div class="searches-hint-note">LI covers LD in absence</div></div></div>
         <div class="table-wrap">
           <table class="timeline-table">
             <thead>
@@ -177,12 +239,13 @@
               </tr>
             </thead>
             <tbody>
-              <tr><td class="time-col">08:50–09:15</td><td class="slot searches">Student Searches <span class="lead">(LG / LD)</span><span class="slot-note">LI covers LD in absence</span></td><td class="slot searches">Student Searches <span class="lead">(LG / LD)</span></td><td class="slot">—</td></tr><tr><td class="time-col">09:15–09:45</td><td class="slot reset">Reset <span class="lead">(LG)</span></td><td class="slot reset">Reset <span class="lead">(LI)</span></td><td class="slot">—</td></tr><tr><td class="time-col">09:45–10:25</td><td class="slot core maths">Maths <span class="lead">(LG)</span></td><td class="slot core maths">Maths <span class="lead">(LI)</span></td><td class="slot core maths">Maths <span class="lead">(HK / JM)</span></td></tr><tr><td class="time-col">10:25–11:05</td><td class="slot core english">English <span class="lead">(LG)</span></td><td class="slot core english">English <span class="lead">(LI)</span></td><td class="slot core english">English <span class="lead">(HK / JM)</span></td></tr><tr><td class="time-col">11:05–11:20</td><td class="slot break">Break <span class="lead">(LD, LI, SA, JC, JM, HK)</span></td><td class="slot">Personal Development <span class="lead">(LG)</span></td><td class="slot">—</td></tr><tr><td class="time-col">11:20–11:35</td><td class="slot">Group Mentoring <span class="lead">(JC)</span></td><td class="slot break">Break <span class="lead">(LG, LD, LI, SA, JM, HK)</span></td><td class="slot">—</td></tr><tr><td class="time-col">11:35–12:15</td><td class="slot">Group Mentoring <span class="lead">(JC)</span></td><td class="slot">King&#x27;s Trust <span class="lead">(LG)</span></td><td class="slot">—</td></tr><tr><td class="time-col">12:15–12:30</td><td class="slot break">Lunch <span class="lead">(All staff)</span></td><td class="slot break">Lunch <span class="lead">(All staff)</span></td><td class="slot">—</td></tr><tr><td class="time-col">12:30–13:10</td><td class="slot">SEMH / AQA <span class="lead">(JC)</span></td><td class="slot">Sports Leaders / Vocational <span class="lead">(LI)</span></td><td class="slot">—</td></tr><tr><td class="time-col">13:10–13:20</td><td class="slot transition">Transition / Expectations <span class="lead">(LI / JC)</span></td><td class="slot transition">Transition / Expectations <span class="lead">(LI / JC)</span></td><td class="slot">—</td></tr><tr><td class="time-col">13:20–14:45</td><td class="slot pe">PE <span class="lead">(LI)</span></td><td class="slot pe">PE <span class="lead">(LI)</span></td><td class="slot">—</td></tr><tr><td class="time-col">14:45–15:00</td><td class="slot">Pause &amp; Progress <span class="lead">(LG / JC)</span></td><td class="slot">Pause &amp; Progress <span class="lead">(LG / JC)</span></td><td class="slot">—</td></tr>
+              <tr><td class="time-col">09:15–09:45</td><td class="slot reset">Reset <span class="lead">(LG)</span></td><td class="slot reset">Reset <span class="lead">(LI)</span></td><td class="slot">—</td></tr><tr><td class="time-col">09:45–10:25</td><td class="slot core maths">Maths <span class="lead">(LG)</span></td><td class="slot core maths">Maths <span class="lead">(LI)</span></td><td class="slot core maths">Maths <span class="lead">(HK / JM)</span></td></tr><tr><td class="time-col">10:25–11:05</td><td class="slot core english">English <span class="lead">(LG)</span></td><td class="slot core english">English <span class="lead">(LI)</span></td><td class="slot core english">English <span class="lead">(HK / JM)</span></td></tr><tr><td class="time-col">11:05–11:20</td><td class="slot break">Break <span class="lead">(LD, LI, SA, JC, JM, HK)</span></td><td class="slot">Personal Development <span class="lead">(LG)</span></td><td class="slot">—</td></tr><tr><td class="time-col">11:20–11:35</td><td class="slot">Group Mentoring <span class="lead">(JC)</span></td><td class="slot break">Break <span class="lead">(LG, LD, LI, SA, JM, HK)</span></td><td class="slot">—</td></tr><tr><td class="time-col">11:35–12:15</td><td class="slot">Group Mentoring <span class="lead">(JC)</span></td><td class="slot">King&#x27;s Trust <span class="lead">(LG)</span></td><td class="slot">—</td></tr><tr><td class="time-col">12:15–12:30</td><td class="slot break">Lunch <span class="lead">(All staff)</span></td><td class="slot break">Lunch <span class="lead">(All staff)</span></td><td class="slot">—</td></tr><tr><td class="time-col">12:30–13:10</td><td class="slot">SEMH / AQA <span class="lead">(JC)</span></td><td class="slot">Sports Leaders / Vocational <span class="lead">(LI)</span></td><td class="slot">—</td></tr><tr><td class="time-col">13:10–13:20</td><td class="slot transition">Transition / Expectations <span class="lead">(LI / JC)</span></td><td class="slot transition">Transition / Expectations <span class="lead">(LI / JC)</span></td><td class="slot">—</td></tr><tr><td class="time-col">13:20–14:45</td><td class="slot pe">PE <span class="lead">(LI)</span></td><td class="slot pe">PE <span class="lead">(LI)</span></td><td class="slot">—</td></tr><tr><td class="time-col">14:45–15:00</td><td class="slot">Pause &amp; Progress <span class="lead">(LG / JC)</span></td><td class="slot">Pause &amp; Progress <span class="lead">(LG / JC)</span></td><td class="slot">—</td></tr>
             </tbody>
           </table>
         </div>
       </section>
       <section class="day-panel" id="panel-tuesday" role="tabpanel">
+        <div class="searches-hint"><button class="searches-hint-btn" aria-label="Student searches info"><span class="searches-hint-icon">ℹ️</span> Searches</button><div class="searches-hint-popup"><div class="searches-hint-title">Student Searches 08:50–09:15</div><div class="searches-hint-staff">SA / LD</div><div class="searches-hint-note">LI covers LD in absence</div></div></div>
         <div class="table-wrap">
           <table class="timeline-table">
             <thead>
@@ -194,12 +257,13 @@
               </tr>
             </thead>
             <tbody>
-              <tr><td class="time-col">08:50–09:15</td><td class="slot searches">Student Searches <span class="lead">(SA / LD)</span><span class="slot-note">LI covers LD in absence</span></td><td class="slot searches">Student Searches <span class="lead">(SA / LD)</span></td><td class="slot">—</td></tr><tr><td class="time-col">09:15–09:45</td><td class="slot assembly">Assembly <span class="lead">(SA / LG)</span></td><td class="slot assembly">Assembly <span class="lead">(SA / LG)</span></td><td class="slot">—</td></tr><tr><td class="time-col">09:45–10:25</td><td class="slot core maths">Maths <span class="lead">(LG)</span></td><td class="slot core maths">Maths <span class="lead">(LI)</span></td><td class="slot core maths">Maths <span class="lead">(HK / JM)</span></td></tr><tr><td class="time-col">10:25–11:05</td><td class="slot core english">English <span class="lead">(LG)</span></td><td class="slot core english">English <span class="lead">(LI)</span></td><td class="slot core english">English <span class="lead">(HK / JM)</span></td></tr><tr><td class="time-col">11:05–11:20</td><td class="slot break">Break <span class="lead">(LG, LI, SA, JC, JM, HK)</span></td><td class="slot">Personal Development <span class="lead">(LD)</span></td><td class="slot">—</td></tr><tr><td class="time-col">11:20–11:35</td><td class="slot">Art <span class="lead">(SA)</span></td><td class="slot break">Break <span class="lead">(LG, LD, LI, JC, JM, HK)</span></td><td class="slot">—</td></tr><tr><td class="time-col">11:35–12:15</td><td class="slot">Art <span class="lead">(SA)</span></td><td class="slot">DofE <span class="lead">(LD)</span></td><td class="slot">—</td></tr><tr><td class="time-col">12:15–12:30</td><td class="slot break">Lunch <span class="lead">(All staff)</span></td><td class="slot break">Lunch <span class="lead">(All staff)</span></td><td class="slot">—</td></tr><tr><td class="time-col">12:30–13:10</td><td class="slot">SEMH / AQA <span class="lead">(LG)</span></td><td class="slot">SEMH / AQA <span class="lead">(LI)</span></td><td class="slot">—</td></tr><tr><td class="time-col">13:10–13:20</td><td class="slot transition">Transition / Expectations <span class="lead">(LI / JC)</span></td><td class="slot transition">Transition / Expectations <span class="lead">(LI / JC)</span></td><td class="slot">—</td></tr><tr><td class="time-col">13:20–14:45</td><td class="slot pe">PE <span class="lead">(LI)</span></td><td class="slot pe">PE <span class="lead">(LI)</span></td><td class="slot">—</td></tr><tr><td class="time-col">14:45–15:00</td><td class="slot">Pause &amp; Progress <span class="lead">(LG / JC)</span></td><td class="slot">Pause &amp; Progress <span class="lead">(LG / JC)</span></td><td class="slot">—</td></tr>
+              <tr><td class="time-col">09:15–09:45</td><td class="slot assembly">Assembly <span class="lead">(SA / LG)</span></td><td class="slot assembly">Assembly <span class="lead">(SA / LG)</span></td><td class="slot">—</td></tr><tr><td class="time-col">09:45–10:25</td><td class="slot core maths">Maths <span class="lead">(LG)</span></td><td class="slot core maths">Maths <span class="lead">(LI)</span></td><td class="slot core maths">Maths <span class="lead">(HK / JM)</span></td></tr><tr><td class="time-col">10:25–11:05</td><td class="slot core english">English <span class="lead">(LG)</span></td><td class="slot core english">English <span class="lead">(LI)</span></td><td class="slot core english">English <span class="lead">(HK / JM)</span></td></tr><tr><td class="time-col">11:05–11:20</td><td class="slot break">Break <span class="lead">(LG, LI, SA, JC, JM, HK)</span></td><td class="slot">Personal Development <span class="lead">(LD)</span></td><td class="slot">—</td></tr><tr><td class="time-col">11:20–11:35</td><td class="slot">Art <span class="lead">(SA)</span></td><td class="slot break">Break <span class="lead">(LG, LD, LI, JC, JM, HK)</span></td><td class="slot">—</td></tr><tr><td class="time-col">11:35–12:15</td><td class="slot">Art <span class="lead">(SA)</span></td><td class="slot">DofE <span class="lead">(LD)</span></td><td class="slot">—</td></tr><tr><td class="time-col">12:15–12:30</td><td class="slot break">Lunch <span class="lead">(All staff)</span></td><td class="slot break">Lunch <span class="lead">(All staff)</span></td><td class="slot">—</td></tr><tr><td class="time-col">12:30–13:10</td><td class="slot">SEMH / AQA <span class="lead">(LG)</span></td><td class="slot">SEMH / AQA <span class="lead">(LI)</span></td><td class="slot">—</td></tr><tr><td class="time-col">13:10–13:20</td><td class="slot transition">Transition / Expectations <span class="lead">(LI / JC)</span></td><td class="slot transition">Transition / Expectations <span class="lead">(LI / JC)</span></td><td class="slot">—</td></tr><tr><td class="time-col">13:20–14:45</td><td class="slot pe">PE <span class="lead">(LI)</span></td><td class="slot pe">PE <span class="lead">(LI)</span></td><td class="slot">—</td></tr><tr><td class="time-col">14:45–15:00</td><td class="slot">Pause &amp; Progress <span class="lead">(LG / JC)</span></td><td class="slot">Pause &amp; Progress <span class="lead">(LG / JC)</span></td><td class="slot">—</td></tr>
             </tbody>
           </table>
         </div>
       </section>
       <section class="day-panel" id="panel-wednesday" role="tabpanel">
+        <div class="searches-hint"><button class="searches-hint-btn" aria-label="Student searches info"><span class="searches-hint-icon">ℹ️</span> Searches</button><div class="searches-hint-popup"><div class="searches-hint-title">Student Searches 08:50–09:15</div><div class="searches-hint-staff">SA / LD</div><div class="searches-hint-note">LI covers LD in absence — students arrive 10:00</div></div></div>
         <div class="table-wrap">
           <table class="timeline-table">
             <thead>
@@ -211,12 +275,13 @@
               </tr>
             </thead>
             <tbody>
-              <tr><td class="time-col">08:50–09:15</td><td class="slot searches">Student Searches <span class="lead">(SA / LD)</span><span class="slot-note">LI covers LD in absence — students arrive 10:00</span></td><td class="slot searches">Student Searches <span class="lead">(SA / LD)</span></td></tr><tr><td class="time-col">10:00–10:20</td><td class="slot reset">Reset <span class="lead">(LG)</span></td><td class="slot reset">Reset <span class="lead">(LI)</span></td></tr><tr><td class="time-col">10:20–11:10</td><td class="slot core maths">Maths <span class="lead">(LG)</span></td><td class="slot core maths">Maths <span class="lead">(LI)</span></td></tr><tr><td class="time-col">11:10–11:25</td><td class="slot break">Toilet Break / Upstairs Only <span class="lead">(All staff)</span></td><td class="slot break">Toilet Break / Upstairs Only <span class="lead">(All staff)</span></td></tr><tr><td class="time-col">11:25–12:15</td><td class="slot core english">English <span class="lead">(LG)</span></td><td class="slot core english">English <span class="lead">(LI)</span></td></tr><tr><td class="time-col">12:15–12:30</td><td class="slot break">Lunch <span class="lead">(All staff)</span></td><td class="slot break">Lunch <span class="lead">(All staff)</span></td></tr><tr><td class="time-col">12:30–13:10</td><td class="slot">PSHE <span class="lead">(SA)</span></td><td class="slot">PSHE <span class="lead">(LG)</span></td></tr><tr><td class="time-col">13:10–13:25</td><td class="slot break">Break <span class="lead">(All staff)</span></td><td class="slot break">Break <span class="lead">(All staff)</span></td></tr><tr><td class="time-col">13:25–14:05</td><td class="slot">SEMH / AQA <span class="lead">(LG)</span></td><td class="slot">Citizenship <span class="lead">(LD / LI)</span></td></tr><tr><td class="time-col">14:05–14:15</td><td class="slot transition">Transition / Expectations <span class="lead">(LI / SA)</span></td><td class="slot transition">Transition / Expectations <span class="lead">(LI / SA)</span></td></tr><tr><td class="time-col">14:15–14:45</td><td class="slot pe">Gym <span class="lead">(LI / SA)</span></td><td class="slot pe">Gym <span class="lead">(LI / SA)</span></td></tr><tr><td class="time-col">14:45–15:00</td><td class="slot">Pause &amp; Progress <span class="lead">(LG / SA)</span></td><td class="slot">Pause &amp; Progress <span class="lead">(LG / SA)</span></td></tr>
+              <tr><td class="time-col">10:00–10:20</td><td class="slot reset">Reset <span class="lead">(LG)</span></td><td class="slot reset">Reset <span class="lead">(LI)</span></td></tr><tr><td class="time-col">10:20–11:10</td><td class="slot core maths">Maths <span class="lead">(LG)</span></td><td class="slot core maths">Maths <span class="lead">(LI)</span></td></tr><tr><td class="time-col">11:10–11:25</td><td class="slot break">Toilet Break / Upstairs Only <span class="lead">(All staff)</span></td><td class="slot break">Toilet Break / Upstairs Only <span class="lead">(All staff)</span></td></tr><tr><td class="time-col">11:25–12:15</td><td class="slot core english">English <span class="lead">(LG)</span></td><td class="slot core english">English <span class="lead">(LI)</span></td></tr><tr><td class="time-col">12:15–12:30</td><td class="slot break">Lunch <span class="lead">(All staff)</span></td><td class="slot break">Lunch <span class="lead">(All staff)</span></td></tr><tr><td class="time-col">12:30–13:10</td><td class="slot">PSHE <span class="lead">(SA)</span></td><td class="slot">PSHE <span class="lead">(LG)</span></td></tr><tr><td class="time-col">13:10–13:25</td><td class="slot break">Break <span class="lead">(All staff)</span></td><td class="slot break">Break <span class="lead">(All staff)</span></td></tr><tr><td class="time-col">13:25–14:05</td><td class="slot">SEMH / AQA <span class="lead">(LG)</span></td><td class="slot">Citizenship <span class="lead">(LD / LI)</span></td></tr><tr><td class="time-col">14:05–14:15</td><td class="slot transition">Transition / Expectations <span class="lead">(LI / SA)</span></td><td class="slot transition">Transition / Expectations <span class="lead">(LI / SA)</span></td></tr><tr><td class="time-col">14:15–14:45</td><td class="slot pe">Gym <span class="lead">(LI / SA)</span></td><td class="slot pe">Gym <span class="lead">(LI / SA)</span></td></tr><tr><td class="time-col">14:45–15:00</td><td class="slot">Pause &amp; Progress <span class="lead">(LG / SA)</span></td><td class="slot">Pause &amp; Progress <span class="lead">(LG / SA)</span></td></tr>
             </tbody>
           </table>
         </div>
       </section>
       <section class="day-panel" id="panel-thursday" role="tabpanel">
+        <div class="searches-hint"><button class="searches-hint-btn" aria-label="Student searches info"><span class="searches-hint-icon">ℹ️</span> Searches</button><div class="searches-hint-popup"><div class="searches-hint-title">Student Searches 08:50–09:15</div><div class="searches-hint-staff">SA / LD</div><div class="searches-hint-note">LI covers LD in absence</div></div></div>
         <div class="table-wrap">
           <table class="timeline-table">
             <thead>
@@ -228,12 +293,13 @@
               </tr>
             </thead>
             <tbody>
-              <tr><td class="time-col">08:50–09:15</td><td class="slot searches">Student Searches <span class="lead">(SA / LD)</span><span class="slot-note">LI covers LD in absence</span></td><td class="slot searches">Student Searches <span class="lead">(SA / LD)</span></td><td class="slot">—</td></tr><tr><td class="time-col">09:15–09:45</td><td class="slot reset">Reset <span class="lead">(LG)</span></td><td class="slot reset">Reset <span class="lead">(LI)</span></td><td class="slot">—</td></tr><tr><td class="time-col">09:45–10:25</td><td class="slot core maths">Maths <span class="lead">(LG)</span></td><td class="slot core maths">Maths <span class="lead">(LI)</span></td><td class="slot core maths">Maths <span class="lead">(HK / JM)</span></td></tr><tr><td class="time-col">10:25–11:05</td><td class="slot core english">English <span class="lead">(LG)</span></td><td class="slot core english">English <span class="lead">(LI)</span></td><td class="slot core english">English <span class="lead">(HK / JM)</span></td></tr><tr><td class="time-col">11:05–11:20</td><td class="slot break">Break <span class="lead">(LG, LI, SA, JM, HK)</span></td><td class="slot">Personal Development <span class="lead">(JC / LD)</span></td><td class="slot">—</td></tr><tr><td class="time-col">11:20–11:35</td><td class="slot">Food Technology <span class="lead">(SA)</span></td><td class="slot break">Break <span class="lead">(LG, LD, LI, JC, JM, HK)</span></td><td class="slot">—</td></tr><tr><td class="time-col">11:35–12:15</td><td class="slot">Food Technology <span class="lead">(SA)</span></td><td class="slot">Citizenship <span class="lead">(JC / LD)</span></td><td class="slot">—</td></tr><tr><td class="time-col">12:15–12:30</td><td class="slot break">Lunch <span class="lead">(All staff)</span></td><td class="slot break">Lunch <span class="lead">(All staff)</span></td><td class="slot">—</td></tr><tr><td class="time-col">12:30–13:10</td><td class="slot">SEMH / AQA <span class="lead">(LG)</span></td><td class="slot">SEMH / AQA <span class="lead">(LI)</span></td><td class="slot">—</td></tr><tr><td class="time-col">13:10–13:20</td><td class="slot transition">Transition / Expectations <span class="lead">(LI / JC)</span></td><td class="slot transition">Transition / Expectations <span class="lead">(LI / JC)</span></td><td class="slot">—</td></tr><tr><td class="time-col">13:20–14:00</td><td class="slot pe">PE <span class="lead">(LI)</span></td><td class="slot pe">PE <span class="lead">(LI)</span></td><td class="slot">—</td></tr>
+              <tr><td class="time-col">09:15–09:45</td><td class="slot reset">Reset <span class="lead">(LG)</span></td><td class="slot reset">Reset <span class="lead">(LI)</span></td><td class="slot">—</td></tr><tr><td class="time-col">09:45–10:25</td><td class="slot core maths">Maths <span class="lead">(LG)</span></td><td class="slot core maths">Maths <span class="lead">(LI)</span></td><td class="slot core maths">Maths <span class="lead">(HK / JM)</span></td></tr><tr><td class="time-col">10:25–11:05</td><td class="slot core english">English <span class="lead">(LG)</span></td><td class="slot core english">English <span class="lead">(LI)</span></td><td class="slot core english">English <span class="lead">(HK / JM)</span></td></tr><tr><td class="time-col">11:05–11:20</td><td class="slot break">Break <span class="lead">(LG, LI, SA, JM, HK)</span></td><td class="slot">Personal Development <span class="lead">(JC / LD)</span></td><td class="slot">—</td></tr><tr><td class="time-col">11:20–11:35</td><td class="slot">Food Technology <span class="lead">(SA)</span></td><td class="slot break">Break <span class="lead">(LG, LD, LI, JC, JM, HK)</span></td><td class="slot">—</td></tr><tr><td class="time-col">11:35–12:15</td><td class="slot">Food Technology <span class="lead">(SA)</span></td><td class="slot">Citizenship <span class="lead">(JC / LD)</span></td><td class="slot">—</td></tr><tr><td class="time-col">12:15–12:30</td><td class="slot break">Lunch <span class="lead">(All staff)</span></td><td class="slot break">Lunch <span class="lead">(All staff)</span></td><td class="slot">—</td></tr><tr><td class="time-col">12:30–13:10</td><td class="slot">SEMH / AQA <span class="lead">(LG)</span></td><td class="slot">SEMH / AQA <span class="lead">(LI)</span></td><td class="slot">—</td></tr><tr><td class="time-col">13:10–13:20</td><td class="slot transition">Transition / Expectations <span class="lead">(LI / JC)</span></td><td class="slot transition">Transition / Expectations <span class="lead">(LI / JC)</span></td><td class="slot">—</td></tr><tr><td class="time-col">13:20–14:00</td><td class="slot pe">PE <span class="lead">(LI)</span></td><td class="slot pe">PE <span class="lead">(LI)</span></td><td class="slot">—</td></tr>
             </tbody>
           </table>
         </div>
       </section>
       <section class="day-panel" id="panel-friday" role="tabpanel">
+        <div class="searches-hint"><button class="searches-hint-btn" aria-label="Student searches info"><span class="searches-hint-icon">ℹ️</span> Searches</button><div class="searches-hint-popup"><div class="searches-hint-title">Student Searches 08:50–09:15</div><div class="searches-hint-staff">SA / LD</div><div class="searches-hint-note">LI covers LD in absence</div></div></div>
         <div class="table-wrap">
           <table class="timeline-table">
             <thead>
@@ -245,12 +311,27 @@
               </tr>
             </thead>
             <tbody>
-              <tr><td class="time-col">08:50–09:15</td><td class="slot searches">Student Searches <span class="lead">(SA / LD)</span><span class="slot-note">LI covers LD in absence</span></td><td class="slot searches">Student Searches <span class="lead">(SA / LD)</span></td><td class="slot">—</td></tr><tr><td class="time-col">09:15–09:45</td><td class="slot reset">Reset <span class="lead">(LG)</span></td><td class="slot reset">Reset <span class="lead">(LI)</span></td><td class="slot">—</td></tr><tr><td class="time-col">09:45–10:25</td><td class="slot core maths">Maths <span class="lead">(LG)</span></td><td class="slot core maths">Maths <span class="lead">(LI)</span></td><td class="slot core maths">Maths <span class="lead">(HK / JM)</span></td></tr><tr><td class="time-col">10:25–11:05</td><td class="slot core english">English <span class="lead">(LG)</span></td><td class="slot core english">English <span class="lead">(LI)</span></td><td class="slot core english">English <span class="lead">(HK / JM)</span></td></tr><tr><td class="time-col">11:05–11:20</td><td class="slot break">Break <span class="lead">(LG, LD, SA, JC, JM, HK)</span></td><td class="slot">Personal Development <span class="lead">(LI)</span></td><td class="slot">—</td></tr><tr><td class="time-col">11:20–11:35</td><td class="slot">PSHE <span class="lead">(SA)</span></td><td class="slot break">Break <span class="lead">(LG, LD, LI, JC, JM, HK)</span></td><td class="slot">—</td></tr><tr><td class="time-col">11:35–12:15</td><td class="slot">PSHE <span class="lead">(SA)</span></td><td class="slot">SEMH / AQA <span class="lead">(LI)</span></td><td class="slot">—</td></tr><tr><td class="time-col">12:15–12:30</td><td class="slot break">Lunch <span class="lead">(All staff)</span></td><td class="slot break">Lunch <span class="lead">(All staff)</span></td><td class="slot">—</td></tr><tr><td class="time-col">12:30–13:10</td><td class="slot">SEMH / AQA <span class="lead">(LG)</span></td><td class="slot">Sports Leaders / Vocational <span class="lead">(LI)</span></td><td class="slot">—</td></tr><tr><td class="time-col">13:10–13:20</td><td class="slot transition">Transition / Expectations <span class="lead">(LI / LG)</span></td><td class="slot transition">Transition / Expectations <span class="lead">(LI / LG)</span></td><td class="slot">—</td></tr><tr><td class="time-col">13:20–14:00</td><td class="slot pe">PE <span class="lead">(LI)</span></td><td class="slot pe">PE <span class="lead">(LI)</span></td><td class="slot">—</td></tr>
+              <tr><td class="time-col">09:15–09:45</td><td class="slot reset">Reset <span class="lead">(LG)</span></td><td class="slot reset">Reset <span class="lead">(LI)</span></td><td class="slot">—</td></tr><tr><td class="time-col">09:45–10:25</td><td class="slot core maths">Maths <span class="lead">(LG)</span></td><td class="slot core maths">Maths <span class="lead">(LI)</span></td><td class="slot core maths">Maths <span class="lead">(HK / JM)</span></td></tr><tr><td class="time-col">10:25–11:05</td><td class="slot core english">English <span class="lead">(LG)</span></td><td class="slot core english">English <span class="lead">(LI)</span></td><td class="slot core english">English <span class="lead">(HK / JM)</span></td></tr><tr><td class="time-col">11:05–11:20</td><td class="slot break">Break <span class="lead">(LG, LD, SA, JC, JM, HK)</span></td><td class="slot">Personal Development <span class="lead">(LI)</span></td><td class="slot">—</td></tr><tr><td class="time-col">11:20–11:35</td><td class="slot">PSHE <span class="lead">(SA)</span></td><td class="slot break">Break <span class="lead">(LG, LD, LI, JC, JM, HK)</span></td><td class="slot">—</td></tr><tr><td class="time-col">11:35–12:15</td><td class="slot">PSHE <span class="lead">(SA)</span></td><td class="slot">SEMH / AQA <span class="lead">(LI)</span></td><td class="slot">—</td></tr><tr><td class="time-col">12:15–12:30</td><td class="slot break">Lunch <span class="lead">(All staff)</span></td><td class="slot break">Lunch <span class="lead">(All staff)</span></td><td class="slot">—</td></tr><tr><td class="time-col">12:30–13:10</td><td class="slot">SEMH / AQA <span class="lead">(LG)</span></td><td class="slot">Sports Leaders / Vocational <span class="lead">(LI)</span></td><td class="slot">—</td></tr><tr><td class="time-col">13:10–13:20</td><td class="slot transition">Transition / Expectations <span class="lead">(LI / LG)</span></td><td class="slot transition">Transition / Expectations <span class="lead">(LI / LG)</span></td><td class="slot">—</td></tr><tr><td class="time-col">13:20–14:00</td><td class="slot pe">PE <span class="lead">(LI)</span></td><td class="slot pe">PE <span class="lead">(LI)</span></td><td class="slot">—</td></tr>
             </tbody>
           </table>
         </div>
       </section>
     </div>
   </div>
+  
+<script>
+document.addEventListener('click', function(e) {
+  var btn = e.target.closest('.searches-hint-btn');
+  if (btn) {
+    e.stopPropagation();
+    btn.parentElement.classList.toggle('open');
+    return;
+  }
+  document.querySelectorAll('.searches-hint.open').forEach(function(el) {
+    el.classList.remove('open');
+  });
+});
+</script>
+
 </body>
 </html>
