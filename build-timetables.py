@@ -110,6 +110,8 @@ def get_location(label: str, stage: str, day_key: str, kind: str) -> str:
         return "Foyer"
     if kind == "transition" or "transition" in low:
         return "Foyer"
+    if "pause" in low and "progress" in low:
+        return "Foyer"
     if kind == "assembly" or low == "assembly":
         return "Sports Hall"
     if kind == "pe":
