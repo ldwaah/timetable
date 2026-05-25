@@ -137,7 +137,7 @@ def get_location(label: str, stage: str, day_key: str, kind: str) -> str:
         return "Main Room"
 
     if kind == "assembly" or low == "assembly":
-        return "Sports Hall"
+        return "Foyer"
     if kind == "pe":
         if low == "gym":
             return "Gym"
@@ -768,7 +768,7 @@ def get_staff_location(subject: str, stage: str, day_key: str) -> str:
         return "Main Room"
 
     if "assembly" in low:
-        return "Sports Hall"
+        return "Foyer"
 
     if "break supervision" in low or "break" in low and "supervision" in low:
         if "main foyer" in low or "foyer" in low:
