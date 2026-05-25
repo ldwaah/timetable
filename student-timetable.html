@@ -34,7 +34,17 @@
     #tab-tuesday:checked ~ .tab-bar label[for="tab-tuesday"],
     #tab-wednesday:checked ~ .tab-bar label[for="tab-wednesday"],
     #tab-thursday:checked ~ .tab-bar label[for="tab-thursday"],
-    #tab-friday:checked ~ .tab-bar label[for="tab-friday"] {
+    #tab-friday:checked ~ .tab-bar label[for="tab-friday"],
+    #tab-ks3-monday:checked ~ .tab-bar label[for="tab-ks3-monday"],
+    #tab-ks3-tuesday:checked ~ .tab-bar label[for="tab-ks3-tuesday"],
+    #tab-ks3-wednesday:checked ~ .tab-bar label[for="tab-ks3-wednesday"],
+    #tab-ks3-thursday:checked ~ .tab-bar label[for="tab-ks3-thursday"],
+    #tab-ks3-friday:checked ~ .tab-bar label[for="tab-ks3-friday"],
+    #tab-ks4-monday:checked ~ .tab-bar label[for="tab-ks4-monday"],
+    #tab-ks4-tuesday:checked ~ .tab-bar label[for="tab-ks4-tuesday"],
+    #tab-ks4-wednesday:checked ~ .tab-bar label[for="tab-ks4-wednesday"],
+    #tab-ks4-thursday:checked ~ .tab-bar label[for="tab-ks4-thursday"],
+    #tab-ks4-friday:checked ~ .tab-bar label[for="tab-ks4-friday"] {
       color: #f0f6fc;
       background: #1f3a5f;
       border-color: #58a6ff;
@@ -156,6 +166,79 @@
     .slot.transition { background: #21262d; }
     .slot.transition .slot-label { color: #8b949e; font-style: italic; }
 
+    .ks-selector {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .ks-btn {
+      flex: 1;
+      padding: 1rem 1.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      border: 2px solid #30363d;
+      border-radius: 12px;
+      background: #161b22;
+      color: #8b949e;
+      transition: all 0.2s;
+    }
+
+    .ks-btn:hover {
+      background: #21262d;
+      color: #e6edf3;
+      border-color: #58a6ff;
+    }
+
+    .ks-btn.active {
+      background: #1f3a5f;
+      color: #f0f6fc;
+      border-color: #58a6ff;
+    }
+
+    .ks-view { display: none; }
+    .ks-view.active { display: block; }
+
+    .ks-grid {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    .ks-grid th,
+    .ks-grid td {
+      border: 1px solid #21262d;
+      padding: 0.55rem 0.65rem;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    .ks-grid th {
+      background: #1c2128;
+      color: #f0f6fc;
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .activity-col .slot-label { font-weight: 500; color: #e6edf3; }
+    .staff-col { color: #8b949e; font-size: 0.8rem; }
+    .location-col { color: #a371f7; font-size: 0.8rem; font-weight: 500; }
+
+    .ks-grid tr.break .activity-col .slot-label { color: #3fb950; }
+    .ks-grid tr.break .location-col { color: #3fb950; }
+    .ks-grid tr.core.maths .activity-col .slot-label { color: #79c0ff; font-weight: 600; }
+    .ks-grid tr.core.english .activity-col .slot-label { color: #e3b341; font-weight: 600; }
+    .ks-grid tr.assembly .activity-col .slot-label { color: #d2a8ff; }
+    .ks-grid tr.reset .activity-col .slot-label { color: #79c0ff; font-weight: 600; }
+    .ks-grid tr.pe .activity-col .slot-label { color: #3fb950; font-weight: 600; }
+    .ks-grid tr.arrival .activity-col .slot-label { color: #58a6ff; }
+    .ks-grid tr.checks .activity-col .slot-label { color: #8b949e; font-style: italic; }
+    .ks-grid tr.transition .activity-col .slot-label { color: #8b949e; font-style: italic; }
+
     .searches-hint {
       position: relative;
       display: inline-block;
@@ -224,115 +307,227 @@
     <h1>Student timetable</h1>
   </div>
 
-  
+  <div class="ks-selector">
+    <button class="ks-btn active" data-target="ks3-view">KS3 Timetable</button>
+    <button class="ks-btn" data-target="ks4-view">KS4 Timetable</button>
+  </div>
+
+  <div id="ks3-view" class="ks-view active">
+    
   <style>
-    #tab-monday:checked ~ .tab-panels #panel-monday { display: block; }
-    #tab-tuesday:checked ~ .tab-panels #panel-tuesday { display: block; }
-    #tab-wednesday:checked ~ .tab-panels #panel-wednesday { display: block; }
-    #tab-thursday:checked ~ .tab-panels #panel-thursday { display: block; }
-    #tab-friday:checked ~ .tab-panels #panel-friday { display: block; }
+    #tab-ks3-monday:checked ~ .tab-panels #panel-ks3-monday { display: block; }
+    #tab-ks3-tuesday:checked ~ .tab-panels #panel-ks3-tuesday { display: block; }
+    #tab-ks3-wednesday:checked ~ .tab-panels #panel-ks3-wednesday { display: block; }
+    #tab-ks3-thursday:checked ~ .tab-panels #panel-ks3-thursday { display: block; }
+    #tab-ks3-friday:checked ~ .tab-panels #panel-ks3-friday { display: block; }
   </style>
   <div class="day-tabs">
-    <input type="radio" name="day-tab" id="tab-monday" class="tab-input" checked>
-    <input type="radio" name="day-tab" id="tab-tuesday" class="tab-input">
-    <input type="radio" name="day-tab" id="tab-wednesday" class="tab-input">
-    <input type="radio" name="day-tab" id="tab-thursday" class="tab-input">
-    <input type="radio" name="day-tab" id="tab-friday" class="tab-input">
-    <div class="tab-bar" role="tablist"><label for="tab-monday" class="day-tab-btn" role="tab">Mon</label><label for="tab-tuesday" class="day-tab-btn" role="tab">Tue</label><label for="tab-wednesday" class="day-tab-btn" role="tab">Wed</label><label for="tab-thursday" class="day-tab-btn" role="tab">Thu</label><label for="tab-friday" class="day-tab-btn" role="tab">Fri</label></div>
+    <input type="radio" name="ks3-day-tab" id="tab-ks3-monday" class="tab-input" checked><input type="radio" name="ks3-day-tab" id="tab-ks3-tuesday" class="tab-input"><input type="radio" name="ks3-day-tab" id="tab-ks3-wednesday" class="tab-input"><input type="radio" name="ks3-day-tab" id="tab-ks3-thursday" class="tab-input"><input type="radio" name="ks3-day-tab" id="tab-ks3-friday" class="tab-input">
+    <div class="tab-bar" role="tablist"><label for="tab-ks3-monday" class="day-tab-btn" role="tab">Mon</label><label for="tab-ks3-tuesday" class="day-tab-btn" role="tab">Tue</label><label for="tab-ks3-wednesday" class="day-tab-btn" role="tab">Wed</label><label for="tab-ks3-thursday" class="day-tab-btn" role="tab">Thu</label><label for="tab-ks3-friday" class="day-tab-btn" role="tab">Fri</label></div>
     <div class="tab-panels">
       
-      <section class="day-panel" id="panel-monday" role="tabpanel" aria-labelledby="tab-monday">
+      <section class="day-panel" id="panel-ks3-monday" role="tabpanel">
         <div class="searches-hint"><button class="searches-hint-btn" aria-label="Student searches info"><span class="searches-hint-icon">ℹ️</span> Searches</button><div class="searches-hint-popup"><div class="searches-hint-title">Student Searches 08:50–09:15</div><div class="searches-hint-staff">LG / LD</div><div class="searches-hint-note">LI covers LD in absence</div></div></div>
         <div class="table-wrap">
-          <table class="day-grid">
+          <table class="ks-grid">
             <thead>
               <tr>
                 <th scope="col">Time</th>
-                <th scope="col">KS3</th>
-                <th scope="col">KS4</th>
-                <th scope="col">FLZ</th>
+                <th scope="col">Activity</th>
+                <th scope="col">Staff</th>
+                <th scope="col">Location</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td class="time-col">08:50–09:05</td><td colspan="2" class="slot arrival"><span class="slot-label">Arrival</span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">09:05–09:15</td><td colspan="2" class="slot checks"><span class="slot-label">Checks / Late Arrivals</span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">09:15–09:45</td><td class="slot reset"><span class="slot-label">Reset<span class="slot-staff">LG</span><span class="slot-note">Supported by HK / JM</span></span></td><td class="slot reset"><span class="slot-label">Reset<span class="slot-staff">LI</span><span class="slot-note">Supported by HK / JM</span></span></td><td class="slot reset"><span class="slot-label">Reset support → FLZ 09:40<span class="slot-staff">HK / JM</span><span class="slot-note">Supported by HK / JM</span></span></td></tr><tr><td class="time-col">09:45–10:25</td><td class="slot core maths"><span class="slot-label">Maths<span class="slot-staff">LG</span></span></td><td class="slot core maths"><span class="slot-label">Maths<span class="slot-staff">LI</span></span></td><td class="slot core maths"><span class="slot-label">Maths<span class="slot-staff">HK / JM</span></span></td></tr><tr><td class="time-col">10:25–11:05</td><td class="slot core english"><span class="slot-label">English<span class="slot-staff">LG</span></span></td><td class="slot core english"><span class="slot-label">English<span class="slot-staff">LI</span></span></td><td class="slot core english"><span class="slot-label">English<span class="slot-staff">HK / JM</span></span></td></tr><tr><td class="time-col">11:05–11:20</td><td class="slot break"><span class="slot-label">KS3 Break (Outside)<span class="slot-staff">HK, LD (Main Foyer)</span></span></td><td class="slot"><span class="slot-label">Personal Development<span class="slot-staff">JC</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">11:20–11:35</td><td class="slot"><span class="slot-label">Group Mentoring<span class="slot-staff">JC</span></span></td><td class="slot break"><span class="slot-label">KS4 Break (Outside)<span class="slot-staff">LI, LG</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">11:35–12:15</td><td class="slot"><span class="slot-label">Group Mentoring<span class="slot-staff">JC</span></span></td><td class="slot"><span class="slot-label">King&#x27;s Trust<span class="slot-staff">LG</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">12:15–12:30</td><td class="slot break"><span class="slot-label">KS3 Lunch<span class="slot-staff">HK, LD (Main Foyer)</span></span></td><td class="slot break"><span class="slot-label">KS4 Lunch<span class="slot-staff">LI, LG</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">12:30–13:10</td><td class="slot"><span class="slot-label">SEMH / AQA<span class="slot-staff">JC</span></span></td><td class="slot"><span class="slot-label">Sports Leaders / Vocational<span class="slot-staff">LI</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">13:10–13:20</td><td colspan="2" class="slot transition"><span class="slot-label">Transition / Expectations<span class="slot-staff">LI / JC</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">13:20–14:45</td><td colspan="2" class="slot pe"><span class="slot-label">PE<span class="slot-staff">LI</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">14:45–15:00</td><td colspan="2" class="slot"><span class="slot-label">Pause &amp; Progress<span class="slot-staff">LG / JC</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr>
+              <tr class="slot arrival"><td class="time-col">08:50–09:05</td><td class="activity-col"><span class="slot-label">Arrival</span></td><td class="staff-col"></td><td class="location-col">Foyer</td></tr><tr class="slot checks"><td class="time-col">09:05–09:15</td><td class="activity-col"><span class="slot-label">Checks / Late Arrivals</span></td><td class="staff-col"></td><td class="location-col">Foyer</td></tr><tr class="slot reset"><td class="time-col">09:15–09:45</td><td class="activity-col"><span class="slot-label">Reset</span></td><td class="staff-col">LG</td><td class="location-col">Boardroom</td></tr><tr class="slot core maths"><td class="time-col">09:45–10:25</td><td class="activity-col"><span class="slot-label">Maths</span></td><td class="staff-col">LG</td><td class="location-col">Boardroom</td></tr><tr class="slot core english"><td class="time-col">10:25–11:05</td><td class="activity-col"><span class="slot-label">English</span></td><td class="staff-col">LG</td><td class="location-col">Boardroom</td></tr><tr class="slot break"><td class="time-col">11:05–11:20</td><td class="activity-col"><span class="slot-label">Break</span></td><td class="staff-col">HK, LD (Main Foyer)</td><td class="location-col">Outside</td></tr><tr class="slot"><td class="time-col">11:20–11:35</td><td class="activity-col"><span class="slot-label">Group Mentoring</span></td><td class="staff-col">JC</td><td class="location-col">Boardroom</td></tr><tr class="slot"><td class="time-col">11:35–12:15</td><td class="activity-col"><span class="slot-label">Group Mentoring</span></td><td class="staff-col">JC</td><td class="location-col">Boardroom</td></tr><tr class="slot break"><td class="time-col">12:15–12:30</td><td class="activity-col"><span class="slot-label">Lunch</span></td><td class="staff-col">HK, LD (Main Foyer)</td><td class="location-col">Boardroom</td></tr><tr class="slot"><td class="time-col">12:30–13:10</td><td class="activity-col"><span class="slot-label">SEMH / AQA</span></td><td class="staff-col">JC</td><td class="location-col">Boardroom</td></tr><tr class="slot transition"><td class="time-col">13:10–13:20</td><td class="activity-col"><span class="slot-label">Transition / Expectations</span></td><td class="staff-col">LI / JC</td><td class="location-col">Foyer</td></tr><tr class="slot pe"><td class="time-col">13:20–14:45</td><td class="activity-col"><span class="slot-label">PE</span></td><td class="staff-col">LI</td><td class="location-col">Sports Hall</td></tr><tr class="slot"><td class="time-col">14:45–15:00</td><td class="activity-col"><span class="slot-label">Pause &amp; Progress</span></td><td class="staff-col">LG / JC</td><td class="location-col">Boardroom</td></tr>
             </tbody>
           </table>
         </div>
       </section>
-      <section class="day-panel" id="panel-tuesday" role="tabpanel" aria-labelledby="tab-tuesday">
+      <section class="day-panel" id="panel-ks3-tuesday" role="tabpanel">
         <div class="searches-hint"><button class="searches-hint-btn" aria-label="Student searches info"><span class="searches-hint-icon">ℹ️</span> Searches</button><div class="searches-hint-popup"><div class="searches-hint-title">Student Searches 08:50–09:15</div><div class="searches-hint-staff">SA / LD</div><div class="searches-hint-note">LI covers LD in absence</div></div></div>
         <div class="table-wrap">
-          <table class="day-grid">
+          <table class="ks-grid">
             <thead>
               <tr>
                 <th scope="col">Time</th>
-                <th scope="col">KS3</th>
-                <th scope="col">KS4</th>
-                <th scope="col">FLZ</th>
+                <th scope="col">Activity</th>
+                <th scope="col">Staff</th>
+                <th scope="col">Location</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td class="time-col">08:50–09:05</td><td colspan="2" class="slot arrival"><span class="slot-label">Arrival</span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">09:05–09:15</td><td colspan="2" class="slot checks"><span class="slot-label">Checks / Late Arrivals</span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">09:15–09:45</td><td colspan="2" class="slot assembly"><span class="slot-label">Assembly<span class="slot-staff">SA / LG</span></span></td><td class="slot assembly"><span class="slot-label">Reset support → FLZ 09:40<span class="slot-staff">HK / JM</span></span></td></tr><tr><td class="time-col">09:45–10:25</td><td class="slot core maths"><span class="slot-label">Maths<span class="slot-staff">LG</span></span></td><td class="slot core maths"><span class="slot-label">Maths<span class="slot-staff">LI</span></span></td><td class="slot core maths"><span class="slot-label">Maths<span class="slot-staff">HK / JM</span></span></td></tr><tr><td class="time-col">10:25–11:05</td><td class="slot core english"><span class="slot-label">English<span class="slot-staff">LG</span></span></td><td class="slot core english"><span class="slot-label">English<span class="slot-staff">LI</span></span></td><td class="slot core english"><span class="slot-label">English<span class="slot-staff">HK / JM</span></span></td></tr><tr><td class="time-col">11:05–11:20</td><td class="slot break"><span class="slot-label">KS3 Break (Outside)<span class="slot-staff">SA (Main Foyer), HK</span></span></td><td class="slot"><span class="slot-label">Personal Development<span class="slot-staff">LD</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">11:20–11:35</td><td class="slot"><span class="slot-label">Art<span class="slot-staff">SA</span></span></td><td class="slot break"><span class="slot-label">KS4 Break (Outside)<span class="slot-staff">LI, LG</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">11:35–12:15</td><td class="slot"><span class="slot-label">Art<span class="slot-staff">SA</span></span></td><td class="slot"><span class="slot-label">DofE<span class="slot-staff">LD</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">12:15–12:30</td><td class="slot break"><span class="slot-label">KS3 Lunch<span class="slot-staff">SA (Main Foyer), HK</span></span></td><td class="slot break"><span class="slot-label">KS4 Lunch<span class="slot-staff">LI, LG</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">12:30–13:10</td><td class="slot"><span class="slot-label">SEMH / AQA<span class="slot-staff">JC</span></span></td><td class="slot"><span class="slot-label">SEMH / AQA<span class="slot-staff">LG</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">13:10–13:20</td><td colspan="2" class="slot transition"><span class="slot-label">Transition / Expectations<span class="slot-staff">LI / JC</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">13:20–14:45</td><td colspan="2" class="slot pe"><span class="slot-label">PE<span class="slot-staff">LI</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">14:45–15:00</td><td colspan="2" class="slot"><span class="slot-label">Pause &amp; Progress<span class="slot-staff">LG / JC</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr>
+              <tr class="slot arrival"><td class="time-col">08:50–09:05</td><td class="activity-col"><span class="slot-label">Arrival</span></td><td class="staff-col"></td><td class="location-col">Foyer</td></tr><tr class="slot checks"><td class="time-col">09:05–09:15</td><td class="activity-col"><span class="slot-label">Checks / Late Arrivals</span></td><td class="staff-col"></td><td class="location-col">Foyer</td></tr><tr class="slot assembly"><td class="time-col">09:15–09:45</td><td class="activity-col"><span class="slot-label">Assembly</span></td><td class="staff-col">SA / LG</td><td class="location-col">Sports Hall</td></tr><tr class="slot core maths"><td class="time-col">09:45–10:25</td><td class="activity-col"><span class="slot-label">Maths</span></td><td class="staff-col">LG</td><td class="location-col">Boardroom</td></tr><tr class="slot core english"><td class="time-col">10:25–11:05</td><td class="activity-col"><span class="slot-label">English</span></td><td class="staff-col">LG</td><td class="location-col">Boardroom</td></tr><tr class="slot break"><td class="time-col">11:05–11:20</td><td class="activity-col"><span class="slot-label">Break</span></td><td class="staff-col">SA (Main Foyer), HK</td><td class="location-col">Outside</td></tr><tr class="slot"><td class="time-col">11:20–11:35</td><td class="activity-col"><span class="slot-label">Art</span></td><td class="staff-col">SA</td><td class="location-col">Art Room</td></tr><tr class="slot"><td class="time-col">11:35–12:15</td><td class="activity-col"><span class="slot-label">Art</span></td><td class="staff-col">SA</td><td class="location-col">Art Room</td></tr><tr class="slot break"><td class="time-col">12:15–12:30</td><td class="activity-col"><span class="slot-label">Lunch</span></td><td class="staff-col">SA (Main Foyer), HK</td><td class="location-col">Boardroom</td></tr><tr class="slot"><td class="time-col">12:30–13:10</td><td class="activity-col"><span class="slot-label">SEMH / AQA</span></td><td class="staff-col">JC</td><td class="location-col">Boardroom</td></tr><tr class="slot transition"><td class="time-col">13:10–13:20</td><td class="activity-col"><span class="slot-label">Transition / Expectations</span></td><td class="staff-col">LI / JC</td><td class="location-col">Foyer</td></tr><tr class="slot pe"><td class="time-col">13:20–14:45</td><td class="activity-col"><span class="slot-label">PE</span></td><td class="staff-col">LI</td><td class="location-col">Sports Hall</td></tr><tr class="slot"><td class="time-col">14:45–15:00</td><td class="activity-col"><span class="slot-label">Pause &amp; Progress</span></td><td class="staff-col">LG / JC</td><td class="location-col">Boardroom</td></tr>
             </tbody>
           </table>
         </div>
       </section>
-      <section class="day-panel" id="panel-wednesday" role="tabpanel" aria-labelledby="tab-wednesday">
+      <section class="day-panel" id="panel-ks3-wednesday" role="tabpanel">
         <div class="searches-hint"><button class="searches-hint-btn" aria-label="Student searches info"><span class="searches-hint-icon">ℹ️</span> Searches</button><div class="searches-hint-popup"><div class="searches-hint-title">Student Searches 08:50–09:15</div><div class="searches-hint-staff">SA / LD</div><div class="searches-hint-note">LI covers LD in absence — students arrive 10:00</div></div></div>
         <div class="table-wrap">
-          <table class="day-grid">
+          <table class="ks-grid">
             <thead>
               <tr>
                 <th scope="col">Time</th>
-                <th scope="col">KS3</th>
-                <th scope="col">KS4</th>
-                
+                <th scope="col">Activity</th>
+                <th scope="col">Staff</th>
+                <th scope="col">Location</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td class="time-col">10:00–10:20</td><td class="slot reset"><span class="slot-label">Reset<span class="slot-staff">LG</span></span></td><td class="slot reset"><span class="slot-label">Reset<span class="slot-staff">LI</span></span></td></tr><tr><td class="time-col">10:20–11:10</td><td class="slot core maths"><span class="slot-label">Maths<span class="slot-staff">LG</span></span></td><td class="slot core maths"><span class="slot-label">Maths<span class="slot-staff">LI</span></span></td></tr><tr><td class="time-col">11:10–11:25</td><td class="slot break"><span class="slot-label">KS3 Break (Main Room)<span class="slot-staff">SA, HK</span></span></td><td class="slot break"><span class="slot-label">KS4 Break (Computer Room)<span class="slot-staff">LI, LG</span></span></td></tr><tr><td class="time-col">11:25–12:15</td><td class="slot core english"><span class="slot-label">English<span class="slot-staff">LG</span></span></td><td class="slot core english"><span class="slot-label">English<span class="slot-staff">LI</span></span></td></tr><tr><td class="time-col">12:15–12:30</td><td class="slot break"><span class="slot-label">KS3 Lunch<span class="slot-staff">SA, HK</span></span></td><td class="slot break"><span class="slot-label">KS4 Lunch<span class="slot-staff">LI, LG</span></span></td></tr><tr><td class="time-col">12:30–13:10</td><td class="slot"><span class="slot-label">PSHE<span class="slot-staff">LD</span></span></td><td class="slot"><span class="slot-label">PSHE<span class="slot-staff">LG</span></span></td></tr><tr><td class="time-col">13:10–13:25</td><td colspan="2" class="slot break"><span class="slot-label">Break<span class="slot-staff">SA, LI</span></span></td></tr><tr><td class="time-col">13:25–14:05</td><td class="slot"><span class="slot-label">SEMH / AQA<span class="slot-staff">LG</span></span></td><td class="slot"><span class="slot-label">Citizenship<span class="slot-staff">LD / LI</span></span></td></tr><tr><td class="time-col">14:05–14:15</td><td colspan="2" class="slot transition"><span class="slot-label">Transition / Expectations<span class="slot-staff">LI / SA</span></span></td></tr><tr><td class="time-col">14:15–14:45</td><td colspan="2" class="slot pe"><span class="slot-label">Gym<span class="slot-staff">LI / SA</span></span></td></tr><tr><td class="time-col">14:45–15:00</td><td colspan="2" class="slot"><span class="slot-label">Pause &amp; Progress<span class="slot-staff">LG / SA</span></span></td></tr>
+              <tr class="slot reset"><td class="time-col">10:00–10:20</td><td class="activity-col"><span class="slot-label">Reset</span></td><td class="staff-col">LG</td><td class="location-col">Boardroom</td></tr><tr class="slot core maths"><td class="time-col">10:20–11:10</td><td class="activity-col"><span class="slot-label">Maths</span></td><td class="staff-col">LG</td><td class="location-col">Boardroom</td></tr><tr class="slot break"><td class="time-col">11:10–11:25</td><td class="activity-col"><span class="slot-label">Break — Main Room</span></td><td class="staff-col">SA, HK</td><td class="location-col">Boardroom</td></tr><tr class="slot core english"><td class="time-col">11:25–12:15</td><td class="activity-col"><span class="slot-label">English</span></td><td class="staff-col">LG</td><td class="location-col">Boardroom</td></tr><tr class="slot break"><td class="time-col">12:15–12:30</td><td class="activity-col"><span class="slot-label">Lunch</span></td><td class="staff-col">SA, HK</td><td class="location-col">Boardroom</td></tr><tr class="slot"><td class="time-col">12:30–13:10</td><td class="activity-col"><span class="slot-label">PSHE</span></td><td class="staff-col">LD</td><td class="location-col">Boardroom</td></tr><tr class="slot break"><td class="time-col">13:10–13:25</td><td class="activity-col"><span class="slot-label">Break</span></td><td class="staff-col">SA, LI</td><td class="location-col">Boardroom</td></tr><tr class="slot"><td class="time-col">13:25–14:05</td><td class="activity-col"><span class="slot-label">SEMH / AQA</span></td><td class="staff-col">LG</td><td class="location-col">Boardroom</td></tr><tr class="slot transition"><td class="time-col">14:05–14:15</td><td class="activity-col"><span class="slot-label">Transition / Expectations</span></td><td class="staff-col">LI / SA</td><td class="location-col">Foyer</td></tr><tr class="slot pe"><td class="time-col">14:15–14:45</td><td class="activity-col"><span class="slot-label">Gym</span></td><td class="staff-col">LI / SA</td><td class="location-col">Gym</td></tr><tr class="slot"><td class="time-col">14:45–15:00</td><td class="activity-col"><span class="slot-label">Pause &amp; Progress</span></td><td class="staff-col">LG / SA</td><td class="location-col">Boardroom</td></tr>
             </tbody>
           </table>
         </div>
       </section>
-      <section class="day-panel" id="panel-thursday" role="tabpanel" aria-labelledby="tab-thursday">
+      <section class="day-panel" id="panel-ks3-thursday" role="tabpanel">
         <div class="searches-hint"><button class="searches-hint-btn" aria-label="Student searches info"><span class="searches-hint-icon">ℹ️</span> Searches</button><div class="searches-hint-popup"><div class="searches-hint-title">Student Searches 08:50–09:15</div><div class="searches-hint-staff">SA / LD</div><div class="searches-hint-note">LI covers LD in absence</div></div></div>
         <div class="table-wrap">
-          <table class="day-grid">
+          <table class="ks-grid">
             <thead>
               <tr>
                 <th scope="col">Time</th>
-                <th scope="col">KS3</th>
-                <th scope="col">KS4</th>
-                <th scope="col">FLZ</th>
+                <th scope="col">Activity</th>
+                <th scope="col">Staff</th>
+                <th scope="col">Location</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td class="time-col">08:50–09:05</td><td colspan="2" class="slot arrival"><span class="slot-label">Arrival</span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">09:05–09:15</td><td colspan="2" class="slot checks"><span class="slot-label">Checks / Late Arrivals</span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">09:15–09:45</td><td class="slot reset"><span class="slot-label">Reset<span class="slot-staff">LG</span><span class="slot-note">Supported by HK / JM</span></span></td><td class="slot reset"><span class="slot-label">Reset<span class="slot-staff">LI</span><span class="slot-note">Supported by HK / JM</span></span></td><td class="slot reset"><span class="slot-label">Reset support → FLZ 09:40<span class="slot-staff">HK / JM</span><span class="slot-note">Supported by HK / JM</span></span></td></tr><tr><td class="time-col">09:45–10:25</td><td class="slot core maths"><span class="slot-label">Maths<span class="slot-staff">LG</span></span></td><td class="slot core maths"><span class="slot-label">Maths<span class="slot-staff">LI</span></span></td><td class="slot core maths"><span class="slot-label">Maths<span class="slot-staff">HK / JM</span></span></td></tr><tr><td class="time-col">10:25–11:05</td><td class="slot core english"><span class="slot-label">English<span class="slot-staff">LG</span></span></td><td class="slot core english"><span class="slot-label">English<span class="slot-staff">LI</span></span></td><td class="slot core english"><span class="slot-label">English<span class="slot-staff">HK / JM</span></span></td></tr><tr><td class="time-col">11:05–11:20</td><td class="slot break"><span class="slot-label">KS3 Break (Outside)<span class="slot-staff">SA (Main Foyer), HK</span></span></td><td class="slot"><span class="slot-label">Personal Development<span class="slot-staff">JC / LD</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">11:20–11:35</td><td class="slot"><span class="slot-label">Food Technology<span class="slot-staff">SA</span></span></td><td class="slot break"><span class="slot-label">KS4 Break (Outside)<span class="slot-staff">LI, LG</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">11:35–12:15</td><td class="slot"><span class="slot-label">Food Technology<span class="slot-staff">SA</span></span></td><td class="slot"><span class="slot-label">Citizenship<span class="slot-staff">JC / LD</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">12:15–12:30</td><td class="slot break"><span class="slot-label">KS3 Lunch<span class="slot-staff">SA (Main Foyer), HK</span></span></td><td class="slot break"><span class="slot-label">KS4 Lunch<span class="slot-staff">LI, LG</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">12:30–13:10</td><td class="slot"><span class="slot-label">SEMH / AQA<span class="slot-staff">LG</span></span></td><td class="slot"><span class="slot-label">SEMH / AQA<span class="slot-staff">LI</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">13:10–13:20</td><td colspan="2" class="slot transition"><span class="slot-label">Transition / Expectations<span class="slot-staff">LI / JC</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">13:20–14:00</td><td colspan="2" class="slot pe"><span class="slot-label">PE<span class="slot-staff">LI</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr>
+              <tr class="slot arrival"><td class="time-col">08:50–09:05</td><td class="activity-col"><span class="slot-label">Arrival</span></td><td class="staff-col"></td><td class="location-col">Foyer</td></tr><tr class="slot checks"><td class="time-col">09:05–09:15</td><td class="activity-col"><span class="slot-label">Checks / Late Arrivals</span></td><td class="staff-col"></td><td class="location-col">Foyer</td></tr><tr class="slot reset"><td class="time-col">09:15–09:45</td><td class="activity-col"><span class="slot-label">Reset</span></td><td class="staff-col">LG</td><td class="location-col">Boardroom</td></tr><tr class="slot core maths"><td class="time-col">09:45–10:25</td><td class="activity-col"><span class="slot-label">Maths</span></td><td class="staff-col">LG</td><td class="location-col">Boardroom</td></tr><tr class="slot core english"><td class="time-col">10:25–11:05</td><td class="activity-col"><span class="slot-label">English</span></td><td class="staff-col">LG</td><td class="location-col">Boardroom</td></tr><tr class="slot break"><td class="time-col">11:05–11:20</td><td class="activity-col"><span class="slot-label">Break</span></td><td class="staff-col">SA (Main Foyer), HK</td><td class="location-col">Outside</td></tr><tr class="slot"><td class="time-col">11:20–11:35</td><td class="activity-col"><span class="slot-label">Food Technology</span></td><td class="staff-col">SA</td><td class="location-col">Cooking Room</td></tr><tr class="slot"><td class="time-col">11:35–12:15</td><td class="activity-col"><span class="slot-label">Food Technology</span></td><td class="staff-col">SA</td><td class="location-col">Cooking Room</td></tr><tr class="slot break"><td class="time-col">12:15–12:30</td><td class="activity-col"><span class="slot-label">Lunch</span></td><td class="staff-col">SA (Main Foyer), HK</td><td class="location-col">Boardroom</td></tr><tr class="slot"><td class="time-col">12:30–13:10</td><td class="activity-col"><span class="slot-label">SEMH / AQA</span></td><td class="staff-col">LG</td><td class="location-col">Boardroom</td></tr><tr class="slot transition"><td class="time-col">13:10–13:20</td><td class="activity-col"><span class="slot-label">Transition / Expectations</span></td><td class="staff-col">LI / JC</td><td class="location-col">Foyer</td></tr><tr class="slot pe"><td class="time-col">13:20–14:00</td><td class="activity-col"><span class="slot-label">PE</span></td><td class="staff-col">LI</td><td class="location-col">Sports Hall</td></tr>
             </tbody>
           </table>
         </div>
       </section>
-      <section class="day-panel" id="panel-friday" role="tabpanel" aria-labelledby="tab-friday">
+      <section class="day-panel" id="panel-ks3-friday" role="tabpanel">
         <div class="searches-hint"><button class="searches-hint-btn" aria-label="Student searches info"><span class="searches-hint-icon">ℹ️</span> Searches</button><div class="searches-hint-popup"><div class="searches-hint-title">Student Searches 08:50–09:15</div><div class="searches-hint-staff">SA / LD</div><div class="searches-hint-note">LI covers LD in absence</div></div></div>
         <div class="table-wrap">
-          <table class="day-grid">
+          <table class="ks-grid">
             <thead>
               <tr>
                 <th scope="col">Time</th>
-                <th scope="col">KS3</th>
-                <th scope="col">KS4</th>
-                <th scope="col">FLZ</th>
+                <th scope="col">Activity</th>
+                <th scope="col">Staff</th>
+                <th scope="col">Location</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td class="time-col">08:50–09:05</td><td colspan="2" class="slot arrival"><span class="slot-label">Arrival</span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">09:05–09:15</td><td colspan="2" class="slot checks"><span class="slot-label">Checks / Late Arrivals</span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">09:15–09:45</td><td class="slot reset"><span class="slot-label">Reset<span class="slot-staff">LG</span><span class="slot-note">Supported by HK / JM</span></span></td><td class="slot reset"><span class="slot-label">Reset<span class="slot-staff">LI</span><span class="slot-note">Supported by HK / JM</span></span></td><td class="slot reset"><span class="slot-label">Reset support → FLZ 09:40<span class="slot-staff">HK / JM</span><span class="slot-note">Supported by HK / JM</span></span></td></tr><tr><td class="time-col">09:45–10:25</td><td class="slot core maths"><span class="slot-label">Maths<span class="slot-staff">LG</span></span></td><td class="slot core maths"><span class="slot-label">Maths<span class="slot-staff">LI</span></span></td><td class="slot core maths"><span class="slot-label">Maths<span class="slot-staff">HK / JM</span></span></td></tr><tr><td class="time-col">10:25–11:05</td><td class="slot core english"><span class="slot-label">English<span class="slot-staff">LG</span></span></td><td class="slot core english"><span class="slot-label">English<span class="slot-staff">LI</span></span></td><td class="slot core english"><span class="slot-label">English<span class="slot-staff">HK / JM</span></span></td></tr><tr><td class="time-col">11:05–11:20</td><td class="slot break"><span class="slot-label">KS3 Break (Outside)<span class="slot-staff">SA (Main Foyer), HK</span></span></td><td class="slot"><span class="slot-label">Personal Development<span class="slot-staff">LI</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">11:20–11:35</td><td class="slot"><span class="slot-label">PSHE<span class="slot-staff">SA</span></span></td><td class="slot break"><span class="slot-label">KS4 Break (Outside)<span class="slot-staff">LI, LG</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">11:35–12:15</td><td class="slot"><span class="slot-label">PSHE<span class="slot-staff">SA</span></span></td><td class="slot"><span class="slot-label">SEMH / AQA<span class="slot-staff">LI</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">12:15–12:30</td><td class="slot break"><span class="slot-label">KS3 Lunch<span class="slot-staff">SA (Main Foyer), HK</span></span></td><td class="slot break"><span class="slot-label">KS4 Lunch<span class="slot-staff">LI, LG</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">12:30–13:10</td><td class="slot"><span class="slot-label">SEMH / AQA<span class="slot-staff">LG</span></span></td><td class="slot"><span class="slot-label">Sports Leaders / Vocational<span class="slot-staff">LI</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">13:10–13:20</td><td colspan="2" class="slot transition"><span class="slot-label">Transition / Expectations<span class="slot-staff">LI / LG</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr><tr><td class="time-col">13:20–14:00</td><td colspan="2" class="slot pe"><span class="slot-label">PE<span class="slot-staff">LI</span></span></td><td class="slot"><span class="slot-label">—</span></td></tr>
+              <tr class="slot arrival"><td class="time-col">08:50–09:05</td><td class="activity-col"><span class="slot-label">Arrival</span></td><td class="staff-col"></td><td class="location-col">Foyer</td></tr><tr class="slot checks"><td class="time-col">09:05–09:15</td><td class="activity-col"><span class="slot-label">Checks / Late Arrivals</span></td><td class="staff-col"></td><td class="location-col">Foyer</td></tr><tr class="slot reset"><td class="time-col">09:15–09:45</td><td class="activity-col"><span class="slot-label">Reset</span></td><td class="staff-col">LG</td><td class="location-col">Boardroom</td></tr><tr class="slot core maths"><td class="time-col">09:45–10:25</td><td class="activity-col"><span class="slot-label">Maths</span></td><td class="staff-col">LG</td><td class="location-col">Boardroom</td></tr><tr class="slot core english"><td class="time-col">10:25–11:05</td><td class="activity-col"><span class="slot-label">English</span></td><td class="staff-col">LG</td><td class="location-col">Boardroom</td></tr><tr class="slot break"><td class="time-col">11:05–11:20</td><td class="activity-col"><span class="slot-label">Break</span></td><td class="staff-col">SA (Main Foyer), HK</td><td class="location-col">Outside</td></tr><tr class="slot"><td class="time-col">11:20–11:35</td><td class="activity-col"><span class="slot-label">PSHE</span></td><td class="staff-col">SA</td><td class="location-col">Boardroom</td></tr><tr class="slot"><td class="time-col">11:35–12:15</td><td class="activity-col"><span class="slot-label">PSHE</span></td><td class="staff-col">SA</td><td class="location-col">Boardroom</td></tr><tr class="slot break"><td class="time-col">12:15–12:30</td><td class="activity-col"><span class="slot-label">Lunch</span></td><td class="staff-col">SA (Main Foyer), HK</td><td class="location-col">Boardroom</td></tr><tr class="slot"><td class="time-col">12:30–13:10</td><td class="activity-col"><span class="slot-label">SEMH / AQA</span></td><td class="staff-col">LG</td><td class="location-col">Boardroom</td></tr><tr class="slot transition"><td class="time-col">13:10–13:20</td><td class="activity-col"><span class="slot-label">Transition / Expectations</span></td><td class="staff-col">LI / LG</td><td class="location-col">Foyer</td></tr><tr class="slot pe"><td class="time-col">13:20–14:00</td><td class="activity-col"><span class="slot-label">PE</span></td><td class="staff-col">LI</td><td class="location-col">Sports Hall</td></tr>
             </tbody>
           </table>
         </div>
       </section>
     </div>
   </div>
+  </div>
+
+  <div id="ks4-view" class="ks-view">
+    
+  <style>
+    #tab-ks4-monday:checked ~ .tab-panels #panel-ks4-monday { display: block; }
+    #tab-ks4-tuesday:checked ~ .tab-panels #panel-ks4-tuesday { display: block; }
+    #tab-ks4-wednesday:checked ~ .tab-panels #panel-ks4-wednesday { display: block; }
+    #tab-ks4-thursday:checked ~ .tab-panels #panel-ks4-thursday { display: block; }
+    #tab-ks4-friday:checked ~ .tab-panels #panel-ks4-friday { display: block; }
+  </style>
+  <div class="day-tabs">
+    <input type="radio" name="ks4-day-tab" id="tab-ks4-monday" class="tab-input" checked><input type="radio" name="ks4-day-tab" id="tab-ks4-tuesday" class="tab-input"><input type="radio" name="ks4-day-tab" id="tab-ks4-wednesday" class="tab-input"><input type="radio" name="ks4-day-tab" id="tab-ks4-thursday" class="tab-input"><input type="radio" name="ks4-day-tab" id="tab-ks4-friday" class="tab-input">
+    <div class="tab-bar" role="tablist"><label for="tab-ks4-monday" class="day-tab-btn" role="tab">Mon</label><label for="tab-ks4-tuesday" class="day-tab-btn" role="tab">Tue</label><label for="tab-ks4-wednesday" class="day-tab-btn" role="tab">Wed</label><label for="tab-ks4-thursday" class="day-tab-btn" role="tab">Thu</label><label for="tab-ks4-friday" class="day-tab-btn" role="tab">Fri</label></div>
+    <div class="tab-panels">
+      
+      <section class="day-panel" id="panel-ks4-monday" role="tabpanel">
+        <div class="searches-hint"><button class="searches-hint-btn" aria-label="Student searches info"><span class="searches-hint-icon">ℹ️</span> Searches</button><div class="searches-hint-popup"><div class="searches-hint-title">Student Searches 08:50–09:15</div><div class="searches-hint-staff">LG / LD</div><div class="searches-hint-note">LI covers LD in absence</div></div></div>
+        <div class="table-wrap">
+          <table class="ks-grid">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Activity</th>
+                <th scope="col">Staff</th>
+                <th scope="col">Location</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="slot arrival"><td class="time-col">08:50–09:05</td><td class="activity-col"><span class="slot-label">Arrival</span></td><td class="staff-col"></td><td class="location-col">Foyer</td></tr><tr class="slot checks"><td class="time-col">09:05–09:15</td><td class="activity-col"><span class="slot-label">Checks / Late Arrivals</span></td><td class="staff-col"></td><td class="location-col">Foyer</td></tr><tr class="slot reset"><td class="time-col">09:15–09:45</td><td class="activity-col"><span class="slot-label">Reset</span></td><td class="staff-col">LI</td><td class="location-col">URFUTURE</td></tr><tr class="slot core maths"><td class="time-col">09:45–10:25</td><td class="activity-col"><span class="slot-label">Maths</span></td><td class="staff-col">LI</td><td class="location-col">URFUTURE</td></tr><tr class="slot core english"><td class="time-col">10:25–11:05</td><td class="activity-col"><span class="slot-label">English</span></td><td class="staff-col">LI</td><td class="location-col">URFUTURE</td></tr><tr class="slot"><td class="time-col">11:05–11:20</td><td class="activity-col"><span class="slot-label">Personal Development</span></td><td class="staff-col">JC</td><td class="location-col">URFUTURE</td></tr><tr class="slot break"><td class="time-col">11:20–11:35</td><td class="activity-col"><span class="slot-label">Break</span></td><td class="staff-col">LI, LG</td><td class="location-col">Outside</td></tr><tr class="slot"><td class="time-col">11:35–12:15</td><td class="activity-col"><span class="slot-label">King&#x27;s Trust</span></td><td class="staff-col">LG</td><td class="location-col">URFUTURE</td></tr><tr class="slot break"><td class="time-col">12:15–12:30</td><td class="activity-col"><span class="slot-label">Lunch</span></td><td class="staff-col">LI, LG</td><td class="location-col">URFUTURE</td></tr><tr class="slot"><td class="time-col">12:30–13:10</td><td class="activity-col"><span class="slot-label">Sports Leaders / Vocational</span></td><td class="staff-col">LI</td><td class="location-col">Sports Hall</td></tr><tr class="slot transition"><td class="time-col">13:10–13:20</td><td class="activity-col"><span class="slot-label">Transition / Expectations</span></td><td class="staff-col">LI / JC</td><td class="location-col">Foyer</td></tr><tr class="slot pe"><td class="time-col">13:20–14:45</td><td class="activity-col"><span class="slot-label">PE</span></td><td class="staff-col">LI</td><td class="location-col">Sports Hall</td></tr><tr class="slot"><td class="time-col">14:45–15:00</td><td class="activity-col"><span class="slot-label">Pause &amp; Progress</span></td><td class="staff-col">LG / JC</td><td class="location-col">URFUTURE</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="day-panel" id="panel-ks4-tuesday" role="tabpanel">
+        <div class="searches-hint"><button class="searches-hint-btn" aria-label="Student searches info"><span class="searches-hint-icon">ℹ️</span> Searches</button><div class="searches-hint-popup"><div class="searches-hint-title">Student Searches 08:50–09:15</div><div class="searches-hint-staff">SA / LD</div><div class="searches-hint-note">LI covers LD in absence</div></div></div>
+        <div class="table-wrap">
+          <table class="ks-grid">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Activity</th>
+                <th scope="col">Staff</th>
+                <th scope="col">Location</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="slot arrival"><td class="time-col">08:50–09:05</td><td class="activity-col"><span class="slot-label">Arrival</span></td><td class="staff-col"></td><td class="location-col">Foyer</td></tr><tr class="slot checks"><td class="time-col">09:05–09:15</td><td class="activity-col"><span class="slot-label">Checks / Late Arrivals</span></td><td class="staff-col"></td><td class="location-col">Foyer</td></tr><tr class="slot assembly"><td class="time-col">09:15–09:45</td><td class="activity-col"><span class="slot-label">Assembly</span></td><td class="staff-col">SA / LG</td><td class="location-col">Sports Hall</td></tr><tr class="slot core maths"><td class="time-col">09:45–10:25</td><td class="activity-col"><span class="slot-label">Maths</span></td><td class="staff-col">LI</td><td class="location-col">URFUTURE</td></tr><tr class="slot core english"><td class="time-col">10:25–11:05</td><td class="activity-col"><span class="slot-label">English</span></td><td class="staff-col">LI</td><td class="location-col">URFUTURE</td></tr><tr class="slot"><td class="time-col">11:05–11:20</td><td class="activity-col"><span class="slot-label">Personal Development</span></td><td class="staff-col">LD</td><td class="location-col">URFUTURE</td></tr><tr class="slot break"><td class="time-col">11:20–11:35</td><td class="activity-col"><span class="slot-label">Break</span></td><td class="staff-col">LI, LG</td><td class="location-col">Outside</td></tr><tr class="slot"><td class="time-col">11:35–12:15</td><td class="activity-col"><span class="slot-label">DofE</span></td><td class="staff-col">LD</td><td class="location-col">URFUTURE</td></tr><tr class="slot break"><td class="time-col">12:15–12:30</td><td class="activity-col"><span class="slot-label">Lunch</span></td><td class="staff-col">LI, LG</td><td class="location-col">URFUTURE</td></tr><tr class="slot"><td class="time-col">12:30–13:10</td><td class="activity-col"><span class="slot-label">SEMH / AQA</span></td><td class="staff-col">LG</td><td class="location-col">URFUTURE</td></tr><tr class="slot transition"><td class="time-col">13:10–13:20</td><td class="activity-col"><span class="slot-label">Transition / Expectations</span></td><td class="staff-col">LI / JC</td><td class="location-col">Foyer</td></tr><tr class="slot pe"><td class="time-col">13:20–14:45</td><td class="activity-col"><span class="slot-label">PE</span></td><td class="staff-col">LI</td><td class="location-col">Sports Hall</td></tr><tr class="slot"><td class="time-col">14:45–15:00</td><td class="activity-col"><span class="slot-label">Pause &amp; Progress</span></td><td class="staff-col">LG / JC</td><td class="location-col">URFUTURE</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="day-panel" id="panel-ks4-wednesday" role="tabpanel">
+        <div class="searches-hint"><button class="searches-hint-btn" aria-label="Student searches info"><span class="searches-hint-icon">ℹ️</span> Searches</button><div class="searches-hint-popup"><div class="searches-hint-title">Student Searches 08:50–09:15</div><div class="searches-hint-staff">SA / LD</div><div class="searches-hint-note">LI covers LD in absence — students arrive 10:00</div></div></div>
+        <div class="table-wrap">
+          <table class="ks-grid">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Activity</th>
+                <th scope="col">Staff</th>
+                <th scope="col">Location</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="slot reset"><td class="time-col">10:00–10:20</td><td class="activity-col"><span class="slot-label">Reset</span></td><td class="staff-col">LI</td><td class="location-col">URFUTURE</td></tr><tr class="slot core maths"><td class="time-col">10:20–11:10</td><td class="activity-col"><span class="slot-label">Maths</span></td><td class="staff-col">LI</td><td class="location-col">URFUTURE</td></tr><tr class="slot break"><td class="time-col">11:10–11:25</td><td class="activity-col"><span class="slot-label">Break — Computer Room</span></td><td class="staff-col">LI, LG</td><td class="location-col">Computer Room</td></tr><tr class="slot core english"><td class="time-col">11:25–12:15</td><td class="activity-col"><span class="slot-label">English</span></td><td class="staff-col">LI</td><td class="location-col">URFUTURE</td></tr><tr class="slot break"><td class="time-col">12:15–12:30</td><td class="activity-col"><span class="slot-label">Lunch</span></td><td class="staff-col">LI, LG</td><td class="location-col">URFUTURE</td></tr><tr class="slot"><td class="time-col">12:30–13:10</td><td class="activity-col"><span class="slot-label">PSHE</span></td><td class="staff-col">LG</td><td class="location-col">URFUTURE</td></tr><tr class="slot break"><td class="time-col">13:10–13:25</td><td class="activity-col"><span class="slot-label">Break</span></td><td class="staff-col">SA, LI</td><td class="location-col">Computer Room</td></tr><tr class="slot"><td class="time-col">13:25–14:05</td><td class="activity-col"><span class="slot-label">Citizenship</span></td><td class="staff-col">LD / LI</td><td class="location-col">URFUTURE</td></tr><tr class="slot transition"><td class="time-col">14:05–14:15</td><td class="activity-col"><span class="slot-label">Transition / Expectations</span></td><td class="staff-col">LI / SA</td><td class="location-col">Foyer</td></tr><tr class="slot pe"><td class="time-col">14:15–14:45</td><td class="activity-col"><span class="slot-label">Gym</span></td><td class="staff-col">LI / SA</td><td class="location-col">Gym</td></tr><tr class="slot"><td class="time-col">14:45–15:00</td><td class="activity-col"><span class="slot-label">Pause &amp; Progress</span></td><td class="staff-col">LG / SA</td><td class="location-col">URFUTURE</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="day-panel" id="panel-ks4-thursday" role="tabpanel">
+        <div class="searches-hint"><button class="searches-hint-btn" aria-label="Student searches info"><span class="searches-hint-icon">ℹ️</span> Searches</button><div class="searches-hint-popup"><div class="searches-hint-title">Student Searches 08:50–09:15</div><div class="searches-hint-staff">SA / LD</div><div class="searches-hint-note">LI covers LD in absence</div></div></div>
+        <div class="table-wrap">
+          <table class="ks-grid">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Activity</th>
+                <th scope="col">Staff</th>
+                <th scope="col">Location</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="slot arrival"><td class="time-col">08:50–09:05</td><td class="activity-col"><span class="slot-label">Arrival</span></td><td class="staff-col"></td><td class="location-col">Foyer</td></tr><tr class="slot checks"><td class="time-col">09:05–09:15</td><td class="activity-col"><span class="slot-label">Checks / Late Arrivals</span></td><td class="staff-col"></td><td class="location-col">Foyer</td></tr><tr class="slot reset"><td class="time-col">09:15–09:45</td><td class="activity-col"><span class="slot-label">Reset</span></td><td class="staff-col">LI</td><td class="location-col">URFUTURE</td></tr><tr class="slot core maths"><td class="time-col">09:45–10:25</td><td class="activity-col"><span class="slot-label">Maths</span></td><td class="staff-col">LI</td><td class="location-col">URFUTURE</td></tr><tr class="slot core english"><td class="time-col">10:25–11:05</td><td class="activity-col"><span class="slot-label">English</span></td><td class="staff-col">LI</td><td class="location-col">URFUTURE</td></tr><tr class="slot"><td class="time-col">11:05–11:20</td><td class="activity-col"><span class="slot-label">Personal Development</span></td><td class="staff-col">JC / LD</td><td class="location-col">URFUTURE</td></tr><tr class="slot break"><td class="time-col">11:20–11:35</td><td class="activity-col"><span class="slot-label">Break</span></td><td class="staff-col">LI, LG</td><td class="location-col">Outside</td></tr><tr class="slot"><td class="time-col">11:35–12:15</td><td class="activity-col"><span class="slot-label">Citizenship</span></td><td class="staff-col">JC / LD</td><td class="location-col">URFUTURE</td></tr><tr class="slot break"><td class="time-col">12:15–12:30</td><td class="activity-col"><span class="slot-label">Lunch</span></td><td class="staff-col">LI, LG</td><td class="location-col">URFUTURE</td></tr><tr class="slot"><td class="time-col">12:30–13:10</td><td class="activity-col"><span class="slot-label">SEMH / AQA</span></td><td class="staff-col">LI</td><td class="location-col">URFUTURE</td></tr><tr class="slot transition"><td class="time-col">13:10–13:20</td><td class="activity-col"><span class="slot-label">Transition / Expectations</span></td><td class="staff-col">LI / JC</td><td class="location-col">Foyer</td></tr><tr class="slot pe"><td class="time-col">13:20–14:00</td><td class="activity-col"><span class="slot-label">PE</span></td><td class="staff-col">LI</td><td class="location-col">Sports Hall</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="day-panel" id="panel-ks4-friday" role="tabpanel">
+        <div class="searches-hint"><button class="searches-hint-btn" aria-label="Student searches info"><span class="searches-hint-icon">ℹ️</span> Searches</button><div class="searches-hint-popup"><div class="searches-hint-title">Student Searches 08:50–09:15</div><div class="searches-hint-staff">SA / LD</div><div class="searches-hint-note">LI covers LD in absence</div></div></div>
+        <div class="table-wrap">
+          <table class="ks-grid">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Activity</th>
+                <th scope="col">Staff</th>
+                <th scope="col">Location</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="slot arrival"><td class="time-col">08:50–09:05</td><td class="activity-col"><span class="slot-label">Arrival</span></td><td class="staff-col"></td><td class="location-col">Foyer</td></tr><tr class="slot checks"><td class="time-col">09:05–09:15</td><td class="activity-col"><span class="slot-label">Checks / Late Arrivals</span></td><td class="staff-col"></td><td class="location-col">Foyer</td></tr><tr class="slot reset"><td class="time-col">09:15–09:45</td><td class="activity-col"><span class="slot-label">Reset</span></td><td class="staff-col">LI</td><td class="location-col">URFUTURE</td></tr><tr class="slot core maths"><td class="time-col">09:45–10:25</td><td class="activity-col"><span class="slot-label">Maths</span></td><td class="staff-col">LI</td><td class="location-col">URFUTURE</td></tr><tr class="slot core english"><td class="time-col">10:25–11:05</td><td class="activity-col"><span class="slot-label">English</span></td><td class="staff-col">LI</td><td class="location-col">URFUTURE</td></tr><tr class="slot"><td class="time-col">11:05–11:20</td><td class="activity-col"><span class="slot-label">Personal Development</span></td><td class="staff-col">LI</td><td class="location-col">URFUTURE</td></tr><tr class="slot break"><td class="time-col">11:20–11:35</td><td class="activity-col"><span class="slot-label">Break</span></td><td class="staff-col">LI, LG</td><td class="location-col">Outside</td></tr><tr class="slot"><td class="time-col">11:35–12:15</td><td class="activity-col"><span class="slot-label">SEMH / AQA</span></td><td class="staff-col">LI</td><td class="location-col">URFUTURE</td></tr><tr class="slot break"><td class="time-col">12:15–12:30</td><td class="activity-col"><span class="slot-label">Lunch</span></td><td class="staff-col">LI, LG</td><td class="location-col">URFUTURE</td></tr><tr class="slot"><td class="time-col">12:30–13:10</td><td class="activity-col"><span class="slot-label">Sports Leaders / Vocational</span></td><td class="staff-col">LI</td><td class="location-col">Sports Hall</td></tr><tr class="slot transition"><td class="time-col">13:10–13:20</td><td class="activity-col"><span class="slot-label">Transition / Expectations</span></td><td class="staff-col">LI / LG</td><td class="location-col">Foyer</td></tr><tr class="slot pe"><td class="time-col">13:20–14:00</td><td class="activity-col"><span class="slot-label">PE</span></td><td class="staff-col">LI</td><td class="location-col">Sports Hall</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+  </div>
+
   
 <script>
 document.addEventListener('click', function(e) {
@@ -344,6 +539,23 @@ document.addEventListener('click', function(e) {
   }
   document.querySelectorAll('.searches-hint.open').forEach(function(el) {
     el.classList.remove('open');
+  });
+});
+</script>
+
+  
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var btns = document.querySelectorAll('.ks-btn');
+  var views = document.querySelectorAll('.ks-view');
+  btns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      btns.forEach(function(b) { b.classList.remove('active'); });
+      views.forEach(function(v) { v.classList.remove('active'); });
+      btn.classList.add('active');
+      var target = btn.getAttribute('data-target');
+      document.getElementById(target).classList.add('active');
+    });
   });
 });
 </script>

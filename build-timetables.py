@@ -99,6 +99,52 @@ def _is_break_or_lunch(label: str) -> bool:
     return False
 
 
+def get_location(label: str, stage: str, day_key: str, kind: str) -> str:
+    """Determine the room/location for a given activity."""
+    if not label or label == "—":
+        return ""
+    low = label.lower()
+    if kind == "arrival" or "arrival" in low:
+        return "Foyer"
+    if kind == "checks" or "checks" in low:
+        return "Foyer"
+    if kind == "transition" or "transition" in low:
+        return "Foyer"
+    if kind == "assembly" or low == "assembly":
+        return "Sports Hall"
+    if kind == "pe":
+        if low == "gym":
+            return "Gym"
+        return "Sports Hall"
+    if "art" in low and "art" == low:
+        return "Art Room"
+    if low == "food technology":
+        return "Cooking Room"
+    if "flz" in low or stage == "flz":
+        return "Sports Hall"
+    if low == "lunch":
+        if stage == "ks3":
+            return "Boardroom"
+        return "URFUTURE"
+    if low.startswith("break"):
+        if "main room" in low:
+            return "Boardroom"
+        if "computer room" in low:
+            return "Computer Room"
+        if day_key == "wednesday":
+            if stage == "ks3":
+                return "Boardroom"
+            return "Computer Room"
+        return "Outside"
+    if "sports leaders" in low or "vocational" in low:
+        return "Sports Hall"
+    if stage == "ks3":
+        return "Boardroom"
+    if stage == "ks4":
+        return "URFUTURE"
+    return ""
+
+
 def _row_ks_identical(row: dict) -> bool:
     """True when KS3 and KS4 carry the same label, staff, and supervision."""
     if (row.get("ks3", "—") or "—").lower() != (row.get("ks4", "—") or "—").lower():
@@ -292,51 +338,45 @@ def display_rows(day: dict, *, include_staff_only: bool = True) -> list[dict]:
     return merge_consecutive_rows(rows)
 
 
-def render_student_day_panel(week: dict, day_key: str) -> str:
+def render_student_ks_day_panel(week: dict, day_key: str, stage: str) -> str:
+    """Render a single day panel for one key stage (ks3 or ks4)."""
     day = week["days"][day_key]
     all_staff = week["staff"].get("people", [])
     rows = display_rows(day, include_staff_only=False)
     rows = [r for r in rows if r.get("kind") != "searches"]
-    has_flz = any(row.get("flz") for row in rows)
     hint_html = render_searches_hint(day)
     rows_html = []
     for row in rows:
-        time_cell = f'<td class="time-col">{esc(row["start"])}\u2013{esc(row["end"])}</td>'
-        merge_ks = _row_ks_identical(row)
-        merge_flz = merge_ks and has_flz and _row_flz_matches_ks(row)
-        if merge_flz:
-            rows_html.append(
-                f"<tr>{time_cell}"
-                f"{compare_cell_html(row, 'ks3', all_staff=all_staff, colspan=3, day_key=day_key)}"
-                "</tr>"
-            )
-        elif merge_ks:
-            flz_cell = compare_cell_html(row, "flz", all_staff=all_staff, day_key=day_key) if has_flz else ""
-            rows_html.append(
-                f"<tr>{time_cell}"
-                f"{compare_cell_html(row, 'ks3', all_staff=all_staff, colspan=2, day_key=day_key)}"
-                f"{flz_cell}</tr>"
-            )
-        else:
-            flz_cell = compare_cell_html(row, "flz", all_staff=all_staff, day_key=day_key) if has_flz else ""
-            rows_html.append(
-                f"<tr>{time_cell}"
-                f"{compare_cell_html(row, 'ks3', all_staff=all_staff, day_key=day_key)}"
-                f"{compare_cell_html(row, 'ks4', all_staff=all_staff, day_key=day_key)}"
-                f"{flz_cell}</tr>"
-            )
-    flz_th = '<th scope="col">FLZ</th>' if has_flz else ""
+        label = row.get(stage, "—")
+        if not label or label == "—":
+            continue
+        time_str = f'{row["start"]}\u2013{row["end"]}'
+        staff = row.get(f"staff_{stage}", "")
+        supervision = row.get(f"supervision_{stage}")
+        if not staff and supervision:
+            staff = _supervision_text(supervision, all_staff, day_key=day_key)
+        location = get_location(label, stage, day_key, row.get("kind", ""))
+        cls = cell_class(label, row.get("kind", ""))
+        rows_html.append(
+            f'<tr class="{cls}">'
+            f'<td class="time-col">{esc(time_str)}</td>'
+            f'<td class="activity-col"><span class="slot-label">{esc(label)}</span></td>'
+            f'<td class="staff-col">{esc(staff)}</td>'
+            f'<td class="location-col">{esc(location)}</td>'
+            f"</tr>"
+        )
+    prefix = "ks3" if stage == "ks3" else "ks4"
     return f"""
-      <section class="day-panel" id="panel-{day_key}" role="tabpanel" aria-labelledby="tab-{day_key}">
+      <section class="day-panel" id="panel-{prefix}-{day_key}" role="tabpanel">
         {hint_html}
         <div class="table-wrap">
-          <table class="day-grid">
+          <table class="ks-grid">
             <thead>
               <tr>
                 <th scope="col">Time</th>
-                <th scope="col">KS3</th>
-                <th scope="col">KS4</th>
-                {flz_th}
+                <th scope="col">Activity</th>
+                <th scope="col">Staff</th>
+                <th scope="col">Location</th>
               </tr>
             </thead>
             <tbody>
@@ -347,19 +387,34 @@ def render_student_day_panel(week: dict, day_key: str) -> str:
       </section>"""
 
 
-def render_student_day_views(week: dict) -> str:
-    panels = [render_student_day_panel(week, key) for key in DAY_ORDER]
+def render_student_ks_view(week: dict, stage: str) -> str:
+    """Render the full day-tabbed view for one key stage."""
+    prefix = "ks3" if stage == "ks3" else "ks4"
+    panels = [render_student_ks_day_panel(week, key, stage) for key in DAY_ORDER]
+    tab_inputs = []
+    for key in DAY_ORDER:
+        checked = " checked" if key == "monday" else ""
+        tab_inputs.append(
+            f'<input type="radio" name="{prefix}-day-tab" id="tab-{prefix}-{key}" class="tab-input"{checked}>'
+        )
+    tab_labels = []
+    for key in DAY_ORDER:
+        short = key[:3].capitalize()
+        tab_labels.append(
+            f'<label for="tab-{prefix}-{key}" class="day-tab-btn" role="tab">{short}</label>'
+        )
     panel_css = "\n    ".join(
-        f"#tab-{key}:checked ~ .tab-panels #panel-{key} {{ display: block; }}"
+        f"#tab-{prefix}-{key}:checked ~ .tab-panels #panel-{prefix}-{key} {{ display: block; }}"
         for key in DAY_ORDER
     )
+    tab_bar = f'<div class="tab-bar" role="tablist">{"".join(tab_labels)}</div>'
     return f"""
   <style>
     {panel_css}
   </style>
   <div class="day-tabs">
-    {render_day_tab_inputs()}
-    {render_day_tab_bar()}
+    {"".join(tab_inputs)}
+    {tab_bar}
     <div class="tab-panels">
       {''.join(panels)}
     </div>
@@ -799,7 +854,17 @@ DAY_TAB_CSS = """
     #tab-tuesday:checked ~ .tab-bar label[for="tab-tuesday"],
     #tab-wednesday:checked ~ .tab-bar label[for="tab-wednesday"],
     #tab-thursday:checked ~ .tab-bar label[for="tab-thursday"],
-    #tab-friday:checked ~ .tab-bar label[for="tab-friday"] {
+    #tab-friday:checked ~ .tab-bar label[for="tab-friday"],
+    #tab-ks3-monday:checked ~ .tab-bar label[for="tab-ks3-monday"],
+    #tab-ks3-tuesday:checked ~ .tab-bar label[for="tab-ks3-tuesday"],
+    #tab-ks3-wednesday:checked ~ .tab-bar label[for="tab-ks3-wednesday"],
+    #tab-ks3-thursday:checked ~ .tab-bar label[for="tab-ks3-thursday"],
+    #tab-ks3-friday:checked ~ .tab-bar label[for="tab-ks3-friday"],
+    #tab-ks4-monday:checked ~ .tab-bar label[for="tab-ks4-monday"],
+    #tab-ks4-tuesday:checked ~ .tab-bar label[for="tab-ks4-tuesday"],
+    #tab-ks4-wednesday:checked ~ .tab-bar label[for="tab-ks4-wednesday"],
+    #tab-ks4-thursday:checked ~ .tab-bar label[for="tab-ks4-thursday"],
+    #tab-ks4-friday:checked ~ .tab-bar label[for="tab-ks4-friday"] {
       color: #f0f6fc;
       background: #1f3a5f;
       border-color: #58a6ff;
@@ -1175,14 +1240,110 @@ def render_searches_hint(day: dict) -> str:
     )
 
 
+STUDENT_KS_SPLIT_CSS = """
+    .ks-selector {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .ks-btn {
+      flex: 1;
+      padding: 1rem 1.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      border: 2px solid #30363d;
+      border-radius: 12px;
+      background: #161b22;
+      color: #8b949e;
+      transition: all 0.2s;
+    }
+
+    .ks-btn:hover {
+      background: #21262d;
+      color: #e6edf3;
+      border-color: #58a6ff;
+    }
+
+    .ks-btn.active {
+      background: #1f3a5f;
+      color: #f0f6fc;
+      border-color: #58a6ff;
+    }
+
+    .ks-view { display: none; }
+    .ks-view.active { display: block; }
+
+    .ks-grid {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    .ks-grid th,
+    .ks-grid td {
+      border: 1px solid #21262d;
+      padding: 0.55rem 0.65rem;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    .ks-grid th {
+      background: #1c2128;
+      color: #f0f6fc;
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .activity-col .slot-label { font-weight: 500; color: #e6edf3; }
+    .staff-col { color: #8b949e; font-size: 0.8rem; }
+    .location-col { color: #a371f7; font-size: 0.8rem; font-weight: 500; }
+
+    .ks-grid tr.break .activity-col .slot-label { color: #3fb950; }
+    .ks-grid tr.break .location-col { color: #3fb950; }
+    .ks-grid tr.core.maths .activity-col .slot-label { color: #79c0ff; font-weight: 600; }
+    .ks-grid tr.core.english .activity-col .slot-label { color: #e3b341; font-weight: 600; }
+    .ks-grid tr.assembly .activity-col .slot-label { color: #d2a8ff; }
+    .ks-grid tr.reset .activity-col .slot-label { color: #79c0ff; font-weight: 600; }
+    .ks-grid tr.pe .activity-col .slot-label { color: #3fb950; font-weight: 600; }
+    .ks-grid tr.arrival .activity-col .slot-label { color: #58a6ff; }
+    .ks-grid tr.checks .activity-col .slot-label { color: #8b949e; font-style: italic; }
+    .ks-grid tr.transition .activity-col .slot-label { color: #8b949e; font-style: italic; }
+"""
+
+STUDENT_KS_SPLIT_JS = """
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var btns = document.querySelectorAll('.ks-btn');
+  var views = document.querySelectorAll('.ks-view');
+  btns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      btns.forEach(function(b) { b.classList.remove('active'); });
+      views.forEach(function(v) { v.classList.remove('active'); });
+      btn.classList.add('active');
+      var target = btn.getAttribute('data-target');
+      document.getElementById(target).classList.add('active');
+    });
+  });
+});
+</script>
+"""
+
+
 def build_student_html(week: dict) -> str:
+    ks3_view = render_student_ks_view(week, "ks3")
+    ks4_view = render_student_ks_view(week, "ks4")
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student timetable</title>
-  <style>{DAY_TAB_CSS}{SHARED_STUDENT_CSS}{SEARCHES_HINT_CSS}</style>
+  <style>{DAY_TAB_CSS}{SHARED_STUDENT_CSS}{STUDENT_KS_SPLIT_CSS}{SEARCHES_HINT_CSS}</style>
 </head>
 <body>
   <div class="top">
@@ -1190,8 +1351,21 @@ def build_student_html(week: dict) -> str:
     <h1>Student timetable</h1>
   </div>
 
-  {render_student_day_views(week)}
+  <div class="ks-selector">
+    <button class="ks-btn active" data-target="ks3-view">KS3 Timetable</button>
+    <button class="ks-btn" data-target="ks4-view">KS4 Timetable</button>
+  </div>
+
+  <div id="ks3-view" class="ks-view active">
+    {ks3_view}
+  </div>
+
+  <div id="ks4-view" class="ks-view">
+    {ks4_view}
+  </div>
+
   {SEARCHES_HINT_JS}
+  {STUDENT_KS_SPLIT_JS}
 </body>
 </html>
 """
