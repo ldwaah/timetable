@@ -31,6 +31,20 @@
           "note": "LI covers LD in absence"
         },
         {
+          "start": "08:50",
+          "end": "09:05",
+          "ks3": "Arrival",
+          "ks4": "Arrival",
+          "kind": "arrival"
+        },
+        {
+          "start": "09:05",
+          "end": "09:15",
+          "ks3": "Checks / Late Arrivals",
+          "ks4": "Checks / Late Arrivals",
+          "kind": "checks"
+        },
+        {
           "start": "09:15",
           "end": "09:45",
           "ks3": "Reset",
@@ -146,6 +160,20 @@
           "staff_ks3": "SA / LD",
           "staff_ks4": "SA / LD",
           "note": "LI covers LD in absence"
+        },
+        {
+          "start": "08:50",
+          "end": "09:05",
+          "ks3": "Arrival",
+          "ks4": "Arrival",
+          "kind": "arrival"
+        },
+        {
+          "start": "09:05",
+          "end": "09:15",
+          "ks3": "Checks / Late Arrivals",
+          "ks4": "Checks / Late Arrivals",
+          "kind": "checks"
         },
         {
           "start": "09:15",
@@ -378,6 +406,20 @@
           "note": "LI covers LD in absence"
         },
         {
+          "start": "08:50",
+          "end": "09:05",
+          "ks3": "Arrival",
+          "ks4": "Arrival",
+          "kind": "arrival"
+        },
+        {
+          "start": "09:05",
+          "end": "09:15",
+          "ks3": "Checks / Late Arrivals",
+          "ks4": "Checks / Late Arrivals",
+          "kind": "checks"
+        },
+        {
           "start": "09:15",
           "end": "09:45",
           "ks3": "Reset",
@@ -484,6 +526,20 @@
           "staff_ks3": "SA / LD",
           "staff_ks4": "SA / LD",
           "note": "LI covers LD in absence"
+        },
+        {
+          "start": "08:50",
+          "end": "09:05",
+          "ks3": "Arrival",
+          "ks4": "Arrival",
+          "kind": "arrival"
+        },
+        {
+          "start": "09:05",
+          "end": "09:15",
+          "ks3": "Checks / Late Arrivals",
+          "ks4": "Checks / Late Arrivals",
+          "kind": "checks"
         },
         {
           "start": "09:15",
