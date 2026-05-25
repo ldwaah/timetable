@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 SKIP_MERGE_LABELS = frozenset(
-    {"Break", "Lunch", "Arrival", "Checks / late arrivals", "Assembly"}
+    {"Break", "Lunch", "Arrival", "Checks / late arrivals", "Assembly", "Student Searches"}
 )
 
 

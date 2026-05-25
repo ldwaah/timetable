@@ -77,6 +77,8 @@ def esc(text: str | None) -> str:
 def cell_class(label: str, kind: str) -> str:
     if label == "—":
         return "slot"
+    if kind == "searches" or "Student Searches" in label:
+        return "slot searches"
     if kind == "assembly" or label == "Assembly":
         return "slot assembly"
     if kind == "reset" or label == "Reset":
@@ -110,6 +112,7 @@ def compare_cell_html(
     label = row.get(stage, "—")
     staff = row.get(f"staff_{stage}") if show_staff else None
     supervision = row.get(f"supervision_{stage}")
+    note = row.get("note")
     cls = cell_class(label, row.get("kind", ""))
     label_html = esc(label)
     if staff:
@@ -117,6 +120,8 @@ def compare_cell_html(
     elif supervision and all_staff:
         sup = _supervision_text(supervision, all_staff)
         label_html = f'{esc(label)}<span class="slot-staff">{esc(sup)}</span>'
+    if note and label != "—":
+        label_html += f'<span class="slot-note">{esc(note)}</span>'
     return f'<td class="{cls}"><span class="slot-label">{label_html}</span></td>'
 
 
@@ -140,14 +145,17 @@ def render_day_tab_bar() -> str:
     return f'<div class="tab-bar" role="tablist">{"".join(labels)}</div>'
 
 
-def display_rows(day: dict) -> list[dict]:
-    return merge_consecutive_rows(day["rows"])
+def display_rows(day: dict, *, include_staff_only: bool = True) -> list[dict]:
+    rows = day["rows"]
+    if not include_staff_only:
+        rows = [r for r in rows if not r.get("staff_only")]
+    return merge_consecutive_rows(rows)
 
 
 def render_student_day_panel(week: dict, day_key: str) -> str:
     day = week["days"][day_key]
     all_staff = week["staff"].get("people", [])
-    rows = display_rows(day)
+    rows = display_rows(day, include_staff_only=False)
     has_flz = any(row.get("flz") for row in rows)
     rows_html = []
     for row in rows:
@@ -351,7 +359,7 @@ def render_staff_person_page(week: dict, initials: str, sessions: list[dict]) ->
 def render_staff_day_panel(week: dict, day_key: str) -> str:
     day = week["days"][day_key]
     all_staff = week["staff"].get("people", [])
-    rows = display_rows(day)
+    rows = display_rows(day, include_staff_only=True)
     has_flz = any(row.get("flz") for row in rows)
     rows_html = []
     for row in rows:
@@ -360,12 +368,16 @@ def render_staff_day_panel(week: dict, day_key: str) -> str:
         s4 = row.get("staff_ks4")
         sup3 = row.get("supervision_ks3")
         sup4 = row.get("supervision_ks4")
+        note = row.get("note")
         k3_disp = esc(ks3) + (f' <span class="lead">({esc(s3)})</span>' if s3 else "")
         k4_disp = esc(ks4) + (f' <span class="lead">({esc(s4)})</span>' if s4 else "")
         if not s3 and sup3:
             k3_disp = esc(ks3) + f' <span class="lead">({esc(_supervision_text(sup3, all_staff))})</span>'
         if not s4 and sup4:
             k4_disp = esc(ks4) + f' <span class="lead">({esc(_supervision_text(sup4, all_staff))})</span>'
+        if note:
+            note_html = f'<span class="slot-note">{esc(note)}</span>'
+            k3_disp += note_html
         flz_html = ""
         if has_flz:
             flz = row.get("flz", "—")
@@ -538,6 +550,14 @@ SHARED_STUDENT_CSS = """
       margin-top: 0.15rem;
     }
 
+    .slot-note {
+      display: block;
+      font-size: 0.65rem;
+      font-style: italic;
+      color: #6e7681;
+      margin-top: 0.2rem;
+    }
+
     .slot.core.maths .slot-staff { color: #58a6ff; }
     .slot.core.english .slot-staff { color: #d4a72c; }
 
@@ -552,6 +572,9 @@ SHARED_STUDENT_CSS = """
     .slot.assembly .slot-label { color: #d2a8ff; }
     .slot.reset { background: #1c2d4a; }
     .slot.reset .slot-label { color: #79c0ff; font-weight: 600; }
+    .slot.searches { background: #2d1f1f; }
+    .slot.searches .slot-label { color: #f78166; font-weight: 600; }
+    .slot.searches .slot-staff { color: #f0883e; }
     .slot.checks { background: #21262d; }
     .slot.checks .slot-label { color: #8b949e; font-style: italic; }
     .slot.arrival { background: #1f3a5f44; }
@@ -646,12 +669,15 @@ STAFF_CSS = """
     .slot.break { color: #3fb950; }
     .slot.assembly { color: #d2a8ff; }
     .slot.reset { color: #79c0ff; font-weight: 600; }
+    .slot.searches { color: #f78166; font-weight: 600; }
+    .slot.searches .lead { color: #f0883e; }
     .slot.checks { color: #8b949e; font-style: italic; }
     .slot.arrival { color: #58a6ff; }
     .slot.lesson { color: #c9d1d9; }
     .slot.core.maths { color: #79c0ff; font-weight: 600; }
     .slot.core.english { color: #e3b341; font-weight: 600; }
     .slot.pe { color: #3fb950; font-weight: 600; }
+    .slot-note { display: block; font-size: 0.65rem; font-style: italic; color: #6e7681; margin-top: 0.15rem; font-weight: 400; }
 """
 
 STAFF_PERSON_CSS = (
