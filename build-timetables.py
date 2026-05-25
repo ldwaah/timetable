@@ -712,7 +712,7 @@ def get_staff_location(subject: str, stage: str, day_key: str) -> str:
     if "ppa / on-call" in low or "centre duties" in low:
         return "Foyer"
     if low == "student support":
-        return "Boardroom"
+        return ""
     if low == "ppa":
         return ""
     if "whole school support" in low:
