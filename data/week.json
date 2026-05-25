@@ -89,7 +89,9 @@
           "end": "13:10",
           "ks3": "SEMH / AQA",
           "ks4": "SEMH / AQA",
-          "kind": "lesson"
+          "kind": "lesson",
+          "staff_ks3": "Lorelle",
+          "staff_ks4": "Laurent"
         },
         {
           "start": "13:10",
@@ -189,7 +191,9 @@
           "end": "13:10",
           "ks3": "SEMH / AQA",
           "ks4": "SEMH / AQA",
-          "kind": "lesson"
+          "kind": "lesson",
+          "staff_ks3": "Lorelle",
+          "staff_ks4": "Laurent"
         },
         {
           "start": "13:10",
@@ -380,7 +384,9 @@
           "end": "13:10",
           "ks3": "SEMH / AQA",
           "ks4": "SEMH / AQA",
-          "kind": "lesson"
+          "kind": "lesson",
+          "staff_ks3": "Lorelle",
+          "staff_ks4": "Laurent"
         },
         {
           "start": "13:10",
@@ -483,7 +489,9 @@
           "end": "13:10",
           "ks3": "SEMH / AQA",
           "ks4": "SEMH / AQA",
-          "kind": "lesson"
+          "kind": "lesson",
+          "staff_ks3": "Lorelle",
+          "staff_ks4": "Laurent"
         },
         {
           "start": "13:10",
@@ -557,6 +565,10 @@
       },
       "Group Mentoring": {
         "ks3": "Jeff"
+      },
+      "SEMH / AQA": {
+        "ks3": "Lorelle",
+        "ks4": "Laurent"
       }
     }
   }
