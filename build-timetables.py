@@ -240,12 +240,22 @@ def compare_cell_html(
     supervision = row.get(f"supervision_{stage}")
     note = row.get("note")
     cls = cell_class(label, row.get("kind", ""))
-    label_html = esc(label)
+    display_label = label
+    if colspan == 1 and stage in ("ks3", "ks4") and _is_break_or_lunch(label):
+        prefix = "KS3" if stage == "ks3" else "KS4"
+        if label == "Lunch":
+            display_label = f"{prefix} Lunch"
+        elif "\u2014" in label:
+            room = label.split("\u2014")[1].strip()
+            display_label = f"{prefix} Break ({room})"
+        elif label.startswith("Break"):
+            display_label = f"{prefix} Break"
+    label_html = esc(display_label)
     if staff:
-        label_html = f'{esc(label)}<span class="slot-staff">{esc(staff)}</span>'
+        label_html = f'{esc(display_label)}<span class="slot-staff">{esc(staff)}</span>'
     elif supervision and all_staff:
         sup = _supervision_text(supervision, all_staff, day_key=day_key)
-        label_html = f'{esc(label)}<span class="slot-staff">{esc(sup)}</span>'
+        label_html = f'{esc(display_label)}<span class="slot-staff">{esc(sup)}</span>'
     if note and label != "—":
         label_html += f'<span class="slot-note">{esc(note)}</span>'
     cs = f' colspan="{colspan}"' if colspan > 1 else ""
@@ -503,18 +513,19 @@ def collect_staff_sessions(week: dict) -> dict[str, list[dict]]:
                 if supervision:
                     stage_label = "KS3" if stage == "ks3" else "KS4"
                     break_label = row.get(stage, "")
+                    sup_type = "Lunch" if break_label == "Lunch" else "Break"
+                    sup_subject = f"{stage_label} {sup_type} Supervision"
+                    location = ""
                     if "\u2014" in break_label:
-                        sup_subject = f"Supervision ({break_label.split('\u2014')[1].strip()})"
-                    else:
-                        sup_subject = "Supervision"
+                        location = break_label.split("\u2014")[1].strip()
+                        sup_subject = f"{sup_subject} ({location})"
                     for person in supervision:
                         if day_key in off_days.get(person, []):
                             continue
-                        person_subject = (
-                            "Supervision (Main Foyer)"
-                            if person in SLT_MEMBERS and day_key != "wednesday"
-                            else sup_subject
-                        )
+                        if person in SLT_MEMBERS and day_key != "wednesday" and not location:
+                            person_subject = f"{sup_subject} (Main Foyer)"
+                        else:
+                            person_subject = sup_subject
                         sessions.setdefault(person, []).append(
                             {
                                 "day": day["label"],
