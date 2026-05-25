@@ -1871,6 +1871,7 @@ def main() -> None:
                 ("wednesday", "14:45\u201315:00"): "Student Support",
                 ("thursday", "11:05\u201311:20"): "Student Support",
                 ("thursday", "11:35\u201312:15"): "PPA / Lunch",
+                ("friday", "11:35\u201312:15"): "PPA / Lunch",
             }
             for s in combined:
                 if s["subject"] == "PPA":

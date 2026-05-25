@@ -720,10 +720,10 @@
           "start": "11:35",
           "end": "12:15",
           "ks3": "PSHE",
-          "ks4": "SEMH / AQA",
+          "ks4": "King's Trust",
           "kind": "lesson",
           "staff_ks3": "SA",
-          "staff_ks4": "LI"
+          "staff_ks4": "LG"
         },
         {
           "start": "12:15",
@@ -982,7 +982,7 @@
           "stage": "KS4"
         },
         {
-          "days": ["thursday", "friday"],
+          "days": ["thursday"],
           "start": "13:10",
           "end": "14:00",
           "subject": "Beauty / Enrichment",
