@@ -715,8 +715,10 @@ def get_staff_location(subject: str, stage: str, day_key: str) -> str:
         return "Foyer"
     if low == "student support":
         return ""
-    if low == "ppa":
+    if low == "ppa" or low == "ppa / lunch":
         return ""
+    if low == "supporting assembly":
+        return "Foyer"
     if "whole school support" in low:
         return "Foyer"
     if "ks3 support" in low:
@@ -925,7 +927,6 @@ def render_staff_person_page(week: dict, initials: str, sessions: list[dict]) ->
     <h1>{esc(display)}</h1>
   </div>
   {render_person_day_tabs(week, sessions, off_days=off)}
-  {render_faq_section(initials)}
 </body>
 </html>
 """
@@ -1444,21 +1445,10 @@ FAQ_ITEMS: dict[str, dict[str, str]] = {
     },
 }
 
-FAQ_PER_STAFF: dict[str, list[str]] = {
-    "LD": ["ppa_oncall", "whole_school_support"],
-    "SA": ["ppa_oncall", "whole_school_support"],
-    "LG": ["ppa", "whole_school_support"],
-    "LI": ["ppa", "whole_school_support"],
-    "JC": ["student_support", "whole_school_support"],
-    "JM": ["student_support", "whole_school_support"],
-    "HK": ["student_support", "whole_school_support"],
-}
-
-
-def render_faq_section(initials: str) -> str:
-    keys = FAQ_PER_STAFF.get(initials, ["whole_school_support"])
+def render_faq_section_all() -> str:
+    """Render glossary with ALL FAQ items for the main staff page."""
     items_html = []
-    for key in keys:
+    for key in ("student_support", "whole_school_support", "ppa", "ppa_oncall"):
         item = FAQ_ITEMS[key]
         items_html.append(
             f'<details><summary>{esc(item["q"])}</summary>'
@@ -1466,7 +1456,7 @@ def render_faq_section(initials: str) -> str:
         )
     return f"""
   <section class="faq-section">
-    <h2 class="faq-title">Glossary</h2>
+    <h2 class="faq-title">Glossary / FAQ</h2>
     {''.join(items_html)}
   </section>"""
 
@@ -1515,7 +1505,6 @@ STAFF_PERSON_CSS = (
     .location-col { color: #a371f7; font-size: 0.8rem; font-weight: 500; }
     .muted { color: #484f58; text-align: center; }
 """
-    + FAQ_CSS
 )
 
 
@@ -1784,7 +1773,7 @@ def build_staff_html(week: dict) -> str:
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Staff timetable</title>
-  <style>{STAFF_CARDS_CSS}</style>
+  <style>{STAFF_CARDS_CSS}{FAQ_CSS}</style>
 </head>
 <body>
   <div class="top">
@@ -1795,6 +1784,8 @@ def build_staff_html(week: dict) -> str:
   <nav class="staff-grid" aria-label="Staff members">
     {''.join(cards)}
   </nav>
+
+  {render_faq_section_all()}
 </body>
 </html>
 """
@@ -1867,6 +1858,25 @@ def main() -> None:
                     or (s["time"] == "12:30\u201313:20" and s["day_key"] == "monday")
                 ):
                     s["subject"] = "PPA / Lunch"
+        if initials == "LI":
+            _li_overrides: dict[tuple[str, str], str] = {
+                ("monday", "11:05\u201311:20"): "Student Support",
+                ("monday", "11:35\u201312:15"): "PPA / Lunch",
+                ("monday", "14:45\u201315:00"): "Student Support",
+                ("tuesday", "11:05\u201311:20"): "Student Support",
+                ("tuesday", "11:35\u201312:15"): "PPA / Lunch",
+                ("tuesday", "13:00\u201313:10"): "Student Support",
+                ("tuesday", "14:45\u201315:30"): "Student Support",
+                ("wednesday", "12:30\u201313:10"): "PPA / Lunch",
+                ("wednesday", "14:45\u201315:00"): "Student Support",
+                ("thursday", "11:05\u201311:20"): "Student Support",
+                ("thursday", "11:35\u201312:15"): "PPA / Lunch",
+            }
+            for s in combined:
+                if s["subject"] == "PPA":
+                    new_label = _li_overrides.get((s["day_key"], s["time"]))
+                    if new_label:
+                        s["subject"] = new_label
         if initials in ("HK", "JM", "JC"):
             for s in combined:
                 if s["subject"] == "PPA":
