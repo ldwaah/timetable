@@ -96,9 +96,11 @@
         {
           "start": "13:10",
           "end": "13:20",
-          "ks3": "Transition",
-          "ks4": "Transition",
-          "kind": "transition"
+          "ks3": "Transition / Expectations",
+          "ks4": "Transition / Expectations",
+          "kind": "transition",
+          "staff_ks3": "Laurent / Jeff",
+          "staff_ks4": "Laurent / Jeff"
         },
         {
           "start": "13:20",
@@ -198,9 +200,11 @@
         {
           "start": "13:10",
           "end": "13:20",
-          "ks3": "Transition",
-          "ks4": "Transition",
-          "kind": "transition"
+          "ks3": "Transition / Expectations",
+          "ks4": "Transition / Expectations",
+          "kind": "transition",
+          "staff_ks3": "Laurent / Jeff",
+          "staff_ks4": "Laurent / Jeff"
         },
         {
           "start": "13:20",
@@ -391,9 +395,11 @@
         {
           "start": "13:10",
           "end": "13:20",
-          "ks3": "Transition",
-          "ks4": "Transition",
-          "kind": "transition"
+          "ks3": "Transition / Expectations",
+          "ks4": "Transition / Expectations",
+          "kind": "transition",
+          "staff_ks3": "Laurent / Jeff",
+          "staff_ks4": "Laurent / Jeff"
         },
         {
           "start": "13:20",
@@ -496,9 +502,11 @@
         {
           "start": "13:10",
           "end": "13:20",
-          "ks3": "Transition",
-          "ks4": "Transition",
-          "kind": "transition"
+          "ks3": "Transition / Expectations",
+          "ks4": "Transition / Expectations",
+          "kind": "transition",
+          "staff_ks3": "Laurent / Lorelle",
+          "staff_ks4": "Laurent / Lorelle"
         },
         {
           "start": "13:20",
