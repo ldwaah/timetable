@@ -305,17 +305,20 @@
         {
           "start": "14:05",
           "end": "14:20",
-          "ks3": "Lesson — TBC",
-          "ks4": "PSHE",
+          "ks3": "SEMH / AQA",
+          "ks4": "Citizenship",
           "kind": "lesson",
-          "staff_ks4": "Lorelle"
+          "staff_ks3": "Lorelle",
+          "staff_ks4": "Lloyd"
         },
         {
           "start": "14:20",
           "end": "15:00",
-          "ks3": "Lesson — TBC",
-          "ks4": "Lesson — TBC",
-          "kind": "lesson"
+          "ks3": "SEMH / AQA",
+          "ks4": "Citizenship",
+          "kind": "lesson",
+          "staff_ks3": "Lorelle",
+          "staff_ks4": "Lloyd"
         }
       ]
     },
