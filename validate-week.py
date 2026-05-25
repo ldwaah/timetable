@@ -5,7 +5,7 @@ import sys
 
 PE = "PE"
 DURATIONS = {
-    "English": 45,
+    "English": 40,
     "Maths": 40,
     "Art": 40,
     "Citizenship": 40,
@@ -80,8 +80,9 @@ def validate(rows: list[dict], finish: str, dk: str) -> list[str]:
                 f"{dk} {stage}: expected 1-2 breaks, got {len(slots)} {slots}"
             )
         for s, e in slots:
-            if t2m(e) - t2m(s) != 15:
-                issues.append(f"{dk} {stage}: break {s}-{e} not 15 min")
+            dur = t2m(e) - t2m(s)
+            if dur not in (15, 20):
+                issues.append(f"{dk} {stage}: break {s}-{e} is {dur} min (expected 15 or 20)")
 
     for stage in ("ks3", "ks4"):
         for label, exp in DURATIONS.items():

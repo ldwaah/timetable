@@ -54,7 +54,7 @@
         },
         {
           "start": "10:25",
-          "end": "11:10",
+          "end": "11:05",
           "ks3": "English",
           "ks4": "English",
           "kind": "lesson",
@@ -62,7 +62,7 @@
           "staff_ks4": "Laurent"
         },
         {
-          "start": "11:10",
+          "start": "11:05",
           "end": "11:25",
           "ks3": "Break",
           "ks4": "Break",
@@ -116,7 +116,9 @@
           "end": "15:00",
           "ks3": "Pause & Progress",
           "ks4": "Pause & Progress",
-          "kind": "lesson"
+          "kind": "lesson",
+          "staff_ks3": "Lorelle / Jeff",
+          "staff_ks4": "Lorelle / Jeff"
         }
       ]
     },
@@ -145,7 +147,9 @@
           "end": "09:45",
           "ks3": "Assembly",
           "ks4": "Assembly",
-          "kind": "assembly"
+          "kind": "assembly",
+          "staff_ks3": "Sacha / Lorelle",
+          "staff_ks4": "Sacha / Lorelle"
         },
         {
           "start": "09:45",
@@ -158,7 +162,7 @@
         },
         {
           "start": "10:25",
-          "end": "11:10",
+          "end": "11:05",
           "ks3": "English",
           "ks4": "English",
           "kind": "lesson",
@@ -166,7 +170,7 @@
           "staff_ks4": "Laurent"
         },
         {
-          "start": "11:10",
+          "start": "11:05",
           "end": "11:25",
           "ks3": "Break",
           "ks4": "Break",
@@ -220,7 +224,9 @@
           "end": "15:00",
           "ks3": "Pause & Progress",
           "ks4": "Pause & Progress",
-          "kind": "lesson"
+          "kind": "lesson",
+          "staff_ks3": "Lorelle / Jeff",
+          "staff_ks4": "Lorelle / Jeff"
         }
       ]
     },
@@ -353,7 +359,7 @@
         },
         {
           "start": "10:25",
-          "end": "11:10",
+          "end": "11:05",
           "ks3": "English",
           "ks4": "English",
           "kind": "lesson",
@@ -361,7 +367,7 @@
           "staff_ks4": "Laurent"
         },
         {
-          "start": "11:10",
+          "start": "11:05",
           "end": "11:25",
           "ks3": "Break",
           "ks4": "Break",
@@ -452,7 +458,7 @@
         },
         {
           "start": "10:25",
-          "end": "11:10",
+          "end": "11:05",
           "ks3": "English",
           "ks4": "English",
           "kind": "lesson",
@@ -460,7 +466,7 @@
           "staff_ks4": "Laurent"
         },
         {
-          "start": "11:10",
+          "start": "11:05",
           "end": "11:25",
           "ks3": "Break",
           "ks4": "Break",
