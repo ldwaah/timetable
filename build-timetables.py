@@ -218,60 +218,25 @@ def render_student_day_views(week: dict) -> str:
 
 
 def compute_ppa_sessions(week: dict) -> dict[str, list[dict]]:
-    """Identify teaching-period gaps for each staff member and return PPA sessions."""
+    """Return one designated PPA session per staff member per working day."""
     all_staff = week["staff"].get("people", [])
-    off_days: dict[str, list[str]] = week["staff"].get("off_days", {})
+    ppa_map: dict[str, dict] = week["staff"].get("ppa", {})
+    day_labels = {k: v["label"] for k, v in week["days"].items()}
     ppa: dict[str, list[dict]] = {s: [] for s in all_staff}
 
-    for day_key in DAY_ORDER:
-        day = week["days"][day_key]
-        working = [s for s in all_staff if day_key not in off_days.get(s, [])]
-        rows = day["rows"]
-        skip_kinds = {"arrival", "checks", "searches"}
-
-        for row in rows:
-            if row.get("kind") in skip_kinds:
+    for person in all_staff:
+        person_ppa = ppa_map.get(person, {})
+        for day_key in DAY_ORDER:
+            slot = person_ppa.get(day_key)
+            if not slot:
                 continue
-            if row.get("all_staff"):
-                continue
-
-            ks3_label = row.get("ks3", "")
-            ks4_label = row.get("ks4", "")
-            ks3_is_break = _is_break_or_lunch(ks3_label)
-            ks4_is_break = _is_break_or_lunch(ks4_label)
-
-            if ks3_is_break and ks4_is_break:
-                continue
-
-            assigned: set[str] = set()
-
-            for stage in ("ks3", "ks4"):
-                staff_str = row.get(f"staff_{stage}")
-                if staff_str:
-                    assigned |= _parse_staff(staff_str)
-
-            flz_staff = row.get("staff_flz")
-            if flz_staff:
-                assigned |= _parse_staff(flz_staff)
-
-            if ks3_is_break or ks4_is_break:
-                teaching: set[str] = set()
-                if not ks3_is_break:
-                    teaching |= _parse_staff(row.get("staff_ks3"))
-                if not ks4_is_break:
-                    teaching |= _parse_staff(row.get("staff_ks4"))
-                supervision = {s for s in working if s not in teaching}
-                assigned |= supervision
-
-            for person in working:
-                if person not in assigned:
-                    ppa[person].append({
-                        "day": day["label"],
-                        "day_key": day_key,
-                        "time": f'{row["start"]}–{row["end"]}',
-                        "stage": "—",
-                        "subject": "PPA",
-                    })
+            ppa[person].append({
+                "day": day_labels.get(day_key, day_key.capitalize()),
+                "day_key": day_key,
+                "time": f'{slot["start"]}\u2013{slot["end"]}',
+                "stage": "\u2014",
+                "subject": "PPA",
+            })
 
     return ppa
 

@@ -747,6 +747,53 @@
         "ks3": "LG",
         "ks4": "LI"
       }
+    },
+    "ppa": {
+      "LD": {
+        "monday":    { "start": "11:35", "end": "12:15" },
+        "tuesday":   { "start": "09:45", "end": "10:25" },
+        "wednesday": { "start": "12:30", "end": "13:10" },
+        "thursday":  { "start": "09:45", "end": "10:25" },
+        "friday":    { "start": "12:30", "end": "13:10" }
+      },
+      "LG": {
+        "monday":    { "start": "12:30", "end": "13:10" },
+        "tuesday":   { "start": "13:20", "end": "14:00" },
+        "wednesday": { "start": "14:15", "end": "14:45" },
+        "thursday":  { "start": "13:20", "end": "14:00" },
+        "friday":    { "start": "13:20", "end": "14:00" }
+      },
+      "LI": {
+        "monday":    { "start": "11:35", "end": "12:15" },
+        "tuesday":   { "start": "11:35", "end": "12:15" },
+        "wednesday": { "start": "12:30", "end": "13:10" },
+        "thursday":  { "start": "11:35", "end": "12:15" }
+      },
+      "SA": {
+        "tuesday":   { "start": "12:30", "end": "13:10" },
+        "wednesday": { "start": "10:20", "end": "11:00" },
+        "thursday":  { "start": "12:30", "end": "13:10" },
+        "friday":    { "start": "09:45", "end": "10:25" }
+      },
+      "JC": {
+        "monday":    { "start": "09:45", "end": "10:25" },
+        "tuesday":   { "start": "12:30", "end": "13:10" },
+        "thursday":  { "start": "09:45", "end": "10:25" }
+      },
+      "JM": {
+        "monday":    { "start": "13:20", "end": "14:00" },
+        "tuesday":   { "start": "11:35", "end": "12:15" },
+        "wednesday": { "start": "13:25", "end": "14:05" },
+        "thursday":  { "start": "11:35", "end": "12:15" },
+        "friday":    { "start": "11:35", "end": "12:15" }
+      },
+      "HK": {
+        "monday":    { "start": "12:30", "end": "13:10" },
+        "tuesday":   { "start": "13:20", "end": "14:00" },
+        "wednesday": { "start": "11:25", "end": "12:05" },
+        "thursday":  { "start": "12:30", "end": "13:10" },
+        "friday":    { "start": "11:35", "end": "12:15" }
+      }
     }
   }
 }
