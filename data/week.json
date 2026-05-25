@@ -868,30 +868,36 @@
     },
     "supervision_rota": {
       "monday": {
-        "ks3_break": ["LG", "HK"],
-        "ks4_break": ["LI", "JM"],
-        "lunch": ["LD", "JC"]
+        "ks3_break": ["HK", "LD"],
+        "ks4_break": ["LI", "LG"],
+        "lunch_ks3": ["HK", "LD"],
+        "lunch_ks4": ["LI", "LG"],
+        "note": "SA off Monday — LD substitutes for SA in KS3 pair"
       },
       "tuesday": {
-        "ks3_break": ["SA", "JC"],
-        "ks4_break": ["LI", "HK"],
-        "lunch": ["LG", "JM"]
+        "ks3_break": ["SA", "HK"],
+        "ks4_break": ["LI", "LG"],
+        "lunch_ks3": ["SA", "HK"],
+        "lunch_ks4": ["LI", "LG"]
       },
       "wednesday": {
-        "ks3_break": ["SA"],
-        "ks4_break": ["LD"],
-        "lunch": ["LI", "HK"],
-        "break": ["LD", "LI"]
+        "ks3_break": ["SA", "HK"],
+        "ks4_break": ["LI", "LG"],
+        "lunch_ks3": ["SA", "HK"],
+        "lunch_ks4": ["LI", "LG"],
+        "break": ["SA", "LI"]
       },
       "thursday": {
-        "ks3_break": ["LG", "SA"],
-        "ks4_break": ["JC", "JM"],
-        "lunch": ["LD", "HK"]
+        "ks3_break": ["SA", "HK"],
+        "ks4_break": ["LI", "LG"],
+        "lunch_ks3": ["SA", "HK"],
+        "lunch_ks4": ["LI", "LG"]
       },
       "friday": {
-        "ks3_break": ["LD", "JM"],
-        "ks4_break": ["LG", "LI"],
-        "lunch": ["SA", "HK"]
+        "ks3_break": ["SA", "HK"],
+        "ks4_break": ["LI", "LG"],
+        "lunch_ks3": ["SA", "HK"],
+        "lunch_ks4": ["LI", "LG"]
       }
     },
     "ppa": {

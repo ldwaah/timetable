@@ -24,6 +24,8 @@ INITIALS_TO_NAME: dict[str, str] = {
     "HK": "Hisham",
 }
 
+SLT_MEMBERS = {"SA", "LD"}
+
 STAFF_WORKING_HOURS: dict[str, dict[str, tuple[str, str]]] = {
     "LD": {
         "monday": ("08:30", "15:30"), "tuesday": ("08:30", "15:30"),
@@ -156,17 +158,29 @@ def add_supervision(week: dict) -> None:
                 row["supervision_ks4"] = day_rota.get("ks4_break", [])
             else:
                 key = _rota_key_for_row(row)
-                assigned = day_rota.get(key, [])
-                if ks3_is_break:
-                    row["supervision_ks3"] = assigned
-                if ks4_is_break:
-                    row["supervision_ks4"] = assigned
+                if key == "lunch" and ("lunch_ks3" in day_rota or "lunch_ks4" in day_rota):
+                    if ks3_is_break:
+                        row["supervision_ks3"] = day_rota.get("lunch_ks3", day_rota.get("lunch", []))
+                    if ks4_is_break:
+                        row["supervision_ks4"] = day_rota.get("lunch_ks4", day_rota.get("lunch", []))
+                else:
+                    assigned = day_rota.get(key, [])
+                    if ks3_is_break:
+                        row["supervision_ks3"] = assigned
+                    if ks4_is_break:
+                        row["supervision_ks4"] = assigned
 
 
 def _supervision_text(free: list[str], all_staff: list[str]) -> str:
     if len(free) == len(all_staff):
         return "All staff"
-    return ", ".join(free)
+    parts = []
+    for person in free:
+        if person in SLT_MEMBERS:
+            parts.append(f"{person} (Main Foyer)")
+        else:
+            parts.append(person)
+    return ", ".join(parts)
 
 
 def load_week() -> dict:
@@ -495,13 +509,18 @@ def collect_staff_sessions(week: dict) -> dict[str, list[dict]]:
                     for person in supervision:
                         if day_key in off_days.get(person, []):
                             continue
+                        person_subject = (
+                            "Supervision (Main Foyer)"
+                            if person in SLT_MEMBERS
+                            else sup_subject
+                        )
                         sessions.setdefault(person, []).append(
                             {
                                 "day": day["label"],
                                 "day_key": day_key,
                                 "time": f'{row["start"]}\u2013{row["end"]}',
                                 "stage": stage_label,
-                                "subject": sup_subject,
+                                "subject": person_subject,
                             }
                         )
             flz_staff = row.get("staff_flz")
