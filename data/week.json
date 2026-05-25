@@ -359,16 +359,6 @@
         },
         {
           "start": "10:00",
-          "end": "10:30",
-          "ks3": "Line Management (JM)",
-          "ks4": "Line Management (SA)",
-          "kind": "meeting",
-          "staff_only": true,
-          "staff_ks3": "SA",
-          "staff_ks4": "JM"
-        },
-        {
-          "start": "10:00",
           "end": "10:20",
           "ks3": "Reset",
           "ks4": "Reset",
@@ -410,11 +400,21 @@
         },
         {
           "start": "12:30",
+          "end": "13:00",
+          "ks3": "Line Management (JM)",
+          "ks4": "Line Management (SA)",
+          "kind": "meeting",
+          "staff_only": true,
+          "staff_ks3": "SA",
+          "staff_ks4": "JM"
+        },
+        {
+          "start": "12:30",
           "end": "13:10",
           "ks3": "PSHE",
           "ks4": "PSHE",
           "kind": "lesson",
-          "staff_ks3": "SA",
+          "staff_ks3": "LD",
           "staff_ks4": "LG"
         },
         {
@@ -876,7 +876,7 @@
       "LD": {
         "monday":    { "start": "11:35", "end": "12:15" },
         "tuesday":   { "start": "09:45", "end": "10:25" },
-        "wednesday": { "start": "12:30", "end": "13:10" },
+        "wednesday": { "start": "10:00", "end": "10:40" },
         "thursday":  { "start": "09:45", "end": "10:25" },
         "friday":    { "start": "12:30", "end": "13:10" }
       },
@@ -895,7 +895,7 @@
       },
       "SA": {
         "tuesday":   { "start": "12:30", "end": "13:10" },
-        "wednesday": { "start": "10:20", "end": "11:00" },
+        "wednesday": { "start": "10:00", "end": "10:40" },
         "thursday":  { "start": "12:30", "end": "13:10" },
         "friday":    { "start": "09:45", "end": "10:25" }
       },
