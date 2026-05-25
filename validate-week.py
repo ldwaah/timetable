@@ -97,6 +97,8 @@ def validate(rows: list[dict], finish: str, dk: str) -> list[str]:
                 continue
             if dk in ("thursday", "friday") and label == "Citizenship" and total == 50:
                 continue
+            if dk == "friday" and label == "SEMH / AQA" and total == 90:
+                continue
             if dk == "wednesday" and label == "Maths" and total == 50:
                 continue
             if dk == "wednesday" and label == "English" and total == 50:

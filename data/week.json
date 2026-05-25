@@ -468,20 +468,12 @@
         },
         {
           "start": "11:25",
-          "end": "12:05",
-          "ks3": "Citizenship",
-          "ks4": "Citizenship",
-          "kind": "lesson",
-          "staff_ks3": "Jeff / Lloyd",
-          "staff_ks4": "Lloyd"
-        },
-        {
-          "start": "12:05",
           "end": "12:15",
-          "ks3": "Citizenship",
-          "ks4": "Lesson — TBC",
+          "ks3": "SEMH / AQA",
+          "ks4": "SEMH / AQA",
           "kind": "lesson",
-          "staff_ks3": "Jeff / Lloyd"
+          "staff_ks3": "Lorelle",
+          "staff_ks4": "Laurent"
         },
         {
           "start": "12:15",
