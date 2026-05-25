@@ -46,7 +46,7 @@ STAFF_WORKING_HOURS: dict[str, dict[str, tuple[str, str]]] = {
         "friday": ("08:30", "15:00"),
     },
     "JC": {
-        "monday": ("11:00", "15:30"), "tuesday": ("11:00", "15:30"),
+        "monday": ("11:00", "15:30"), "tuesday": ("11:00", "15:00"),
         "thursday": ("11:00", "15:00"),
     },
     "JM": {
@@ -72,12 +72,13 @@ def _time_minutes(t: str) -> int:
     return int(h) * 60 + int(m)
 
 
-def _staff_working_at(hours: dict, person: str, start: str, end: str) -> bool:
+def _staff_working_at(person: str, day_key: str, start: str) -> bool:
     """Return True if person is working during the given slot."""
-    if person not in hours:
+    day_hours = STAFF_WORKING_HOURS.get(person, {}).get(day_key)
+    if not day_hours:
         return True
-    p_start = _time_minutes(hours[person]["start"])
-    p_end = _time_minutes(hours[person]["end"])
+    p_start = _time_minutes(day_hours[0])
+    p_end = _time_minutes(day_hours[1])
     slot_start = _time_minutes(start)
     return p_start <= slot_start < p_end
 
@@ -116,36 +117,42 @@ def _row_flz_matches_ks(row: dict) -> bool:
     return True
 
 
+def _rota_key_for_row(row: dict) -> str:
+    """Determine the supervision_rota lookup key for a break/lunch row."""
+    ks3 = row.get("ks3", "")
+    ks4 = row.get("ks4", "")
+    if ks3 == "Lunch" and ks4 == "Lunch":
+        return "lunch"
+    if "Toilet Break" in ks3:
+        return "toilet_break"
+    ks3_brk = _is_break_or_lunch(ks3)
+    ks4_brk = _is_break_or_lunch(ks4)
+    if ks3_brk and ks4_brk:
+        return "break"
+    if ks3_brk:
+        return "ks3_break"
+    return "ks4_break"
+
+
 def add_supervision(week: dict) -> None:
-    """Tag every break/lunch row with the staff available for supervision."""
-    all_staff = week["staff"].get("people", [])
-    off_days: dict[str, list[str]] = week["staff"].get("off_days", {})
-    hours: dict = week["staff"].get("hours", {})
+    """Tag every break/lunch row with the rostered supervision staff."""
+    rota = week["staff"].get("supervision_rota", {})
     for day_key in DAY_ORDER:
         day = week["days"].get(day_key)
         if not day:
             continue
-        unavailable = {s for s, days in off_days.items() if day_key in days}
+        day_rota = rota.get(day_key, {})
         for row in day["rows"]:
             ks3_is_break = _is_break_or_lunch(row.get("ks3", ""))
             ks4_is_break = _is_break_or_lunch(row.get("ks4", ""))
             if not ks3_is_break and not ks4_is_break:
                 continue
-            teaching: set[str] = set()
-            if not ks3_is_break:
-                teaching |= _parse_staff(row.get("staff_ks3"))
-            if not ks4_is_break:
-                teaching |= _parse_staff(row.get("staff_ks4"))
-            free = [
-                s for s in all_staff
-                if s not in teaching
-                and s not in unavailable
-                and _staff_working_at(hours, s, row["start"], row["end"])
-            ]
+            key = _rota_key_for_row(row)
+            assigned = day_rota.get(key, [])
             if ks3_is_break:
-                row["supervision_ks3"] = free
+                row["supervision_ks3"] = assigned
             if ks4_is_break:
-                row["supervision_ks4"] = free
+                row["supervision_ks4"] = assigned
 
 
 def _supervision_text(free: list[str], all_staff: list[str]) -> str:
@@ -349,8 +356,12 @@ def compute_ppa_sessions(week: dict) -> dict[str, list[dict]]:
 
 def fill_ppa_gaps(
     sessions: list[dict], initials: str, day_labels: dict[str, str],
+    *, min_gap: int = 10,
 ) -> list[dict]:
-    """Create PPA sessions for every gap within a staff member's working hours."""
+    """Create PPA sessions for every gap within a staff member's working hours.
+
+    Gaps shorter than *min_gap* minutes (e.g. arrival buffer) are skipped.
+    """
     hours = STAFF_WORKING_HOURS.get(initials, {})
     grouped = group_sessions_by_day(sessions)
     ppa_sessions: list[dict] = []
@@ -381,7 +392,8 @@ def fill_ppa_gaps(
             if s_end <= work_start or s_start >= work_end:
                 continue
             clamped_start = max(s_start, work_start)
-            if clamped_start > cursor:
+            gap = clamped_start - cursor
+            if gap >= min_gap:
                 ppa_sessions.append({
                     "day": day_labels.get(day_key, day_key.capitalize()),
                     "day_key": day_key,
@@ -391,7 +403,8 @@ def fill_ppa_gaps(
                 })
             cursor = max(cursor, min(s_end, work_end))
 
-        if cursor < work_end:
+        trailing = work_end - cursor
+        if trailing >= min_gap:
             ppa_sessions.append({
                 "day": day_labels.get(day_key, day_key.capitalize()),
                 "day_key": day_key,
@@ -527,26 +540,6 @@ def dedup_person_sessions(sessions: list[dict]) -> list[dict]:
         out.append(dict(curr))
         i += 1
     return out
-
-
-def fill_person_day_gaps(day_sessions: list[dict], day_key: str, day_label: str) -> list[dict]:
-    """Insert PPA entries for gaps between consecutive sessions in a single day."""
-    if len(day_sessions) < 2:
-        return list(day_sessions)
-    result = [day_sessions[0]]
-    for i in range(1, len(day_sessions)):
-        prev_end = _time_minutes(day_sessions[i - 1]["time"].split("\u2013")[1])
-        curr_start = _time_minutes(day_sessions[i]["time"].split("\u2013")[0])
-        if curr_start > prev_end:
-            result.append({
-                "day": day_label,
-                "day_key": day_key,
-                "time": f"{_fmt_time(prev_end)}\u2013{_fmt_time(curr_start)}",
-                "stage": "\u2014",
-                "subject": "PPA",
-            })
-        result.append(day_sessions[i])
-    return result
 
 
 def render_person_day_panel(day_key: str, sessions: list[dict], *, is_off_day: bool = False) -> str:
@@ -1278,18 +1271,22 @@ def build_staff_html(week: dict) -> str:
 """
 
 
-def filter_by_hours(sessions: list[dict], hours: dict, initials: str) -> list[dict]:
+def filter_by_working_hours(sessions: list[dict], initials: str) -> list[dict]:
     """Remove sessions outside a staff member's working hours."""
-    if initials not in hours:
+    person_hours = STAFF_WORKING_HOURS.get(initials)
+    if not person_hours:
         return sessions
-    p_start = _time_minutes(hours[initials]["start"])
-    p_end = _time_minutes(hours[initials]["end"])
     filtered = []
     for s in sessions:
-        slot_start = _time_minutes(s["time"].split("–")[0])
-        if slot_start < p_start or slot_start >= p_end:
+        day_hours = person_hours.get(s["day_key"])
+        if not day_hours:
+            filtered.append(s)
             continue
-        filtered.append(s)
+        slot_start = _time_minutes(s["time"].split("\u2013")[0])
+        p_start = _time_minutes(day_hours[0])
+        p_end = _time_minutes(day_hours[1])
+        if p_start <= slot_start < p_end:
+            filtered.append(s)
     return filtered
 
 
@@ -1307,6 +1304,7 @@ def main() -> None:
     day_labels = {k: v["label"] for k, v in week["days"].items()}
     for initials in week["staff"].get("people", []):
         person_sessions = sessions.get(initials, [])
+        person_sessions = filter_by_working_hours(person_sessions, initials)
         sorted_sessions = sorted(
             person_sessions,
             key=lambda s: (DAY_ORDER.index(s["day_key"]), s["time"]),

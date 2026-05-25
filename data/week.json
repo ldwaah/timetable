@@ -845,6 +845,33 @@
     "start_times": {
       "JC": "11:00"
     },
+    "supervision_rota": {
+      "monday": {
+        "ks3_break": ["LG", "HK"],
+        "ks4_break": ["LI", "JM"],
+        "lunch": ["LD", "JC"]
+      },
+      "tuesday": {
+        "ks3_break": ["SA", "JC"],
+        "ks4_break": ["LI", "HK"],
+        "lunch": ["LG", "JM"]
+      },
+      "wednesday": {
+        "toilet_break": ["SA", "LD"],
+        "lunch": ["LI", "HK"],
+        "break": ["LD", "LI"]
+      },
+      "thursday": {
+        "ks3_break": ["LG", "SA"],
+        "ks4_break": ["JC", "JM"],
+        "lunch": ["LD", "HK"]
+      },
+      "friday": {
+        "ks3_break": ["LD", "JM"],
+        "ks4_break": ["LG", "LI"],
+        "lunch": ["SA", "HK"]
+      }
+    },
     "ppa": {
       "LD": {
         "monday":    { "start": "11:35", "end": "12:15" },
