@@ -49,9 +49,12 @@
           "end": "09:45",
           "ks3": "Reset",
           "ks4": "Reset",
+          "flz": "Reset support → FLZ 09:40",
           "kind": "reset",
           "staff_ks3": "LG",
-          "staff_ks4": "LI"
+          "staff_ks4": "LI",
+          "staff_flz": "HK / JM",
+          "note": "Supported by HK / JM"
         },
         {
           "start": "09:45",
@@ -180,9 +183,11 @@
           "end": "09:45",
           "ks3": "Assembly",
           "ks4": "Assembly",
+          "flz": "Reset support → FLZ 09:40",
           "kind": "assembly",
           "staff_ks3": "SA / LG",
-          "staff_ks4": "SA / LG"
+          "staff_ks4": "SA / LG",
+          "staff_flz": "HK / JM"
         },
         {
           "start": "09:45",
@@ -424,9 +429,12 @@
           "end": "09:45",
           "ks3": "Reset",
           "ks4": "Reset",
+          "flz": "Reset support → FLZ 09:40",
           "kind": "reset",
           "staff_ks3": "LG",
-          "staff_ks4": "LI"
+          "staff_ks4": "LI",
+          "staff_flz": "HK / JM",
+          "note": "Supported by HK / JM"
         },
         {
           "start": "09:45",
@@ -546,9 +554,12 @@
           "end": "09:45",
           "ks3": "Reset",
           "ks4": "Reset",
+          "flz": "Reset support → FLZ 09:40",
           "kind": "reset",
           "staff_ks3": "LG",
-          "staff_ks4": "LI"
+          "staff_ks4": "LI",
+          "staff_flz": "HK / JM",
+          "note": "Supported by HK / JM"
         },
         {
           "start": "09:45",
