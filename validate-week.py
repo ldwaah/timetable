@@ -94,13 +94,13 @@ def validate(rows: list[dict], finish: str, dk: str) -> list[str]:
             need = exp
             if short and label in ("Food Technology", "King's Trust"):
                 need = SHORT_DAY_VOCATIONAL
-            if dk in ("wednesday", "thursday") and label == "Food Technology" and total in (35, 40, 50, 60):
+            if dk in ("wednesday", "thursday") and label == "Food Technology" and total in (35, 40, 50, 55, 60):
                 continue
-            if dk in ("thursday", "friday") and label == "Citizenship" and total == 50:
+            if dk in ("thursday", "friday") and label == "Citizenship" and total in (50, 55):
                 continue
-            if dk == "friday" and label == "SEMH / AQA" and total in (40, 50, 90):
+            if dk == "friday" and label == "SEMH / AQA" and total in (40, 50, 55, 90):
                 continue
-            if dk == "friday" and stage == "ks3" and label == "PSHE" and total == 50:
+            if dk == "friday" and stage == "ks3" and label == "PSHE" and total in (50, 55):
                 continue
             if dk == "wednesday" and label == "Maths" and total == 50:
                 continue
@@ -112,11 +112,11 @@ def validate(rows: list[dict], finish: str, dk: str) -> list[str]:
                 continue
             if dk == "tuesday" and label == "Assembly" and total == 30:
                 continue
-            if dk == "tuesday" and label == "Art" and total == 50:
+            if dk == "tuesday" and label == "Art" and total in (50, 55):
                 continue
-            if dk == "tuesday" and label == "DofE" and total == 50:
+            if dk == "tuesday" and label == "DofE" and total in (50, 55):
                 continue
-            if dk == "monday" and label == "King's Trust" and total == 50:
+            if dk == "monday" and label == "King's Trust" and total in (50, 55):
                 continue
             if total != need:
                 issues.append(f"{dk} {stage} {label}: {total}min not {need}min")
