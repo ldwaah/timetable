@@ -457,17 +457,19 @@
         {
           "start": "11:25",
           "end": "12:05",
-          "ks3": "Lesson — TBC",
+          "ks3": "Citizenship",
           "ks4": "Citizenship",
           "kind": "lesson",
+          "staff_ks3": "Jeff / Lloyd",
           "staff_ks4": "Lloyd"
         },
         {
           "start": "12:05",
           "end": "12:15",
-          "ks3": "Lesson — TBC",
+          "ks3": "Citizenship",
           "ks4": "Lesson — TBC",
-          "kind": "lesson"
+          "kind": "lesson",
+          "staff_ks3": "Jeff / Lloyd"
         },
         {
           "start": "12:15",
