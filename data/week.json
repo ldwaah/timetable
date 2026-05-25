@@ -774,6 +774,27 @@
   "staff": {
     "start": "08:30",
     "hours": {
+      "LG": {
+        "monday": { "start": "08:30", "end": "15:00" },
+        "tuesday": { "start": "08:30", "end": "15:00" },
+        "wednesday": { "start": "08:30", "end": "15:00" },
+        "thursday": { "start": "08:30", "end": "15:00" },
+        "friday": { "start": "08:30", "end": "15:00" }
+      },
+      "LD": {
+        "monday": { "start": "08:30", "end": "15:30" },
+        "tuesday": { "start": "08:30", "end": "15:30" },
+        "wednesday": { "start": "08:30", "end": "15:00" },
+        "thursday": { "start": "08:30", "end": "15:00" },
+        "friday": { "start": "08:30", "end": "15:00" }
+      },
+      "LI": {
+        "monday": { "start": "08:30", "end": "15:30" },
+        "tuesday": { "start": "08:30", "end": "15:30" },
+        "wednesday": { "start": "08:30", "end": "15:00" },
+        "thursday": { "start": "08:30", "end": "15:00" },
+        "friday": { "start": "08:30", "end": "15:00" }
+      },
       "JM": { "start": "09:00", "end": "14:00" },
       "HK": { "start": "09:00", "end": "13:00" }
     },
