@@ -1753,7 +1753,7 @@ def main() -> None:
             for s in combined:
                 if s["subject"] == "PPA":
                     s["subject"] = "PPA / On-call / Centre Duties"
-        if initials == "HK":
+        if initials in ("HK", "JM"):
             for s in combined:
                 if s["subject"] == "PPA":
                     s["subject"] = "Student Support"
