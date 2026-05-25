@@ -855,7 +855,7 @@ def render_person_day_panel(day_key: str, sessions: list[dict], *, is_off_day: b
         for s in sessions:
             is_ppa = s["subject"].startswith("PPA")
             subj_cls = "subject-col ppa" if is_ppa else "subject-col"
-            location = s.get("location") or get_staff_location(s["subject"], s["stage"], day_key)
+            location = s["location"] if "location" in s else get_staff_location(s["subject"], s["stage"], day_key)
             rows_html.append(
                 "<tr>"
                 f'<td class="time-col">{esc(s["time"])}</td>'
@@ -1893,7 +1893,11 @@ def main() -> None:
                 if "reset" in s["subject"].lower():
                     s["location"] = "Computer Suite" if s["day_key"] == "wednesday" else "URFUTURE"
         if initials in ("LI", "LG"):
-            combined = [s for s in combined if s["subject"] != "PPA / Lunch"]
+            for s in combined:
+                if s["subject"] == "PPA / Lunch":
+                    s["subject"] = ""
+                    s["stage"] = ""
+                    s["location"] = ""
         slug = staff_slug(initials)
         page = render_staff_person_page(week, initials, combined)
         (STAFF_DIR / f"{slug}.html").write_text(page, encoding="utf-8")
