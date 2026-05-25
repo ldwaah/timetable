@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jeff — staff timetable</title>
+  <style>
+    .tab-input { position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0; }
+
+    .day-tabs { margin-top: 0.5rem; }
+
+    .tab-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-bottom: 1rem;
+    }
+
+    .day-tab-btn {
+      cursor: pointer;
+      padding: 0.45rem 0.9rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #8b949e;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+
+    .day-tab-btn:hover { color: #e6edf3; background: #21262d; }
+
+    #tab-monday:checked ~ .tab-bar label[for="tab-monday"],
+    #tab-tuesday:checked ~ .tab-bar label[for="tab-tuesday"],
+    #tab-wednesday:checked ~ .tab-bar label[for="tab-wednesday"],
+    #tab-thursday:checked ~ .tab-bar label[for="tab-thursday"],
+    #tab-friday:checked ~ .tab-bar label[for="tab-friday"] {
+      color: #f0f6fc;
+      background: #1f3a5f;
+      border-color: #58a6ff;
+    }
+
+    .tab-panels { position: relative; }
+
+    .day-panel { display: none; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      min-height: 100vh;
+      padding: 2rem 1.25rem;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .top { margin-bottom: 1rem; }
+    a.back { color: #58a6ff; text-decoration: none; font-size: 0.9rem; }
+    h1 { margin-top: 0.75rem; font-size: 1.4rem; color: #f0f6fc; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      background: #161b22;
+    }
+    .person-grid {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    .person-grid th, .person-grid td {
+      padding: 0.55rem 0.75rem;
+      border-bottom: 1px solid #21262d;
+      text-align: left;
+    }
+    .person-grid th {
+      background: #1c2128;
+      color: #8b949e;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+    }
+    .time-col { color: #8b949e; white-space: nowrap; }
+    .subject-col { color: #f0f6fc; font-weight: 500; }
+    .muted { color: #484f58; text-align: center; }
+</style>
+</head>
+<body>
+  <div class="top">
+    <a class="back" href="../staff-timetable.html">← Staff timetable</a>
+    <h1>Jeff</h1>
+  </div>
+  
+  <style>
+    #tab-monday:checked ~ .tab-panels #panel-monday { display: block; }
+    #tab-tuesday:checked ~ .tab-panels #panel-tuesday { display: block; }
+    #tab-wednesday:checked ~ .tab-panels #panel-wednesday { display: block; }
+    #tab-thursday:checked ~ .tab-panels #panel-thursday { display: block; }
+    #tab-friday:checked ~ .tab-panels #panel-friday { display: block; }
+  </style>
+  <div class="day-tabs">
+    <input type="radio" name="day-tab" id="tab-monday" class="tab-input" checked>
+    <input type="radio" name="day-tab" id="tab-tuesday" class="tab-input">
+    <input type="radio" name="day-tab" id="tab-wednesday" class="tab-input">
+    <input type="radio" name="day-tab" id="tab-thursday" class="tab-input">
+    <input type="radio" name="day-tab" id="tab-friday" class="tab-input">
+    <div class="tab-bar" role="tablist"><label for="tab-monday" class="day-tab-btn" role="tab">Mon</label><label for="tab-tuesday" class="day-tab-btn" role="tab">Tue</label><label for="tab-wednesday" class="day-tab-btn" role="tab">Wed</label><label for="tab-thursday" class="day-tab-btn" role="tab">Thu</label><label for="tab-friday" class="day-tab-btn" role="tab">Fri</label></div>
+    <div class="tab-panels">
+      
+      <section class="day-panel" id="panel-monday" role="tabpanel">
+        <div class="table-wrap">
+          <table class="person-grid">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Group</th>
+                <th scope="col">Subject</th>
+              </tr>
+            </thead>
+            <tbody><tr><td class="time-col">11:25–12:15</td><td>KS3</td><td class="subject-col">Group Mentoring</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+      <section class="day-panel" id="panel-tuesday" role="tabpanel">
+        <div class="table-wrap">
+          <table class="person-grid">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Group</th>
+                <th scope="col">Subject</th>
+              </tr>
+            </thead>
+            <tbody><tr><td colspan="3" class="muted">No sessions</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+      <section class="day-panel" id="panel-wednesday" role="tabpanel">
+        <div class="table-wrap">
+          <table class="person-grid">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Group</th>
+                <th scope="col">Subject</th>
+              </tr>
+            </thead>
+            <tbody><tr><td colspan="3" class="muted">No sessions</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+      <section class="day-panel" id="panel-thursday" role="tabpanel">
+        <div class="table-wrap">
+          <table class="person-grid">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Group</th>
+                <th scope="col">Subject</th>
+              </tr>
+            </thead>
+            <tbody><tr><td colspan="3" class="muted">No sessions</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+      <section class="day-panel" id="panel-friday" role="tabpanel">
+        <div class="table-wrap">
+          <table class="person-grid">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Group</th>
+                <th scope="col">Subject</th>
+              </tr>
+            </thead>
+            <tbody><tr><td colspan="3" class="muted">No sessions</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

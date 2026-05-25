@@ -71,9 +71,10 @@
         {
           "start": "11:25",
           "end": "12:15",
-          "ks3": "Lesson — TBC",
+          "ks3": "Group Mentoring",
           "ks4": "King's Trust",
           "kind": "lesson",
+          "staff_ks3": "Jeff",
           "staff_ks4": "Lorelle"
         },
         {
@@ -511,7 +512,8 @@
       "Lorelle",
       "Lloyd",
       "Laurent",
-      "Sacha"
+      "Sacha",
+      "Jeff"
     ],
     "assignments": {
       "Reset": {
@@ -550,6 +552,9 @@
       "PSHE": {
         "ks3": "Sacha",
         "ks4": "Sacha"
+      },
+      "Group Mentoring": {
+        "ks3": "Jeff"
       }
     }
   }
