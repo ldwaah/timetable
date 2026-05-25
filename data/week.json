@@ -866,6 +866,17 @@
     "start_times": {
       "JC": "11:00"
     },
+    "slot_overrides": {
+      "LG": [
+        {
+          "days": ["monday", "tuesday", "thursday", "friday"],
+          "start": "11:05",
+          "end": "11:20",
+          "stage": "KS3",
+          "subject": "KS3 Support"
+        }
+      ]
+    },
     "supervision_rota": {
       "monday": {
         "ks3_break": ["HK", "LD"],
