@@ -65,11 +65,20 @@
           "start": "11:05",
           "end": "11:20",
           "ks3": "Break",
-          "ks4": "Break",
-          "kind": "lesson"
+          "ks4": "King's Trust",
+          "kind": "lesson",
+          "staff_ks4": "Lorelle"
         },
         {
           "start": "11:20",
+          "end": "11:35",
+          "ks3": "Group Mentoring",
+          "ks4": "Break",
+          "kind": "lesson",
+          "staff_ks3": "Jeff"
+        },
+        {
+          "start": "11:35",
           "end": "12:15",
           "ks3": "Group Mentoring",
           "ks4": "King's Trust",
@@ -173,11 +182,20 @@
           "start": "11:05",
           "end": "11:20",
           "ks3": "Break",
-          "ks4": "Break",
-          "kind": "lesson"
+          "ks4": "DofE",
+          "kind": "lesson",
+          "staff_ks4": "Lloyd"
         },
         {
           "start": "11:20",
+          "end": "11:35",
+          "ks3": "Art",
+          "ks4": "Break",
+          "kind": "lesson",
+          "staff_ks3": "Sacha"
+        },
+        {
+          "start": "11:35",
           "end": "12:15",
           "ks3": "Art",
           "ks4": "DofE",
@@ -383,11 +401,20 @@
           "start": "11:05",
           "end": "11:20",
           "ks3": "Break",
-          "ks4": "Break",
-          "kind": "lesson"
+          "ks4": "Citizenship",
+          "kind": "lesson",
+          "staff_ks4": "Jeff / Lloyd"
         },
         {
           "start": "11:20",
+          "end": "11:35",
+          "ks3": "Food Technology",
+          "ks4": "Break",
+          "kind": "lesson",
+          "staff_ks3": "Sacha"
+        },
+        {
+          "start": "11:35",
           "end": "12:15",
           "ks3": "Food Technology",
           "ks4": "Citizenship",
@@ -482,11 +509,20 @@
           "start": "11:05",
           "end": "11:20",
           "ks3": "Break",
-          "ks4": "Break",
-          "kind": "lesson"
+          "ks4": "SEMH / AQA",
+          "kind": "lesson",
+          "staff_ks4": "Laurent"
         },
         {
           "start": "11:20",
+          "end": "11:35",
+          "ks3": "PSHE",
+          "ks4": "Break",
+          "kind": "lesson",
+          "staff_ks3": "Sacha"
+        },
+        {
+          "start": "11:35",
           "end": "12:15",
           "ks3": "PSHE",
           "ks4": "SEMH / AQA",
