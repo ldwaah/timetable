@@ -112,6 +112,30 @@ def get_location(label: str, stage: str, day_key: str, kind: str) -> str:
         return "Foyer"
     if "pause" in low and "progress" in low:
         return "Foyer"
+
+    if day_key == "wednesday":
+        if kind == "assembly" or low == "assembly":
+            return "Gym"
+        if kind == "pe" or low == "gym":
+            return "Gym"
+        if "flz" in low or stage == "flz":
+            return "Gym"
+        if "sports leaders" in low or "vocational" in low:
+            return "Gym"
+        if low == "lunch":
+            if stage == "ks3":
+                return "Main Room"
+            return "Computer Suite"
+        if low.startswith("break"):
+            if stage == "ks3":
+                return "Main Room"
+            return "Computer Suite"
+        if stage == "ks3":
+            return "Main Room"
+        if stage == "ks4":
+            return "Computer Suite"
+        return "Main Room"
+
     if kind == "assembly" or low == "assembly":
         return "Sports Hall"
     if kind == "pe":
@@ -132,10 +156,6 @@ def get_location(label: str, stage: str, day_key: str, kind: str) -> str:
         if "main room" in low:
             return "Boardroom"
         if "computer room" in low:
-            return "Computer Room"
-        if day_key == "wednesday":
-            if stage == "ks3":
-                return "Boardroom"
             return "Computer Room"
         return "Outside"
     if "sports leaders" in low or "vocational" in low:
@@ -679,23 +699,117 @@ def dedup_person_sessions(sessions: list[dict]) -> list[dict]:
     return out
 
 
+def get_staff_location(subject: str, stage: str, day_key: str) -> str:
+    """Derive a room/location for a staff timetable entry."""
+    low = subject.lower()
+
+    if "ppa / on-call" in low or "centre duties" in low:
+        return "Foyer"
+    if low == "ppa":
+        return ""
+    if "whole school support" in low:
+        return "Foyer"
+    if "arrival" in low:
+        return "Foyer"
+    if "checks" in low:
+        return "Foyer"
+    if "transition" in low:
+        return "Foyer"
+    if "staff briefing" in low or "set up" in low:
+        return "Foyer"
+    if "assembly" in low:
+        return "Sports Hall"
+    if "pause" in low and "progress" in low:
+        return "Foyer"
+
+    if "break supervision" in low or "break" in low and "supervision" in low:
+        if "main foyer" in low or "foyer" in low:
+            return "Foyer"
+        if "outside" in low:
+            return "Outside"
+        if "main room" in low:
+            return "Boardroom"
+        if "computer room" in low:
+            return "Computer Room"
+        if day_key == "wednesday":
+            if "ks3" in low:
+                return "Boardroom"
+            if "ks4" in low:
+                return "Computer Room"
+            return "Boardroom"
+        return "Outside"
+
+    if "lunch supervision" in low or ("lunch" in low and "supervision" in low):
+        if "ks3" in low or stage == "KS3":
+            return "Boardroom"
+        if "ks4" in low or stage == "KS4":
+            return "URFUTURE"
+        return ""
+
+    if low == "lunch":
+        if stage == "KS3":
+            return "Boardroom"
+        if stage == "KS4":
+            return "URFUTURE"
+        return ""
+
+    if low.startswith("break"):
+        if day_key == "wednesday":
+            if stage == "KS3":
+                return "Boardroom"
+            return "Computer Room"
+        return "Outside"
+
+    if low == "gym":
+        return "Gym"
+    if low == "pe":
+        return "Sports Hall"
+    if low == "art":
+        return "Art Room"
+    if low == "food technology":
+        return "Cooking Room"
+    if "sports leaders" in low or "vocational" in low:
+        return "Sports Hall"
+
+    if stage == "FLZ" or "flz" in low:
+        return "Sports Hall"
+
+    if "reset" in low:
+        if stage == "KS3" or stage == "All":
+            return "Boardroom"
+        if stage == "KS4":
+            return "URFUTURE"
+        return ""
+
+    if "team meeting" in low or "thrive" in low:
+        return "Boardroom"
+
+    if stage in ("KS3", "All"):
+        return "Boardroom"
+    if stage == "KS4":
+        return "URFUTURE"
+    return ""
+
+
 def render_person_day_panel(day_key: str, sessions: list[dict], *, is_off_day: bool = False) -> str:
     if sessions:
         rows_html = []
         for s in sessions:
             is_ppa = s["subject"].startswith("PPA")
             subj_cls = "subject-col ppa" if is_ppa else "subject-col"
+            location = get_staff_location(s["subject"], s["stage"], day_key)
             rows_html.append(
                 "<tr>"
                 f'<td class="time-col">{esc(s["time"])}</td>'
                 f'<td>{esc(s["stage"])}</td>'
                 f'<td class="{subj_cls}">{esc(s["subject"])}</td>'
+                f'<td class="location-col">{esc(location)}</td>'
                 "</tr>"
             )
         body = "".join(rows_html)
     else:
         msg = "Not working" if is_off_day else "No sessions"
-        body = f'<tr><td colspan="3" class="muted">{msg}</td></tr>'
+        body = f'<tr><td colspan="4" class="muted">{msg}</td></tr>'
     return f"""
       <section class="day-panel" id="panel-{day_key}" role="tabpanel">
         <div class="table-wrap">
@@ -704,7 +818,8 @@ def render_person_day_panel(day_key: str, sessions: list[dict], *, is_off_day: b
               <tr>
                 <th scope="col">Time</th>
                 <th scope="col">Group</th>
-                <th scope="col">Subject</th>
+                <th scope="col">Activity</th>
+                <th scope="col">Location</th>
               </tr>
             </thead>
             <tbody>{body}</tbody>
@@ -1241,6 +1356,7 @@ STAFF_PERSON_CSS = (
     .time-col { color: #8b949e; white-space: nowrap; }
     .subject-col { color: #f0f6fc; font-weight: 500; }
     .subject-col.ppa { color: #d2a8ff; font-style: italic; }
+    .location-col { color: #a371f7; font-size: 0.8rem; font-weight: 500; }
     .muted { color: #484f58; text-align: center; }
 """
 )
