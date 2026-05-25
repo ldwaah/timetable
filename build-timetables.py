@@ -507,6 +507,37 @@ def fill_ppa_gaps(
     return ppa_sessions
 
 
+ARRIVAL_WINDOW = (8 * 60 + 50, 9 * 60 + 15)  # 08:50–09:15
+
+
+def relabel_arrival_ppa(ppa_sessions: list[dict]) -> list[dict]:
+    """Replace PPA with 'Whole School Support' during the 08:50–09:15 arrival window."""
+    arrival_start, arrival_end = ARRIVAL_WINDOW
+    result: list[dict] = []
+    for s in ppa_sessions:
+        if s["subject"] != "PPA":
+            result.append(s)
+            continue
+        parts = s["time"].split("\u2013")
+        s_start = _time_minutes(parts[0])
+        s_end = _time_minutes(parts[1])
+        if s_end <= arrival_start or s_start >= arrival_end:
+            result.append(s)
+            continue
+        if s_start < arrival_start:
+            result.append({**s, "time": f"{_minutes_to_time(s_start)}\u2013{_minutes_to_time(arrival_start)}"})
+        overlap_start = max(s_start, arrival_start)
+        overlap_end = min(s_end, arrival_end)
+        result.append({
+            **s,
+            "time": f"{_minutes_to_time(overlap_start)}\u2013{_minutes_to_time(overlap_end)}",
+            "subject": "Whole School Support",
+        })
+        if s_end > arrival_end:
+            result.append({**s, "time": f"{_minutes_to_time(arrival_end)}\u2013{_minutes_to_time(s_end)}"})
+    return result
+
+
 def group_sessions_by_day(sessions: list[dict]) -> dict[str, list[dict]]:
     grouped: dict[str, list[dict]] = {key: [] for key in DAY_ORDER}
     for s in sessions:
@@ -1535,6 +1566,7 @@ def main() -> None:
         deduped = dedup_person_sessions(sorted_sessions)
         merged = merge_staff_sessions(deduped)
         ppa_gaps = fill_ppa_gaps(merged, initials, day_labels)
+        ppa_gaps = relabel_arrival_ppa(ppa_gaps)
         combined = sorted(
             merged + ppa_gaps,
             key=lambda s: (DAY_ORDER.index(s["day_key"]), s["time"]),
