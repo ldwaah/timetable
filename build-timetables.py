@@ -823,7 +823,7 @@ def get_staff_location(subject: str, stage: str, day_key: str) -> str:
     if low == "food technology":
         return "Cooking Room"
     if "beauty" in low or "enrichment" in low:
-        return "Art Room"
+        return "Foyer / Beauty Room"
     if "sports leaders" in low or "vocational" in low:
         return "Sports Hall"
 
@@ -1761,7 +1761,10 @@ def main() -> None:
                     s["subject"] = "PPA / On-call / Centre Duties"
         if initials == "LG":
             for s in combined:
-                if s["subject"] == "PPA" and s["time"] == "11:35\u201312:15":
+                if s["subject"] == "PPA" and (
+                    s["time"] == "11:35\u201312:15"
+                    or (s["time"] == "12:30\u201313:20" and s["day_key"] == "monday")
+                ):
                     s["subject"] = "PPA / Lunch"
         if initials in ("HK", "JM", "JC"):
             for s in combined:
