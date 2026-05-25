@@ -105,7 +105,7 @@ def get_location(label: str, stage: str, day_key: str, kind: str) -> str:
         return ""
     low = label.lower()
     if kind == "searches" or "student searches" in low:
-        return "Boardroom"
+        return "Foyer"
     if kind == "arrival" or "arrival" in low:
         return "Foyer"
     if kind == "checks" or "checks" in low:
@@ -710,7 +710,7 @@ def get_staff_location(subject: str, stage: str, day_key: str) -> str:
     low = subject.lower()
 
     if "student searches" in low:
-        return "Boardroom"
+        return "Foyer"
     if "ppa / on-call" in low or "centre duties" in low:
         return "Foyer"
     if low == "student support":
