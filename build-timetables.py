@@ -75,6 +75,8 @@ def esc(text: str | None) -> str:
 
 
 def cell_class(label: str, kind: str) -> str:
+    if label == "—":
+        return "slot"
     if kind == "assembly" or label == "Assembly":
         return "slot assembly"
     if kind == "reset" or label == "Reset":
@@ -105,7 +107,7 @@ def compare_cell_html(
     show_staff: bool = True,
     all_staff: list[str] | None = None,
 ) -> str:
-    label = row[stage]
+    label = row.get(stage, "—")
     staff = row.get(f"staff_{stage}") if show_staff else None
     supervision = row.get(f"supervision_{stage}")
     cls = cell_class(label, row.get("kind", ""))
@@ -145,15 +147,20 @@ def display_rows(day: dict) -> list[dict]:
 def render_student_day_panel(week: dict, day_key: str) -> str:
     day = week["days"][day_key]
     all_staff = week["staff"].get("people", [])
+    rows = display_rows(day)
+    has_flz = any(row.get("flz") for row in rows)
     rows_html = []
-    for row in display_rows(day):
+    for row in rows:
+        flz_cell = compare_cell_html(row, "flz", all_staff=all_staff) if has_flz else ""
         rows_html.append(
             "<tr>"
             f'<td class="time-col">{esc(row["start"])}–{esc(row["end"])}</td>'
             f"{compare_cell_html(row, 'ks3', all_staff=all_staff)}"
             f"{compare_cell_html(row, 'ks4', all_staff=all_staff)}"
+            f"{flz_cell}"
             "</tr>"
         )
+    flz_th = '<th scope="col">FLZ</th>' if has_flz else ""
     return f"""
       <section class="day-panel" id="panel-{day_key}" role="tabpanel" aria-labelledby="tab-{day_key}">
         <div class="table-wrap">
@@ -163,6 +170,7 @@ def render_student_day_panel(week: dict, day_key: str) -> str:
                 <th scope="col">Time</th>
                 <th scope="col">KS3</th>
                 <th scope="col">KS4</th>
+                {flz_th}
               </tr>
             </thead>
             <tbody>
@@ -240,6 +248,19 @@ def collect_staff_sessions(week: dict) -> dict[str, list[dict]]:
                                 "subject": "Supervision",
                             }
                         )
+            flz_staff = row.get("staff_flz")
+            flz_label = row.get("flz")
+            if flz_staff and flz_label:
+                for initials in (s.strip() for s in flz_staff.split("/")):
+                    sessions.setdefault(initials, []).append(
+                        {
+                            "day": day["label"],
+                            "day_key": day_key,
+                            "time": f'{row["start"]}–{row["end"]}',
+                            "stage": "FLZ",
+                            "subject": flz_label,
+                        }
+                    )
     for name in sessions:
         sessions[name] = merge_staff_sessions(sessions[name])
     return sessions
@@ -330,8 +351,10 @@ def render_staff_person_page(week: dict, initials: str, sessions: list[dict]) ->
 def render_staff_day_panel(week: dict, day_key: str) -> str:
     day = week["days"][day_key]
     all_staff = week["staff"].get("people", [])
+    rows = display_rows(day)
+    has_flz = any(row.get("flz") for row in rows)
     rows_html = []
-    for row in display_rows(day):
+    for row in rows:
         ks3, ks4 = row["ks3"], row["ks4"]
         s3 = row.get("staff_ks3")
         s4 = row.get("staff_ks4")
@@ -343,13 +366,21 @@ def render_staff_day_panel(week: dict, day_key: str) -> str:
             k3_disp = esc(ks3) + f' <span class="lead">({esc(_supervision_text(sup3, all_staff))})</span>'
         if not s4 and sup4:
             k4_disp = esc(ks4) + f' <span class="lead">({esc(_supervision_text(sup4, all_staff))})</span>'
+        flz_html = ""
+        if has_flz:
+            flz = row.get("flz", "—")
+            sf = row.get("staff_flz")
+            flz_disp = esc(flz) + (f' <span class="lead">({esc(sf)})</span>' if sf else "")
+            flz_html = f'<td class="{cell_class(flz, row.get("kind", ""))}">{flz_disp}</td>'
         rows_html.append(
             f"<tr>"
             f'<td class="time-col">{esc(row["start"])}–{esc(row["end"])}</td>'
             f'<td class="{cell_class(ks3, row.get("kind", ""))}">{k3_disp}</td>'
             f'<td class="{cell_class(ks4, row.get("kind", ""))}">{k4_disp}</td>'
+            f"{flz_html}"
             f"</tr>"
         )
+    flz_th = '<th scope="col">FLZ</th>' if has_flz else ""
     return f"""
       <section class="day-panel" id="panel-{day_key}" role="tabpanel">
         <div class="table-wrap">
@@ -359,6 +390,7 @@ def render_staff_day_panel(week: dict, day_key: str) -> str:
                 <th scope="col">Time</th>
                 <th scope="col">KS3</th>
                 <th scope="col">KS4</th>
+                {flz_th}
               </tr>
             </thead>
             <tbody>

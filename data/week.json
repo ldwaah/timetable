@@ -48,18 +48,22 @@
           "end": "10:25",
           "ks3": "Maths",
           "ks4": "Maths",
+          "flz": "Maths",
           "kind": "lesson",
           "staff_ks3": "LG",
-          "staff_ks4": "LI"
+          "staff_ks4": "LI",
+          "staff_flz": "HK / JM"
         },
         {
           "start": "10:25",
           "end": "11:05",
           "ks3": "English",
           "ks4": "English",
+          "flz": "English",
           "kind": "lesson",
           "staff_ks3": "LG",
-          "staff_ks4": "LI"
+          "staff_ks4": "LI",
+          "staff_flz": "HK / JM"
         },
         {
           "start": "11:05",
@@ -165,18 +169,22 @@
           "end": "10:25",
           "ks3": "Maths",
           "ks4": "Maths",
+          "flz": "Maths",
           "kind": "lesson",
           "staff_ks3": "LG",
-          "staff_ks4": "LI"
+          "staff_ks4": "LI",
+          "staff_flz": "HK / JM"
         },
         {
           "start": "10:25",
           "end": "11:05",
           "ks3": "English",
           "ks4": "English",
+          "flz": "English",
           "kind": "lesson",
           "staff_ks3": "LG",
-          "staff_ks4": "LI"
+          "staff_ks4": "LI",
+          "staff_flz": "HK / JM"
         },
         {
           "start": "11:05",
@@ -384,18 +392,22 @@
           "end": "10:25",
           "ks3": "Maths",
           "ks4": "Maths",
+          "flz": "Maths",
           "kind": "lesson",
           "staff_ks3": "LG",
-          "staff_ks4": "LI"
+          "staff_ks4": "LI",
+          "staff_flz": "HK / JM"
         },
         {
           "start": "10:25",
           "end": "11:05",
           "ks3": "English",
           "ks4": "English",
+          "flz": "English",
           "kind": "lesson",
           "staff_ks3": "LG",
-          "staff_ks4": "LI"
+          "staff_ks4": "LI",
+          "staff_flz": "HK / JM"
         },
         {
           "start": "11:05",
@@ -492,18 +504,22 @@
           "end": "10:25",
           "ks3": "Maths",
           "ks4": "Maths",
+          "flz": "Maths",
           "kind": "lesson",
           "staff_ks3": "LG",
-          "staff_ks4": "LI"
+          "staff_ks4": "LI",
+          "staff_flz": "HK / JM"
         },
         {
           "start": "10:25",
           "end": "11:05",
           "ks3": "English",
           "ks4": "English",
+          "flz": "English",
           "kind": "lesson",
           "staff_ks3": "LG",
-          "staff_ks4": "LI"
+          "staff_ks4": "LI",
+          "staff_flz": "HK / JM"
         },
         {
           "start": "11:05",
@@ -599,11 +615,13 @@
       },
       "Maths": {
         "ks3": "LG",
-        "ks4": "LI"
+        "ks4": "LI",
+        "flz": "HK / JM"
       },
       "English": {
         "ks3": "LG",
-        "ks4": "LI"
+        "ks4": "LI",
+        "flz": "HK / JM"
       },
       "PE": {
         "ks3": "LI",
