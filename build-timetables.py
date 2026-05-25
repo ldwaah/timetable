@@ -99,6 +99,10 @@ def cell_class(label: str, kind: str) -> str:
         return "slot pe"
     if kind == "transition" or label == "Transition":
         return "slot transition"
+    if kind == "meeting" or label == "Team Meeting":
+        return "slot meeting"
+    if kind == "staff_development" or label == "Thrive":
+        return "slot staff-dev"
     if "Lesson" in label:
         return "slot lesson"
     return "slot"
@@ -292,10 +296,26 @@ def merge_staff_sessions(sessions: list[dict]) -> list[dict]:
 
 def collect_staff_sessions(week: dict) -> dict[str, list[dict]]:
     sessions: dict[str, list[dict]] = {}
+    all_people = week["staff"].get("people", [])
     off_days: dict[str, list[str]] = week["staff"].get("off_days", {})
     for day_key in DAY_ORDER:
         day = week["days"][day_key]
         for row in display_rows(day):
+            if row.get("all_staff"):
+                label = row.get("ks3", row.get("ks4", ""))
+                for person in all_people:
+                    if day_key in off_days.get(person, []):
+                        continue
+                    sessions.setdefault(person, []).append(
+                        {
+                            "day": day["label"],
+                            "day_key": day_key,
+                            "time": f'{row["start"]}–{row["end"]}',
+                            "stage": "All",
+                            "subject": label,
+                        }
+                    )
+                continue
             for stage in ("ks3", "ks4"):
                 staff = row.get(f"staff_{stage}")
                 if staff:
@@ -441,12 +461,16 @@ def render_staff_day_panel(week: dict, day_key: str) -> str:
         sup3 = row.get("supervision_ks3")
         sup4 = row.get("supervision_ks4")
         note = row.get("note")
-        k3_disp = esc(ks3) + (f' <span class="lead">({esc(s3)})</span>' if s3 else "")
-        k4_disp = esc(ks4) + (f' <span class="lead">({esc(s4)})</span>' if s4 else "")
-        if not s3 and sup3:
-            k3_disp = esc(ks3) + f' <span class="lead">({esc(_supervision_text(sup3, all_staff))})</span>'
-        if not s4 and sup4:
-            k4_disp = esc(ks4) + f' <span class="lead">({esc(_supervision_text(sup4, all_staff))})</span>'
+        if row.get("all_staff"):
+            k3_disp = esc(ks3) + ' <span class="lead">(All staff)</span>'
+            k4_disp = esc(ks4) + ' <span class="lead">(All staff)</span>'
+        else:
+            k3_disp = esc(ks3) + (f' <span class="lead">({esc(s3)})</span>' if s3 else "")
+            k4_disp = esc(ks4) + (f' <span class="lead">({esc(s4)})</span>' if s4 else "")
+            if not s3 and sup3:
+                k3_disp = esc(ks3) + f' <span class="lead">({esc(_supervision_text(sup3, all_staff))})</span>'
+            if not s4 and sup4:
+                k4_disp = esc(ks4) + f' <span class="lead">({esc(_supervision_text(sup4, all_staff))})</span>'
         if note:
             note_html = f'<span class="slot-note">{esc(note)}</span>'
             k3_disp += note_html
@@ -750,6 +774,8 @@ STAFF_CSS = """
     .slot.core.maths { color: #79c0ff; font-weight: 600; }
     .slot.core.english { color: #e3b341; font-weight: 600; }
     .slot.pe { color: #3fb950; font-weight: 600; }
+    .slot.meeting { color: #d2a8ff; font-weight: 600; }
+    .slot.staff-dev { color: #56d364; font-weight: 600; }
     .slot-note { display: block; font-size: 0.65rem; font-style: italic; color: #6e7681; margin-top: 0.15rem; font-weight: 400; }
 """
 

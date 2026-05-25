@@ -300,6 +300,15 @@
           "note": "LI covers LD in absence — students arrive 10:00"
         },
         {
+          "start": "09:00",
+          "end": "10:00",
+          "ks3": "Team Meeting",
+          "ks4": "Team Meeting",
+          "kind": "meeting",
+          "staff_only": true,
+          "all_staff": true
+        },
+        {
           "start": "10:00",
           "end": "10:20",
           "ks3": "Reset",
@@ -516,6 +525,15 @@
           "kind": "pe",
           "staff_ks3": "LI",
           "staff_ks4": "LI"
+        },
+        {
+          "start": "14:00",
+          "end": "15:00",
+          "ks3": "Thrive",
+          "ks4": "Thrive",
+          "kind": "staff_development",
+          "staff_only": true,
+          "all_staff": true
         }
       ]
     },
