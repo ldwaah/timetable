@@ -305,21 +305,30 @@
         },
         {
           "start": "14:05",
-          "end": "14:20",
-          "ks3": "SEMH / AQA",
-          "ks4": "Citizenship",
-          "kind": "lesson",
-          "staff_ks3": "Lorelle",
-          "staff_ks4": "Lloyd"
+          "end": "14:15",
+          "ks3": "Transition / Expectations",
+          "ks4": "Transition / Expectations",
+          "kind": "transition",
+          "staff_ks3": "Lorelle / Sacha",
+          "staff_ks4": "Lorelle / Sacha"
         },
         {
-          "start": "14:20",
+          "start": "14:15",
+          "end": "14:45",
+          "ks3": "Gym",
+          "ks4": "Gym",
+          "kind": "pe",
+          "staff_ks3": "Lorelle / Sacha",
+          "staff_ks4": "Lorelle / Sacha"
+        },
+        {
+          "start": "14:45",
           "end": "15:00",
-          "ks3": "SEMH / AQA",
-          "ks4": "Citizenship",
+          "ks3": "Pause & Progress",
+          "ks4": "Pause & Progress",
           "kind": "lesson",
-          "staff_ks3": "Lorelle",
-          "staff_ks4": "Lloyd"
+          "staff_ks3": "Lorelle / Sacha",
+          "staff_ks4": "Lorelle / Sacha"
         }
       ]
     },
