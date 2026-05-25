@@ -249,7 +249,10 @@ def compare_cell_html(
             room = label.split("\u2014")[1].strip()
             display_label = f"{prefix} Break ({room})"
         elif label.startswith("Break"):
-            display_label = f"{prefix} Break"
+            if day_key and day_key != "wednesday":
+                display_label = f"{prefix} Break (Outside)"
+            else:
+                display_label = f"{prefix} Break"
     label_html = esc(display_label)
     if staff:
         label_html = f'{esc(display_label)}<span class="slot-staff">{esc(staff)}</span>'
@@ -523,7 +526,9 @@ def collect_staff_sessions(week: dict) -> dict[str, list[dict]]:
                         if day_key in off_days.get(person, []):
                             continue
                         if person in SLT_MEMBERS and day_key != "wednesday" and not location:
-                            person_subject = f"{sup_subject} (Main Foyer)"
+                            person_subject = f"Break Supervision (Main Foyer)"
+                        elif person not in SLT_MEMBERS and day_key != "wednesday" and not location and sup_type == "Break":
+                            person_subject = f"{sup_subject} (Outside)"
                         else:
                             person_subject = sup_subject
                         sessions.setdefault(person, []).append(
