@@ -711,6 +711,8 @@ def get_staff_location(subject: str, stage: str, day_key: str) -> str:
         return "Boardroom"
     if "ppa / on-call" in low or "centre duties" in low:
         return "Foyer"
+    if low == "student support":
+        return "Boardroom"
     if low == "ppa":
         return ""
     if "whole school support" in low:
@@ -1751,6 +1753,10 @@ def main() -> None:
             for s in combined:
                 if s["subject"] == "PPA":
                     s["subject"] = "PPA / On-call / Centre Duties"
+        if initials == "HK":
+            for s in combined:
+                if s["subject"] == "PPA":
+                    s["subject"] = "Student Support"
         slug = staff_slug(initials)
         page = render_staff_person_page(week, initials, combined)
         (STAFF_DIR / f"{slug}.html").write_text(page, encoding="utf-8")
