@@ -171,12 +171,12 @@ def add_supervision(week: dict) -> None:
                         row["supervision_ks4"] = assigned
 
 
-def _supervision_text(free: list[str], all_staff: list[str]) -> str:
+def _supervision_text(free: list[str], all_staff: list[str], *, day_key: str = "") -> str:
     if len(free) == len(all_staff):
         return "All staff"
     parts = []
     for person in free:
-        if person in SLT_MEMBERS:
+        if person in SLT_MEMBERS and day_key != "wednesday":
             parts.append(f"{person} (Main Foyer)")
         else:
             parts.append(person)
@@ -233,6 +233,7 @@ def compare_cell_html(
     show_staff: bool = True,
     all_staff: list[str] | None = None,
     colspan: int = 1,
+    day_key: str = "",
 ) -> str:
     label = row.get(stage, "—")
     staff = row.get(f"staff_{stage}") if show_staff else None
@@ -243,7 +244,7 @@ def compare_cell_html(
     if staff:
         label_html = f'{esc(label)}<span class="slot-staff">{esc(staff)}</span>'
     elif supervision and all_staff:
-        sup = _supervision_text(supervision, all_staff)
+        sup = _supervision_text(supervision, all_staff, day_key=day_key)
         label_html = f'{esc(label)}<span class="slot-staff">{esc(sup)}</span>'
     if note and label != "—":
         label_html += f'<span class="slot-note">{esc(note)}</span>'
@@ -293,22 +294,22 @@ def render_student_day_panel(week: dict, day_key: str) -> str:
         if merge_flz:
             rows_html.append(
                 f"<tr>{time_cell}"
-                f"{compare_cell_html(row, 'ks3', all_staff=all_staff, colspan=3)}"
+                f"{compare_cell_html(row, 'ks3', all_staff=all_staff, colspan=3, day_key=day_key)}"
                 "</tr>"
             )
         elif merge_ks:
-            flz_cell = compare_cell_html(row, "flz", all_staff=all_staff) if has_flz else ""
+            flz_cell = compare_cell_html(row, "flz", all_staff=all_staff, day_key=day_key) if has_flz else ""
             rows_html.append(
                 f"<tr>{time_cell}"
-                f"{compare_cell_html(row, 'ks3', all_staff=all_staff, colspan=2)}"
+                f"{compare_cell_html(row, 'ks3', all_staff=all_staff, colspan=2, day_key=day_key)}"
                 f"{flz_cell}</tr>"
             )
         else:
-            flz_cell = compare_cell_html(row, "flz", all_staff=all_staff) if has_flz else ""
+            flz_cell = compare_cell_html(row, "flz", all_staff=all_staff, day_key=day_key) if has_flz else ""
             rows_html.append(
                 f"<tr>{time_cell}"
-                f"{compare_cell_html(row, 'ks3', all_staff=all_staff)}"
-                f"{compare_cell_html(row, 'ks4', all_staff=all_staff)}"
+                f"{compare_cell_html(row, 'ks3', all_staff=all_staff, day_key=day_key)}"
+                f"{compare_cell_html(row, 'ks4', all_staff=all_staff, day_key=day_key)}"
                 f"{flz_cell}</tr>"
             )
     flz_th = '<th scope="col">FLZ</th>' if has_flz else ""
@@ -511,7 +512,7 @@ def collect_staff_sessions(week: dict) -> dict[str, list[dict]]:
                             continue
                         person_subject = (
                             "Supervision (Main Foyer)"
-                            if person in SLT_MEMBERS
+                            if person in SLT_MEMBERS and day_key != "wednesday"
                             else sup_subject
                         )
                         sessions.setdefault(person, []).append(
@@ -676,9 +677,9 @@ def render_staff_day_panel(week: dict, day_key: str) -> str:
             k3_disp = esc(ks3) + (f' <span class="lead">({esc(s3)})</span>' if s3 else "")
             k4_disp = esc(ks4) + (f' <span class="lead">({esc(s4)})</span>' if s4 else "")
             if not s3 and sup3:
-                k3_disp = esc(ks3) + f' <span class="lead">({esc(_supervision_text(sup3, all_staff))})</span>'
+                k3_disp = esc(ks3) + f' <span class="lead">({esc(_supervision_text(sup3, all_staff, day_key=day_key))})</span>'
             if not s4 and sup4:
-                k4_disp = esc(ks4) + f' <span class="lead">({esc(_supervision_text(sup4, all_staff))})</span>'
+                k4_disp = esc(ks4) + f' <span class="lead">({esc(_supervision_text(sup4, all_staff, day_key=day_key))})</span>'
         if note:
             note_html = f'<span class="slot-note">{esc(note)}</span>'
             k3_disp += note_html
