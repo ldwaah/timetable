@@ -104,24 +104,25 @@ def get_location(label: str, stage: str, day_key: str, kind: str) -> str:
     if not label or label == "—":
         return ""
     low = label.lower()
-    if kind == "searches" or "student searches" in low:
-        return "Foyer"
-    if kind == "arrival" or "arrival" in low:
-        return "Foyer"
-    if kind == "checks" or "checks" in low:
-        return "Foyer"
-    if kind == "transition" or "transition" in low:
-        return "Foyer"
-    if "pause" in low and "progress" in low:
-        return "Foyer"
-    if "line management" in low and day_key != "wednesday":
-        return "Foyer"
-    if "slt meeting" in low:
-        return "Foyer"
 
+    # Wednesday: Foyer does not exist — redirect to available rooms
     if day_key == "wednesday":
+        if kind == "searches" or "student searches" in low:
+            return "Main Room"
+        if kind == "arrival" or "arrival" in low:
+            return "Main Room"
+        if kind == "checks" or "checks" in low:
+            return "Main Room"
+        if kind == "transition" or "transition" in low:
+            return "Main Room"
+        if "pause" in low and "progress" in low:
+            return "Main Room"
+        if "line management" in low:
+            return "Main Room"
+        if "slt meeting" in low:
+            return "Main Room"
         if kind == "assembly" or low == "assembly":
-            return "Gym"
+            return "Main Room"
         if kind == "pe" or low == "gym":
             return "Gym"
         if "flz" in low or stage == "flz":
@@ -141,6 +142,21 @@ def get_location(label: str, stage: str, day_key: str, kind: str) -> str:
         if stage == "ks4":
             return "Computer Suite"
         return "Main Room"
+
+    if kind == "searches" or "student searches" in low:
+        return "Foyer"
+    if kind == "arrival" or "arrival" in low:
+        return "Foyer"
+    if kind == "checks" or "checks" in low:
+        return "Foyer"
+    if kind == "transition" or "transition" in low:
+        return "Foyer"
+    if "pause" in low and "progress" in low:
+        return "Foyer"
+    if "line management" in low:
+        return "Foyer"
+    if "slt meeting" in low:
+        return "Foyer"
 
     if kind == "assembly" or low == "assembly":
         return "Foyer"
@@ -709,41 +725,40 @@ def get_staff_location(subject: str, stage: str, day_key: str) -> str:
     """Derive a room/location for a staff timetable entry."""
     low = subject.lower()
 
-    if "student searches" in low:
-        return "Foyer"
-    if "on-call" in low or "centre duties" in low:
-        return "Foyer"
     if low == "student support":
         return ""
     if low == "ppa" or low == "ppa / lunch":
         return ""
-    if low == "supporting assembly":
-        return "Foyer"
-    if "whole school support" in low:
-        return "Foyer"
-    if "ks3 support" in low:
-        return "Foyer"
-    if "arrival" in low:
-        return "Foyer"
-    if "checks" in low:
-        return "Foyer"
-    if "transition" in low:
-        return "Foyer"
-    if "staff briefing" in low or "set up" in low:
-        return "Foyer"
-    if "pause" in low and "progress" in low:
-        return "Foyer"
-    if "line management" in low and day_key != "wednesday":
-        return "Foyer"
-    if "slt meeting" in low:
-        return "Foyer"
 
+    # Wednesday: Foyer does not exist — redirect to available rooms
     if day_key == "wednesday":
+        if "student searches" in low:
+            return "Main Room"
+        if "on-call" in low or "centre duties" in low:
+            return "Main Room"
+        if low == "supporting assembly":
+            return "Main Room"
+        if "whole school support" in low:
+            return "Main Room"
+        if "ks3 support" in low:
+            return "Main Room"
+        if "arrival" in low:
+            return "Main Room"
+        if "checks" in low:
+            return "Main Room"
+        if "transition" in low:
+            return "Main Room"
+        if "staff briefing" in low or "set up" in low:
+            return "Main Room"
+        if "pause" in low and "progress" in low:
+            return "Main Room"
+        if "line management" in low:
+            return "Main Room"
+        if "slt meeting" in low:
+            return "Main Room"
         if "assembly" in low:
-            return "Gym"
+            return "Main Room"
         if "break supervision" in low or ("break" in low and "supervision" in low):
-            if "main foyer" in low or "foyer" in low:
-                return "Foyer"
             if "ks3" in low or stage == "KS3":
                 return "Main Room"
             if "ks4" in low or stage == "KS4":
@@ -784,6 +799,32 @@ def get_staff_location(subject: str, stage: str, day_key: str) -> str:
         if stage == "KS4":
             return "Computer Suite"
         return "Main Room"
+
+    # Non-Wednesday days
+    if "student searches" in low:
+        return "Foyer"
+    if "on-call" in low or "centre duties" in low:
+        return "Foyer"
+    if low == "supporting assembly":
+        return "Foyer"
+    if "whole school support" in low:
+        return "Foyer"
+    if "ks3 support" in low:
+        return "Foyer"
+    if "arrival" in low:
+        return "Foyer"
+    if "checks" in low:
+        return "Foyer"
+    if "transition" in low:
+        return "Foyer"
+    if "staff briefing" in low or "set up" in low:
+        return "Foyer"
+    if "pause" in low and "progress" in low:
+        return "Foyer"
+    if "line management" in low:
+        return "Foyer"
+    if "slt meeting" in low:
+        return "Foyer"
 
     if "assembly" in low:
         return "Foyer"
