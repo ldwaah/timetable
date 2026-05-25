@@ -25,6 +25,46 @@ INITIALS_TO_NAME: dict[str, str] = {
 }
 
 
+def _parse_staff(staff_str: str | None) -> set[str]:
+    if not staff_str:
+        return set()
+    return {s.strip() for s in staff_str.split("/")}
+
+
+def _is_break_or_lunch(label: str) -> bool:
+    return label in ("Break", "Lunch") or "Toilet Break" in label
+
+
+def add_supervision(week: dict) -> None:
+    """Tag every break/lunch row with the staff available for supervision."""
+    all_staff = week["staff"].get("people", [])
+    for day_key in DAY_ORDER:
+        day = week["days"].get(day_key)
+        if not day:
+            continue
+        for row in day["rows"]:
+            ks3_is_break = _is_break_or_lunch(row.get("ks3", ""))
+            ks4_is_break = _is_break_or_lunch(row.get("ks4", ""))
+            if not ks3_is_break and not ks4_is_break:
+                continue
+            teaching: set[str] = set()
+            if not ks3_is_break:
+                teaching |= _parse_staff(row.get("staff_ks3"))
+            if not ks4_is_break:
+                teaching |= _parse_staff(row.get("staff_ks4"))
+            free = [s for s in all_staff if s not in teaching]
+            if ks3_is_break:
+                row["supervision_ks3"] = free
+            if ks4_is_break:
+                row["supervision_ks4"] = free
+
+
+def _supervision_text(free: list[str], all_staff: list[str]) -> str:
+    if len(free) == len(all_staff):
+        return "All staff"
+    return ", ".join(free)
+
+
 def load_week() -> dict:
     with DATA_PATH.open(encoding="utf-8") as f:
         return json.load(f)
@@ -41,7 +81,7 @@ def cell_class(label: str, kind: str) -> str:
         return "slot reset"
     if kind == "checks" or "Checks" in label:
         return "slot checks"
-    if label in ("Break", "Lunch"):
+    if label in ("Break", "Lunch") or "Toilet Break" in label:
         return "slot break"
     if label == "Arrival":
         return "slot arrival"
@@ -58,13 +98,23 @@ def cell_class(label: str, kind: str) -> str:
     return "slot"
 
 
-def compare_cell_html(row: dict, stage: str, *, show_staff: bool = True) -> str:
+def compare_cell_html(
+    row: dict,
+    stage: str,
+    *,
+    show_staff: bool = True,
+    all_staff: list[str] | None = None,
+) -> str:
     label = row[stage]
     staff = row.get(f"staff_{stage}") if show_staff else None
+    supervision = row.get(f"supervision_{stage}")
     cls = cell_class(label, row.get("kind", ""))
     label_html = esc(label)
     if staff:
         label_html = f'{esc(label)}<span class="slot-staff">{esc(staff)}</span>'
+    elif supervision and all_staff:
+        sup = _supervision_text(supervision, all_staff)
+        label_html = f'{esc(label)}<span class="slot-staff">{esc(sup)}</span>'
     return f'<td class="{cls}"><span class="slot-label">{label_html}</span></td>'
 
 
@@ -94,13 +144,14 @@ def display_rows(day: dict) -> list[dict]:
 
 def render_student_day_panel(week: dict, day_key: str) -> str:
     day = week["days"][day_key]
+    all_staff = week["staff"].get("people", [])
     rows_html = []
     for row in display_rows(day):
         rows_html.append(
             "<tr>"
             f'<td class="time-col">{esc(row["start"])}–{esc(row["end"])}</td>'
-            f"{compare_cell_html(row, 'ks3')}"
-            f"{compare_cell_html(row, 'ks4')}"
+            f"{compare_cell_html(row, 'ks3', all_staff=all_staff)}"
+            f"{compare_cell_html(row, 'ks4', all_staff=all_staff)}"
             "</tr>"
         )
     return f"""
@@ -166,17 +217,29 @@ def collect_staff_sessions(week: dict) -> dict[str, list[dict]]:
         for row in display_rows(day):
             for stage in ("ks3", "ks4"):
                 staff = row.get(f"staff_{stage}")
-                if not staff:
-                    continue
-                sessions.setdefault(staff, []).append(
-                    {
-                        "day": day["label"],
-                        "day_key": day_key,
-                        "time": f'{row["start"]}–{row["end"]}',
-                        "stage": "KS3" if stage == "ks3" else "KS4",
-                        "subject": row[stage],
-                    }
-                )
+                if staff:
+                    sessions.setdefault(staff, []).append(
+                        {
+                            "day": day["label"],
+                            "day_key": day_key,
+                            "time": f'{row["start"]}–{row["end"]}',
+                            "stage": "KS3" if stage == "ks3" else "KS4",
+                            "subject": row[stage],
+                        }
+                    )
+                supervision = row.get(f"supervision_{stage}")
+                if supervision:
+                    stage_label = "KS3" if stage == "ks3" else "KS4"
+                    for person in supervision:
+                        sessions.setdefault(person, []).append(
+                            {
+                                "day": day["label"],
+                                "day_key": day_key,
+                                "time": f'{row["start"]}–{row["end"]}',
+                                "stage": stage_label,
+                                "subject": "Supervision",
+                            }
+                        )
     for name in sessions:
         sessions[name] = merge_staff_sessions(sessions[name])
     return sessions
@@ -266,13 +329,20 @@ def render_staff_person_page(week: dict, initials: str, sessions: list[dict]) ->
 
 def render_staff_day_panel(week: dict, day_key: str) -> str:
     day = week["days"][day_key]
+    all_staff = week["staff"].get("people", [])
     rows_html = []
     for row in display_rows(day):
         ks3, ks4 = row["ks3"], row["ks4"]
         s3 = row.get("staff_ks3")
         s4 = row.get("staff_ks4")
+        sup3 = row.get("supervision_ks3")
+        sup4 = row.get("supervision_ks4")
         k3_disp = esc(ks3) + (f' <span class="lead">({esc(s3)})</span>' if s3 else "")
         k4_disp = esc(ks4) + (f' <span class="lead">({esc(s4)})</span>' if s4 else "")
+        if not s3 and sup3:
+            k3_disp = esc(ks3) + f' <span class="lead">({esc(_supervision_text(sup3, all_staff))})</span>'
+        if not s4 and sup4:
+            k4_disp = esc(ks4) + f' <span class="lead">({esc(_supervision_text(sup4, all_staff))})</span>'
         rows_html.append(
             f"<tr>"
             f'<td class="time-col">{esc(row["start"])}–{esc(row["end"])}</td>'
@@ -657,6 +727,7 @@ def main() -> None:
     week = load_week()
     if "rows" not in week["days"]["monday"]:
         raise SystemExit("week.json must use days.*.rows format")
+    add_supervision(week)
 
     (ROOT / "student-timetable.html").write_text(build_student_html(week), encoding="utf-8")
     (ROOT / "staff-timetable.html").write_text(build_staff_html(week), encoding="utf-8")
