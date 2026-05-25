@@ -307,6 +307,16 @@
           "kind": "lesson",
           "staff_ks3": "LG / JC",
           "staff_ks4": "LG / JC"
+        },
+        {
+          "start": "15:00",
+          "end": "15:30",
+          "ks3": "Line Management (LI)",
+          "ks4": "Line Management (SA)",
+          "kind": "meeting",
+          "staff_only": true,
+          "staff_ks3": "SA",
+          "staff_ks4": "LI"
         }
       ]
     },
@@ -346,6 +356,16 @@
           "kind": "meeting",
           "staff_only": true,
           "all_staff": true
+        },
+        {
+          "start": "10:00",
+          "end": "10:30",
+          "ks3": "Line Management (JM)",
+          "ks4": "Line Management (SA)",
+          "kind": "meeting",
+          "staff_only": true,
+          "staff_ks3": "SA",
+          "staff_ks4": "JM"
         },
         {
           "start": "10:00",
@@ -568,6 +588,16 @@
         },
         {
           "start": "13:20",
+          "end": "13:50",
+          "ks3": "Line Management (JC)",
+          "ks4": "Line Management (SA)",
+          "kind": "meeting",
+          "staff_only": true,
+          "staff_ks3": "SA",
+          "staff_ks4": "JC"
+        },
+        {
+          "start": "13:20",
           "end": "14:00",
           "ks3": "PE",
           "ks4": "PE",
@@ -709,6 +739,16 @@
           "kind": "transition",
           "staff_ks3": "LI / LG",
           "staff_ks4": "LI / LG"
+        },
+        {
+          "start": "13:20",
+          "end": "13:50",
+          "ks3": "Line Management (LG)",
+          "ks4": "Line Management (SA)",
+          "kind": "meeting",
+          "staff_only": true,
+          "staff_ks3": "SA",
+          "staff_ks4": "LG"
         },
         {
           "start": "13:20",
