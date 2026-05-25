@@ -368,6 +368,39 @@ def collect_staff_sessions(week: dict) -> dict[str, list[dict]]:
     return sessions
 
 
+def dedup_person_sessions(sessions: list[dict]) -> list[dict]:
+    """Merge KS3+KS4 rows that share the same time and subject into a single 'All' row,
+    and drop exact duplicates. Must be called on a sorted session list."""
+    if not sessions:
+        return []
+    out: list[dict] = []
+    i = 0
+    while i < len(sessions):
+        curr = sessions[i]
+        if i + 1 < len(sessions):
+            nxt = sessions[i + 1]
+            same_slot = (
+                curr["day_key"] == nxt["day_key"]
+                and curr["time"] == nxt["time"]
+                and curr["subject"] == nxt["subject"]
+            )
+            if same_slot:
+                stages = {curr["stage"], nxt["stage"]}
+                if stages == {"KS3", "KS4"}:
+                    merged = dict(curr)
+                    merged["stage"] = "All"
+                    out.append(merged)
+                    i += 2
+                    continue
+                if curr["stage"] == nxt["stage"]:
+                    out.append(dict(curr))
+                    i += 2
+                    continue
+        out.append(dict(curr))
+        i += 1
+    return out
+
+
 def group_sessions_by_day(sessions: list[dict]) -> dict[str, list[dict]]:
     grouped: dict[str, list[dict]] = {key: [] for key in DAY_ORDER}
     for s in sessions:
@@ -1119,6 +1152,8 @@ def main() -> None:
             person_sessions + person_ppa,
             key=lambda s: (DAY_ORDER.index(s["day_key"]), s["time"]),
         )
+        combined = dedup_person_sessions(combined)
+        combined = merge_staff_sessions(combined)
         slug = staff_slug(initials)
         page = render_staff_person_page(week, initials, combined)
         (STAFF_DIR / f"{slug}.html").write_text(page, encoding="utf-8")
