@@ -186,6 +186,8 @@ def cell_class(label: str, kind: str) -> str:
         return "slot pe"
     if kind == "transition" or label == "Transition":
         return "slot transition"
+    if kind == "briefing" or "Staff Briefing" in label:
+        return "slot briefing"
     if kind == "meeting" or label == "Team Meeting":
         return "slot meeting"
     if kind == "staff_development" or label == "Thrive":
@@ -527,7 +529,27 @@ def dedup_person_sessions(sessions: list[dict]) -> list[dict]:
     return out
 
 
-def render_person_day_panel(day_key: str, sessions: list[dict]) -> str:
+def fill_person_day_gaps(day_sessions: list[dict], day_key: str, day_label: str) -> list[dict]:
+    """Insert PPA entries for gaps between consecutive sessions in a single day."""
+    if len(day_sessions) < 2:
+        return list(day_sessions)
+    result = [day_sessions[0]]
+    for i in range(1, len(day_sessions)):
+        prev_end = _time_minutes(day_sessions[i - 1]["time"].split("\u2013")[1])
+        curr_start = _time_minutes(day_sessions[i]["time"].split("\u2013")[0])
+        if curr_start > prev_end:
+            result.append({
+                "day": day_label,
+                "day_key": day_key,
+                "time": f"{_fmt_time(prev_end)}\u2013{_fmt_time(curr_start)}",
+                "stage": "\u2014",
+                "subject": "PPA",
+            })
+        result.append(day_sessions[i])
+    return result
+
+
+def render_person_day_panel(day_key: str, sessions: list[dict], *, is_off_day: bool = False) -> str:
     if sessions:
         rows_html = []
         for s in sessions:
@@ -542,7 +564,8 @@ def render_person_day_panel(day_key: str, sessions: list[dict]) -> str:
             )
         body = "".join(rows_html)
     else:
-        body = '<tr><td colspan="3" class="muted">No sessions</td></tr>'
+        msg = "Not working" if is_off_day else "No sessions"
+        body = f'<tr><td colspan="3" class="muted">{msg}</td></tr>'
     return f"""
       <section class="day-panel" id="panel-{day_key}" role="tabpanel">
         <div class="table-wrap">
@@ -560,11 +583,12 @@ def render_person_day_panel(day_key: str, sessions: list[dict]) -> str:
       </section>"""
 
 
-def render_person_day_tabs(week: dict, sessions: list[dict]) -> str:
+def render_person_day_tabs(week: dict, sessions: list[dict], *, off_days: list[str] | None = None) -> str:
+    _off = off_days or []
     grouped = group_sessions_by_day(sessions)
     panels = []
     for key in DAY_ORDER:
-        panels.append(render_person_day_panel(key, grouped[key]))
+        panels.append(render_person_day_panel(key, grouped[key], is_off_day=key in _off))
     panel_css = "\n    ".join(
         f"#tab-{key}:checked ~ .tab-panels #panel-{key} {{ display: block; }}"
         for key in DAY_ORDER
@@ -585,6 +609,7 @@ def render_person_day_tabs(week: dict, sessions: list[dict]) -> str:
 def render_staff_person_page(week: dict, initials: str, sessions: list[dict]) -> str:
     full_name = INITIALS_TO_NAME.get(initials, initials)
     display = f"{initials} ({full_name})"
+    off = week["staff"].get("off_days", {}).get(initials, [])
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -598,7 +623,7 @@ def render_staff_person_page(week: dict, initials: str, sessions: list[dict]) ->
     <a class="back" href="../staff-timetable.html">← Staff timetable</a>
     <h1>{esc(display)}</h1>
   </div>
-  {render_person_day_tabs(week, sessions)}
+  {render_person_day_tabs(week, sessions, off_days=off)}
 </body>
 </html>
 """
@@ -949,6 +974,7 @@ STAFF_CSS = """
     .slot.core.maths { color: #79c0ff; font-weight: 600; }
     .slot.core.english { color: #e3b341; font-weight: 600; }
     .slot.pe { color: #3fb950; font-weight: 600; }
+    .slot.briefing { color: #f0883e; font-weight: 600; }
     .slot.meeting { color: #d2a8ff; font-weight: 600; }
     .slot.staff-dev { color: #56d364; font-weight: 600; }
     .slot-note { display: block; font-size: 0.65rem; font-style: italic; color: #6e7681; margin-top: 0.15rem; font-weight: 400; }

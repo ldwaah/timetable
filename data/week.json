@@ -21,6 +21,16 @@
       "finish": "15:00",
       "rows": [
         {
+          "start": "08:30",
+          "end": "08:50",
+          "ks3": "Set Up / Staff Briefing",
+          "ks4": "Set Up / Staff Briefing",
+          "kind": "briefing",
+          "staff_only": true,
+          "staff_ks3": "LD / LG / LI",
+          "staff_ks4": "LD / LG / LI"
+        },
+        {
           "start": "08:50",
           "end": "09:15",
           "ks3": "Student Searches",
@@ -164,6 +174,16 @@
       "finish": "15:00",
       "rows": [
         {
+          "start": "08:30",
+          "end": "08:50",
+          "ks3": "Set Up / Staff Briefing",
+          "ks4": "Set Up / Staff Briefing",
+          "kind": "briefing",
+          "staff_only": true,
+          "staff_ks3": "LD / LG / LI / SA",
+          "staff_ks4": "LD / LG / LI / SA"
+        },
+        {
           "start": "08:50",
           "end": "09:15",
           "ks3": "Student Searches",
@@ -298,6 +318,16 @@
       "staff_meeting": "09:00–10:00",
       "rows": [
         {
+          "start": "08:30",
+          "end": "08:50",
+          "ks3": "Set Up / Staff Briefing",
+          "ks4": "Set Up / Staff Briefing",
+          "kind": "briefing",
+          "staff_only": true,
+          "staff_ks3": "LD / LG / LI / SA",
+          "staff_ks4": "LD / LG / LI / SA"
+        },
+        {
           "start": "08:50",
           "end": "09:15",
           "ks3": "Student Searches",
@@ -418,6 +448,16 @@
       "arrival_latest": "09:05",
       "finish": "14:00",
       "rows": [
+        {
+          "start": "08:30",
+          "end": "08:50",
+          "ks3": "Set Up / Staff Briefing",
+          "ks4": "Set Up / Staff Briefing",
+          "kind": "briefing",
+          "staff_only": true,
+          "staff_ks3": "LD / LG / LI / SA",
+          "staff_ks4": "LD / LG / LI / SA"
+        },
         {
           "start": "08:50",
           "end": "09:15",
@@ -552,6 +592,16 @@
       "arrival_latest": "09:05",
       "finish": "14:00",
       "rows": [
+        {
+          "start": "08:30",
+          "end": "08:50",
+          "ks3": "Set Up / Staff Briefing",
+          "ks4": "Set Up / Staff Briefing",
+          "kind": "briefing",
+          "staff_only": true,
+          "staff_ks3": "LD / LG / LI / SA",
+          "staff_ks4": "LD / LG / LI / SA"
+        },
         {
           "start": "08:50",
           "end": "09:15",
@@ -752,6 +802,9 @@
         "ks4": "LI"
       }
     },
+    "start_times": {
+      "JC": "11:00"
+    },
     "ppa": {
       "LD": {
         "monday":    { "start": "11:35", "end": "12:15" },
@@ -778,11 +831,6 @@
         "wednesday": { "start": "10:20", "end": "11:00" },
         "thursday":  { "start": "12:30", "end": "13:10" },
         "friday":    { "start": "09:45", "end": "10:25" }
-      },
-      "JC": {
-        "monday":    { "start": "09:45", "end": "10:25" },
-        "tuesday":   { "start": "12:30", "end": "13:10" },
-        "thursday":  { "start": "09:45", "end": "10:25" }
       },
       "JM": {
         "monday":    { "start": "13:20", "end": "14:00" },
