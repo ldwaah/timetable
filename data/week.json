@@ -285,7 +285,7 @@
           "ks4": "PSHE",
           "kind": "lesson",
           "staff_ks3": "Sacha",
-          "staff_ks4": "Sacha"
+          "staff_ks4": "Lorelle"
         },
         {
           "start": "13:10",
@@ -580,7 +580,7 @@
       },
       "PSHE": {
         "ks3": "Sacha",
-        "ks4": "Sacha"
+        "ks4": "Lorelle"
       },
       "Group Mentoring": {
         "ks3": "Jeff"
