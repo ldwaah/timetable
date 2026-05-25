@@ -931,12 +931,102 @@ def staff_slug(initials: str) -> str:
     return INITIALS_TO_NAME.get(initials, initials).lower()
 
 
+STAFF_CARDS_CSS = """
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      min-height: 100vh;
+      padding: 2rem 1.25rem;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .top { margin-bottom: 2rem; }
+
+    a.back {
+      color: #58a6ff;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    a.back:hover { text-decoration: underline; }
+
+    h1 {
+      margin-top: 1rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #f0f6fc;
+    }
+
+    .staff-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .staff-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 2rem 1rem;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    }
+
+    .staff-card:hover {
+      border-color: #a371f7;
+      background: #1c2128;
+      transform: translateY(-2px);
+    }
+
+    .staff-card:focus-visible {
+      outline: 2px solid #a371f7;
+      outline-offset: 2px;
+    }
+
+    .staff-avatar {
+      width: 64px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3d1f5f 0%, #a371f733 100%);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #d2a8ff;
+      letter-spacing: 0.02em;
+    }
+
+    .staff-name {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #f0f6fc;
+    }
+"""
+
+
 def build_staff_html(week: dict) -> str:
     people = week["staff"].get("people", [])
-    person_links = "".join(
-        f'<a href="staff/{esc(staff_slug(initials))}.html">{esc(initials)}</a>'
-        for initials in people
-    )
+    cards = []
+    for initials in people:
+        slug = staff_slug(initials)
+        full_name = INITIALS_TO_NAME.get(initials, initials)
+        cards.append(
+            f'<a class="staff-card" href="staff/{esc(slug)}.html">'
+            f'<span class="staff-avatar">{esc(initials)}</span>'
+            f'<span class="staff-name">{esc(full_name)}</span>'
+            f'</a>'
+        )
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -944,7 +1034,7 @@ def build_staff_html(week: dict) -> str:
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Staff timetable</title>
-  <style>{DAY_TAB_CSS}{STAFF_CSS}{SEARCHES_HINT_CSS}</style>
+  <style>{STAFF_CARDS_CSS}</style>
 </head>
 <body>
   <div class="top">
@@ -952,12 +1042,9 @@ def build_staff_html(week: dict) -> str:
     <h1>Staff timetable</h1>
   </div>
 
-  <nav class="staff-links" aria-label="Individual staff timetables">
-    {person_links}
+  <nav class="staff-grid" aria-label="Staff members">
+    {''.join(cards)}
   </nav>
-
-  {render_staff_day_tabs(week)}
-  {SEARCHES_HINT_JS}
 </body>
 </html>
 """
