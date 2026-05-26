@@ -971,6 +971,15 @@
           "stage": "KS4"
         }
       ],
+      "JC": [
+        {
+          "days": ["thursday"],
+          "start": "11:35",
+          "end": "12:15",
+          "subject": "Citizenship Support / Mentoring",
+          "stage": "KS4"
+        }
+      ],
       "LI": [
         {
           "days": ["tuesday"],
