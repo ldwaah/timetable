@@ -2167,6 +2167,11 @@ def main() -> None:
             for s in combined:
                 if s["subject"] == "PPA":
                     s["subject"] = "On-call / Centre Duties"
+        if initials == "SA":
+            for s in combined:
+                if s["subject"] == "Break Supervision (Main Foyer)":
+                    s["subject"] = "Supervision"
+                    s["location"] = "Foyer"
         if initials == "LG":
             for s in combined:
                 if s["subject"] == "PPA" and (
