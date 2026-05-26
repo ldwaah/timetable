@@ -907,11 +907,11 @@
         "lunch_ks4": ["LI", "LG"]
       },
       "wednesday": {
-        "ks3_break": ["SA", "HK"],
-        "ks4_break": ["LI", "LG"],
+        "ks3_break": ["LG", "HK"],
+        "ks4_break": ["LI", "SA"],
         "lunch_ks3": ["SA", "HK"],
         "lunch_ks4": ["LI", "LG"],
-        "break": ["SA", "LI"]
+        "break": ["LG", "LI"]
       },
       "thursday": {
         "ks3_break": ["SA", "HK"],
