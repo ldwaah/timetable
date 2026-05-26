@@ -1795,6 +1795,273 @@ STAFF_CARDS_CSS = """
 """
 
 
+OVERVIEW_CSS = DAY_TAB_CSS + """
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      margin: 0 auto;
+    }
+
+    .top { margin-bottom: 1.5rem; max-width: 900px; margin-left: auto; margin-right: auto; }
+
+    a.back {
+      color: #58a6ff;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    a.back:hover { text-decoration: underline; }
+
+    h1 {
+      margin-top: 1rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #f0f6fc;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      background: #161b22;
+    }
+
+    .overview-grid {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+      min-width: 900px;
+    }
+
+    .overview-grid th,
+    .overview-grid td {
+      border: 1px solid #21262d;
+      padding: 0.4rem 0.5rem;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    .overview-grid th {
+      background: #1c2128;
+      color: #f0f6fc;
+      font-weight: 600;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    .overview-grid .time-col {
+      color: #8b949e;
+      white-space: nowrap;
+      width: 6.5rem;
+      font-size: 0.72rem;
+    }
+
+    .ov-cell { min-width: 90px; }
+    .ov-cell .ov-activity { font-weight: 500; color: #e6edf3; display: block; line-height: 1.3; }
+    .ov-cell .ov-location { font-size: 0.65rem; color: #a371f7; display: block; margin-top: 0.1rem; }
+    .ov-cell .ov-off { color: #484f58; font-style: italic; }
+
+    .ov-cell.cat-break .ov-activity { color: #3fb950; }
+    .ov-cell.cat-supervision .ov-activity { color: #f0883e; }
+    .ov-cell.cat-teaching .ov-activity { color: #79c0ff; }
+    .ov-cell.cat-assembly .ov-activity { color: #d2a8ff; }
+    .ov-cell.cat-admin .ov-activity { color: #8b949e; font-style: italic; }
+    .ov-cell.cat-pe .ov-activity { color: #3fb950; font-weight: 600; }
+    .ov-cell.cat-reset .ov-activity { color: #79c0ff; font-weight: 600; }
+    .ov-cell.cat-searches .ov-activity { color: #f78166; font-weight: 600; }
+
+    #tab-monday:checked ~ .tab-bar label[for="tab-monday"],
+    #tab-tuesday:checked ~ .tab-bar label[for="tab-tuesday"],
+    #tab-wednesday:checked ~ .tab-bar label[for="tab-wednesday"],
+    #tab-thursday:checked ~ .tab-bar label[for="tab-thursday"],
+    #tab-friday:checked ~ .tab-bar label[for="tab-friday"] {
+      color: #f0f6fc;
+      background: #1f3a5f;
+      border-color: #58a6ff;
+    }
+"""
+
+
+def _overview_category(label: str, kind: str) -> str:
+    """Return a CSS category class for colour-coding overview cells."""
+    if not label or label == "—":
+        return ""
+    low = label.lower()
+    if kind == "searches" or "searches" in low:
+        return "cat-searches"
+    if kind == "pe" or low in ("pe", "gym"):
+        return "cat-pe"
+    if kind == "assembly" or low == "assembly":
+        return "cat-assembly"
+    if kind == "reset" or low == "reset":
+        return "cat-reset"
+    if "break" in low or low == "lunch":
+        return "cat-break"
+    if "supervision" in low:
+        return "cat-supervision"
+    if kind in ("checks", "transition", "briefing") or "checks" in low or "transition" in low or "briefing" in low:
+        return "cat-admin"
+    if kind == "lesson" or "maths" in low or "english" in low or "mentoring" in low:
+        return "cat-teaching"
+    return ""
+
+
+def _overview_staff_activity(person: str, row: dict, day_key: str, all_staff: list[str]) -> tuple[str, str]:
+    """Determine what a staff member is doing in a given row.
+
+    Returns (activity_label, location).
+    """
+    if row.get("all_staff"):
+        label = row.get("ks3", row.get("ks4", ""))
+        loc = get_location(label, "ks3", day_key, row.get("kind", ""))
+        return label, loc
+
+    for stage in ("ks3", "ks4", "flz"):
+        staff_field = row.get(f"staff_{stage}", "")
+        if person in {s.strip() for s in staff_field.split("/")} if staff_field else False:
+            label = row.get(stage, "—")
+            loc = get_location(label, stage, day_key, row.get("kind", ""))
+            stage_prefix = {"ks3": "KS3", "ks4": "KS4", "flz": "FLZ"}.get(stage, "")
+            if stage_prefix and row.get("kind") == "lesson":
+                label = f"{label} ({stage_prefix})"
+            return label, loc
+
+    for stage in ("ks3", "ks4"):
+        supervision = row.get(f"supervision_{stage}", [])
+        if person in supervision:
+            break_label = row.get(stage, "")
+            stage_label = "KS3" if stage == "ks3" else "KS4"
+            sup_type = "Lunch" if break_label == "Lunch" else "Break"
+            activity = f"{stage_label} {sup_type} Sup."
+            loc = get_location(break_label, stage, day_key, row.get("kind", ""))
+            return activity, loc
+
+    return "", ""
+
+
+def render_overview_day_panel(week: dict, day_key: str) -> str:
+    """Render one day panel for the overview page."""
+    day = week["days"][day_key]
+    all_staff = week["staff"].get("people", [])
+    off_days = week["staff"].get("off_days", {})
+    rows = display_rows(day, include_staff_only=True)
+
+    rows_html = []
+    for row in rows:
+        time_cell = f'<td class="time-col">{esc(row["start"])}–{esc(row["end"])}</td>'
+
+        ks3_label = row.get("ks3", "—")
+        ks4_label = row.get("ks4", "—")
+        ks3_loc = get_location(ks3_label, "ks3", day_key, row.get("kind", ""))
+        ks4_loc = get_location(ks4_label, "ks4", day_key, row.get("kind", ""))
+        ks3_cat = _overview_category(ks3_label, row.get("kind", ""))
+        ks4_cat = _overview_category(ks4_label, row.get("kind", ""))
+
+        ks3_cell = (
+            f'<td class="ov-cell {ks3_cat}">'
+            f'<span class="ov-activity">{esc(ks3_label)}</span>'
+            + (f'<span class="ov-location">{esc(ks3_loc)}</span>' if ks3_loc else "")
+            + "</td>"
+        )
+        ks4_cell = (
+            f'<td class="ov-cell {ks4_cat}">'
+            f'<span class="ov-activity">{esc(ks4_label)}</span>'
+            + (f'<span class="ov-location">{esc(ks4_loc)}</span>' if ks4_loc else "")
+            + "</td>"
+        )
+
+        staff_cells = []
+        for person in all_staff:
+            is_off = day_key in off_days.get(person, [])
+            working = _staff_working_at(person, day_key, row["start"])
+            if is_off or not working:
+                staff_cells.append('<td class="ov-cell"><span class="ov-off">—</span></td>')
+                continue
+            activity, loc = _overview_staff_activity(person, row, day_key, all_staff)
+            if not activity:
+                staff_cells.append('<td class="ov-cell"><span class="ov-off">—</span></td>')
+                continue
+            cat = _overview_category(activity, row.get("kind", ""))
+            cell = (
+                f'<td class="ov-cell {cat}">'
+                f'<span class="ov-activity">{esc(activity)}</span>'
+                + (f'<span class="ov-location">{esc(loc)}</span>' if loc else "")
+                + "</td>"
+            )
+            staff_cells.append(cell)
+
+        rows_html.append(
+            f"<tr>{time_cell}{ks3_cell}{ks4_cell}{''.join(staff_cells)}</tr>"
+        )
+
+    staff_headers = "".join(f'<th scope="col">{esc(p)}</th>' for p in all_staff)
+
+    return f"""
+      <section class="day-panel" id="panel-{day_key}" role="tabpanel">
+        <div class="table-wrap">
+          <table class="overview-grid">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">KS3</th>
+                <th scope="col">KS4</th>
+                {staff_headers}
+              </tr>
+            </thead>
+            <tbody>
+              {''.join(rows_html)}
+            </tbody>
+          </table>
+        </div>
+      </section>"""
+
+
+def build_overview_html(week: dict) -> str:
+    """Generate the full overview page with all staff + students side by side."""
+    panels = [render_overview_day_panel(week, key) for key in DAY_ORDER]
+    panel_css = "\n    ".join(
+        f"#tab-{key}:checked ~ .tab-panels #panel-{key} {{ display: block; }}"
+        for key in DAY_ORDER
+    )
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Overview — All Timetables</title>
+  <style>
+    {OVERVIEW_CSS}
+    {panel_css}
+  </style>
+</head>
+<body>
+  <div class="top">
+    <a class="back" href="index.html">\u2190 Back</a>
+    <h1>Weekly Overview</h1>
+  </div>
+
+  <div class="day-tabs">
+    {render_day_tab_inputs()}
+    {render_day_tab_bar()}
+    <div class="tab-panels">
+      {''.join(panels)}
+    </div>
+  </div>
+</body>
+</html>
+"""
+
+
 def build_staff_html(week: dict) -> str:
     people = week["staff"].get("people", [])
     cards = []
@@ -1859,6 +2126,7 @@ def main() -> None:
 
     (ROOT / "student-timetable.html").write_text(build_student_html(week), encoding="utf-8")
     (ROOT / "staff-timetable.html").write_text(build_staff_html(week), encoding="utf-8")
+    (ROOT / "overview.html").write_text(build_overview_html(week), encoding="utf-8")
 
     STAFF_DIR.mkdir(exist_ok=True)
     sessions = collect_staff_sessions(week)
@@ -1942,7 +2210,7 @@ def main() -> None:
         page = render_staff_person_page(week, initials, combined)
         (STAFF_DIR / f"{slug}.html").write_text(page, encoding="utf-8")
 
-    print("Wrote student-timetable.html, staff-timetable.html, and staff/*.html")
+    print("Wrote student-timetable.html, staff-timetable.html, overview.html, and staff/*.html")
 
 
 if __name__ == "__main__":
