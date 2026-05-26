@@ -93,8 +93,7 @@
           "end": "11:20",
           "ks3": "Break",
           "ks4": "Personal Development",
-          "kind": "lesson",
-          "staff_ks4": "JC"
+          "kind": "lesson"
         },
         {
           "start": "11:20",
@@ -552,7 +551,7 @@
           "ks3": "Break",
           "ks4": "Personal Development",
           "kind": "lesson",
-          "staff_ks4": "JC / LD"
+          "staff_ks4": "LD"
         },
         {
           "start": "11:20",
@@ -569,7 +568,7 @@
           "ks4": "Citizenship",
           "kind": "lesson",
           "staff_ks3": "SA",
-          "staff_ks4": "JC / LD"
+          "staff_ks4": "LD"
         },
         {
           "start": "12:15",
@@ -881,28 +880,17 @@
     "start_times": {
       "JC": "11:00"
     },
-    "slot_overrides": {
-      "LG": [
-        {
-          "days": ["monday", "tuesday", "thursday", "friday"],
-          "start": "11:05",
-          "end": "11:20",
-          "stage": "KS3",
-          "subject": "KS3 Support"
-        }
-      ]
-    },
     "supervision_rota": {
       "monday": {
-        "ks3_break": ["HK", "LD"],
-        "ks4_break": ["LI", "LG"],
+        "ks3_break": ["LG", "JC", "LD"],
+        "ks4_break": ["LI", "HK"],
         "lunch_ks3": ["HK", "LD"],
         "lunch_ks4": ["LI", "LG"],
-        "note": "SA off Monday — LD substitutes for SA in KS3 pair"
+        "note": "SA off Monday — LD substitutes for SA in foyer"
       },
       "tuesday": {
-        "ks3_break": ["SA", "HK"],
-        "ks4_break": ["LI", "LG"],
+        "ks3_break": ["LG", "JC", "SA"],
+        "ks4_break": ["LI", "HK"],
         "lunch_ks3": ["SA", "HK"],
         "lunch_ks4": ["LI", "LG"]
       },
@@ -914,14 +902,14 @@
         "break": ["LG", "LI"]
       },
       "thursday": {
-        "ks3_break": ["SA", "HK"],
-        "ks4_break": ["LI", "LG"],
+        "ks3_break": ["LG", "JC", "SA"],
+        "ks4_break": ["LI", "HK"],
         "lunch_ks3": ["SA", "HK"],
         "lunch_ks4": ["LI", "LG"]
       },
       "friday": {
-        "ks3_break": ["SA", "HK"],
-        "ks4_break": ["LI", "LG"],
+        "ks3_break": ["LG", "SA"],
+        "ks4_break": ["LI", "HK"],
         "lunch_ks3": ["SA", "HK"],
         "lunch_ks4": ["LI", "LG"]
       }
@@ -968,13 +956,6 @@
     "slot_overrides": {
       "LG": [
         {
-          "days": ["monday", "tuesday", "thursday", "friday"],
-          "start": "11:05",
-          "end": "11:20",
-          "subject": "KS3 Support",
-          "stage": "KS3"
-        },
-        {
           "days": ["monday", "tuesday"],
           "start": "13:20",
           "end": "14:45",
@@ -995,6 +976,36 @@
           "start": "09:15",
           "end": "09:45",
           "subject": "Supporting Assembly",
+          "stage": "All"
+        }
+      ],
+      "JM": [
+        {
+          "days": ["monday", "tuesday", "thursday", "friday"],
+          "start": "11:05",
+          "end": "11:35",
+          "subject": "Whole School Support",
+          "stage": "All"
+        },
+        {
+          "days": ["monday", "tuesday", "thursday", "friday"],
+          "start": "12:15",
+          "end": "12:30",
+          "subject": "Whole School Support",
+          "stage": "All"
+        },
+        {
+          "days": ["wednesday"],
+          "start": "11:10",
+          "end": "11:25",
+          "subject": "Whole School Support",
+          "stage": "All"
+        },
+        {
+          "days": ["wednesday"],
+          "start": "12:15",
+          "end": "12:30",
+          "subject": "Whole School Support",
           "stage": "All"
         }
       ]

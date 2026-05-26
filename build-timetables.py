@@ -658,7 +658,10 @@ def collect_staff_sessions(week: dict) -> dict[str, list[dict]]:
                         if person in SLT_MEMBERS and day_key != "wednesday" and not location:
                             person_subject = f"Break Supervision (Main Foyer)"
                         elif person not in SLT_MEMBERS and day_key != "wednesday" and not location and sup_type == "Break":
-                            person_subject = f"{sup_subject} (Outside)"
+                            if person == supervision[0]:
+                                person_subject = sup_subject
+                            else:
+                                person_subject = f"{sup_subject} (Outside)"
                         else:
                             person_subject = sup_subject
                         sessions.setdefault(person, []).append(
@@ -829,7 +832,7 @@ def get_staff_location(subject: str, stage: str, day_key: str) -> str:
     if "assembly" in low:
         return "Foyer"
 
-    if "break supervision" in low or "break" in low and "supervision" in low:
+    if "break supervision" in low or ("break" in low and "supervision" in low):
         if "main foyer" in low or "foyer" in low:
             return "Foyer"
         if "outside" in low:
@@ -838,6 +841,10 @@ def get_staff_location(subject: str, stage: str, day_key: str) -> str:
             return "Boardroom"
         if "computer room" in low:
             return "Computer Room"
+        if "ks3" in low or stage == "KS3":
+            return "Boardroom"
+        if "ks4" in low or stage == "KS4":
+            return "URFUTURE"
         return "Outside"
 
     if "lunch supervision" in low or ("lunch" in low and "supervision" in low):
