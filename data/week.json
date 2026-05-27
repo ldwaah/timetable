@@ -412,8 +412,8 @@
           "ks3": "PSHE",
           "ks4": "PSHE",
           "kind": "lesson",
-          "staff_ks3": "SA",
-          "staff_ks4": "LG"
+          "staff_ks3": "LG",
+          "staff_ks4": "LI"
         },
         {
           "start": "13:10",
@@ -837,8 +837,8 @@
         "ks4": "SA"
       },
       "PSHE": {
-        "ks3": "SA",
-        "ks4": "LG"
+        "ks3": "LG",
+        "ks4": "LI"
       },
       "Group Mentoring": {
         "ks3": "JC"
@@ -900,7 +900,7 @@
       "LI": {
         "monday":    { "start": "11:35", "end": "12:15" },
         "tuesday":   { "start": "11:35", "end": "12:15" },
-        "wednesday": { "start": "12:30", "end": "13:10" },
+        "wednesday": { "start": "14:30", "end": "15:00" },
         "thursday":  { "start": "11:35", "end": "12:15" }
       },
       "SA": {

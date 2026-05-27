@@ -2194,7 +2194,7 @@ def main() -> None:
                 ("tuesday", "11:35\u201312:15"): "PPA / Lunch",
                 ("tuesday", "13:00\u201313:10"): "Student Support",
                 ("tuesday", "14:45\u201315:30"): "Student Support",
-                ("wednesday", "12:30\u201313:10"): "PPA / Lunch",
+                ("wednesday", "14:30\u201315:00"): "PPA / Lunch",
                 ("wednesday", "14:45\u201315:00"): "Student Support",
                 ("thursday", "11:05\u201311:20"): "Student Support",
                 ("thursday", "11:35\u201312:15"): "PPA / Lunch",
