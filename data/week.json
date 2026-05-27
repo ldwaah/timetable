@@ -144,8 +144,8 @@
           "ks3": "SEMH Sports",
           "ks4": "SEMH Sports",
           "kind": "pe",
-          "staff_ks3": "LI",
-          "staff_ks4": "LI"
+          "staff_ks3": "LI / JC",
+          "staff_ks4": "LI / JC"
         },
         {
           "start": "14:45",
@@ -947,15 +947,6 @@
           "start": "13:10",
           "end": "14:00",
           "subject": "Beauty / Enrichment",
-          "stage": "KS4"
-        }
-      ],
-      "JC": [
-        {
-          "days": ["thursday"],
-          "start": "11:35",
-          "end": "12:15",
-          "subject": "Citizenship Support / Mentoring",
           "stage": "KS4"
         }
       ],

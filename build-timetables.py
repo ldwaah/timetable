@@ -2211,6 +2211,108 @@ def main() -> None:
                     s["subject"] = "Student Support"
                     if initials == "JC":
                         s["location"] = "Foyer"
+        if initials == "JC":
+            # JC has a few fixed-role blocks that should appear explicitly (not as generic support),
+            # and one slot that needs a label variant without changing the student-facing timetable.
+            def _upsert_slot(day_key: str, time: str, *, stage: str, subject: str) -> None:
+                # Prefer replacing generic filler (e.g. Student Support) rather than duplicating slots.
+                for s in combined:
+                    if s["day_key"] == day_key and s["time"] == time:
+                        if s.get("subject") in ("", "Student Support"):
+                            s["stage"] = stage
+                            s["subject"] = subject
+                            s.pop("location", None)
+                            return
+                combined.append(
+                    {
+                        "day": day_labels.get(day_key, day_key.capitalize()),
+                        "day_key": day_key,
+                        "time": time,
+                        "stage": stage,
+                        "subject": subject,
+                    }
+                )
+
+            def _subtract_fixed_support(day_key: str, *, fixed: list[tuple[str, str]]) -> None:
+                """Remove/trim generic Student Support that overlaps fixed slots."""
+                fixed_mins = [(_time_minutes(s), _time_minutes(e)) for s, e in fixed]
+                fixed_mins.sort()
+
+                new_combined: list[dict] = []
+                for s in combined:
+                    if s["day_key"] != day_key or s.get("subject") != "Student Support":
+                        new_combined.append(s)
+                        continue
+
+                    start_s, end_s = s["time"].split("–")
+                    a, b = _time_minutes(start_s), _time_minutes(end_s)
+                    remaining: list[tuple[int, int]] = [(a, b)]
+                    for fs, fe in fixed_mins:
+                        next_remaining: list[tuple[int, int]] = []
+                        for rs, re in remaining:
+                            if fe <= rs or fs >= re:
+                                next_remaining.append((rs, re))
+                                continue
+                            if rs < fs:
+                                next_remaining.append((rs, fs))
+                            if fe < re:
+                                next_remaining.append((fe, re))
+                        remaining = next_remaining
+
+                    for rs, re in remaining:
+                        if re <= rs:
+                            continue
+                        new_combined.append(
+                            {
+                                **s,
+                                "time": f"{_minutes_to_time(rs)}–{_minutes_to_time(re)}",
+                            }
+                        )
+
+                combined[:] = new_combined
+
+            # Tue: keep staffing unchanged, but show explicit KS3 label variant for JC.
+            for s in combined:
+                if (
+                    s["day_key"] == "tuesday"
+                    and s["time"] == "12:30–13:10"
+                    and s["stage"] == "KS3"
+                    and s["subject"] == "SEMH / AQA"
+                ):
+                    s["subject"] = "SEMH / AQA (KS3)"
+
+            _subtract_fixed_support(
+                "tuesday",
+                fixed=[("11:20", "11:35"), ("11:35", "12:15"), ("12:15", "12:30")],
+            )
+            _upsert_slot("tuesday", "11:20–11:35", stage="KS4", subject="KS4 Break Support")
+            _upsert_slot("tuesday", "11:35–12:15", stage="KS4", subject="1-2-1 Mentoring")
+            _upsert_slot("tuesday", "12:15–12:30", stage="KS4", subject="Lunch Support")
+
+            _subtract_fixed_support(
+                "thursday",
+                fixed=[("11:20", "11:35"), ("11:35", "12:15"), ("12:15", "12:30"), ("12:30", "13:10")],
+            )
+            _upsert_slot("thursday", "11:20–11:35", stage="KS4", subject="KS4 Break Support")
+            _upsert_slot("thursday", "11:35–12:15", stage="KS4", subject="1-2-1 Mentoring")
+            _upsert_slot("thursday", "12:15–12:30", stage="KS4", subject="Lunch Support")
+            _upsert_slot("thursday", "12:30–13:10", stage="KS4", subject="SEMH / AQA (KS4)")
+
+            # Hard guard: ensure no long "Student Support" block masks the fixed pattern.
+            combined[:] = [
+                s
+                for s in combined
+                if not (
+                    s.get("subject") == "Student Support"
+                    and (
+                        (s["day_key"] == "tuesday" and s["time"] == "11:20–12:30")
+                        or (s["day_key"] == "thursday" and s["time"] == "11:20–13:10")
+                    )
+                )
+            ]
+
+            combined.sort(key=lambda s: (DAY_ORDER.index(s["day_key"]), s["time"]))
+            combined[:] = merge_staff_sessions(dedup_person_sessions(combined))
         if initials == "HK":
             for s in combined:
                 if "reset" in s["subject"].lower():
