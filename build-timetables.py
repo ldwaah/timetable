@@ -301,7 +301,8 @@ def cell_class(label: str, kind: str) -> str:
         return "slot core maths"
     if label == "English":
         return "slot core english"
-    if kind == "pe" or label.startswith("PE"):
+    low = label.lower()
+    if kind == "pe" or low in ("pe", "sports", "semh sports", "gym"):
         return "slot pe"
     if kind == "transition" or label == "Transition":
         return "slot transition"
@@ -595,6 +596,11 @@ def merge_staff_sessions(sessions: list[dict]) -> list[dict]:
     out = [dict(sessions[0])]
     for s in sessions[1:]:
         prev = out[-1]
+        # Some staff-wide blocks (e.g. CPD) must remain split so that
+        # part-time staff only see their actual overlap after working-hours filtering.
+        if prev.get("subject") == "CPD" and s.get("subject") == "CPD":
+            out.append(dict(s))
+            continue
         if (
             prev["day_key"] == s["day_key"]
             and prev["stage"] == s["stage"]
@@ -783,7 +789,7 @@ def get_staff_location(subject: str, stage: str, day_key: str) -> str:
             if stage == "KS3":
                 return "Main Room"
             return "Computer Suite"
-        if low == "gym" or low == "pe" or low.startswith("pe"):
+        if low in ("gym", "pe", "sports", "semh sports") or low.startswith("pe"):
             return "Gym"
         if "sports leaders" in low or "vocational" in low:
             return "Gym"
@@ -866,7 +872,7 @@ def get_staff_location(subject: str, stage: str, day_key: str) -> str:
 
     if low == "gym":
         return "Gym"
-    if low == "pe":
+    if low in ("pe", "sports", "semh sports"):
         return "Sports Hall"
     if low == "art":
         return "Art Room"
@@ -1906,7 +1912,7 @@ def _overview_category(label: str, kind: str) -> str:
     low = label.lower()
     if kind == "searches" or "searches" in low:
         return "cat-searches"
-    if kind == "pe" or low in ("pe", "gym"):
+    if kind == "pe" or low in ("pe", "sports", "semh sports", "gym"):
         return "cat-pe"
     if kind == "assembly" or low == "assembly":
         return "cat-assembly"

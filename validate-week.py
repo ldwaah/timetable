@@ -3,7 +3,7 @@
 import json
 import sys
 
-PE = "PE"
+PE = "SEMH Sports"
 DURATIONS = {
     "English": 40,
     "Maths": 40,
@@ -128,7 +128,7 @@ def validate(rows: list[dict], finish: str, dk: str) -> list[str]:
         for stage in ("ks3", "ks4"):
             pe_total = totals(rows, stage, PE)
             if pe_total and pe_total != pe_exp:
-                issues.append(f"{dk} {stage} PE: {pe_total}min not {pe_exp}min")
+                issues.append(f"{dk} {stage} SEMH Sports: {pe_total}min not {pe_exp}min")
 
     return issues
 
@@ -192,12 +192,14 @@ def main() -> int:
             issues.append(f"{dk}: arrival not 08:50")
         if dk == "wednesday" and day.get("arrival_from") != "10:00":
             issues.append("wednesday: students must start 10:00")
-        if dk in ("monday", "tuesday", "wednesday") and day["finish"] != "15:00":
+        if dk in ("monday", "tuesday") and day["finish"] != "15:00":
             issues.append(f"{dk}: finish must be 15:00")
+        if dk == "wednesday" and day["finish"] != "14:30":
+            issues.append("wednesday: finish must be 14:30")
         if dk in ("thursday", "friday") and day["finish"] != "14:00":
             issues.append(f"{dk}: finish must be 14:00")
         if dk == "wednesday" and totals(day["rows"], "ks3", PE):
-            issues.append("wednesday: PE must not run on Wednesday")
+            issues.append("wednesday: SEMH Sports must not run on Wednesday")
 
     if issues:
         print("FAILED:")

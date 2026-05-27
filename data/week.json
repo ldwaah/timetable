@@ -5,13 +5,13 @@
     "break_minutes": 15,
     "lunch_minutes": 15,
     "lunch_time": "12:15–12:30",
-    "pe_label": "PE",
+    "pe_label": "SEMH Sports",
     "pe_minutes_mon_tue": 85,
     "pe_minutes_thu_fri": 40,
     "reset_minutes": 30,
     "checks_window": "09:05–09:15",
     "core_placement": "Reset — first teaching block after checks; Maths then English; Tuesday: Assembly → Maths → English (no Reset)",
-    "short_day_note": "Thu/Fri: PE 13:20–14:00 is last student slot (14:00 finish); Mon/Tue: PE 13:20–14:45 then Pause & Progress"
+    "short_day_note": "Thu/Fri: SEMH Sports 13:20–14:00 is last student slot (14:00 finish); Mon/Tue: SEMH Sports 13:20–14:45 then Pause & Progress"
   },
   "days": {
     "monday": {
@@ -141,8 +141,8 @@
         {
           "start": "13:20",
           "end": "14:45",
-          "ks3": "PE",
-          "ks4": "PE",
+          "ks3": "SEMH Sports",
+          "ks4": "SEMH Sports",
           "kind": "pe",
           "staff_ks3": "LI",
           "staff_ks4": "LI"
@@ -313,8 +313,8 @@
         {
           "start": "13:20",
           "end": "14:45",
-          "ks3": "PE",
-          "ks4": "PE",
+          "ks3": "SEMH Sports",
+          "ks4": "SEMH Sports",
           "kind": "pe",
           "staff_ks3": "LI",
           "staff_ks4": "LI"
@@ -334,36 +334,24 @@
       "label": "Wednesday",
       "arrival_from": "10:00",
       "arrival_latest": null,
-      "finish": "15:00",
-      "staff_meeting": "09:00–10:00",
+      "finish": "14:30",
+      "staff_meeting": "08:30–10:00",
       "rows": [
         {
           "start": "08:30",
-          "end": "08:50",
-          "ks3": "Set Up / Staff Briefing",
-          "ks4": "Set Up / Staff Briefing",
-          "kind": "briefing",
+          "end": "09:00",
+          "ks3": "CPD",
+          "ks4": "CPD",
+          "kind": "staff_development",
           "staff_only": true,
-          "staff_ks3": "LD / LG / LI / SA",
-          "staff_ks4": "LD / LG / LI / SA"
-        },
-        {
-          "start": "08:50",
-          "end": "09:15",
-          "ks3": "Student Searches",
-          "ks4": "Student Searches",
-          "kind": "searches",
-          "staff_ks3": "SA / LD",
-          "staff_ks4": "SA / LD",
-          "staff_only": true,
-          "note": "LI covers LD in absence — students arrive 10:00"
+          "all_staff": true
         },
         {
           "start": "09:00",
           "end": "10:00",
-          "ks3": "Team Meeting",
-          "ks4": "Team Meeting",
-          "kind": "meeting",
+          "ks3": "CPD",
+          "ks4": "CPD",
+          "kind": "staff_development",
           "staff_only": true,
           "all_staff": true
         },
@@ -454,21 +442,12 @@
         },
         {
           "start": "14:15",
-          "end": "14:45",
+          "end": "14:30",
           "ks3": "Gym",
           "ks4": "Gym",
           "kind": "pe",
           "staff_ks3": "LI / SA",
           "staff_ks4": "LI / SA"
-        },
-        {
-          "start": "14:45",
-          "end": "15:00",
-          "ks3": "Pause & Progress",
-          "ks4": "Pause & Progress",
-          "kind": "lesson",
-          "staff_ks3": "LG / SA",
-          "staff_ks4": "LG / SA"
         }
       ]
     },
@@ -609,8 +588,8 @@
         {
           "start": "13:20",
           "end": "14:00",
-          "ks3": "PE",
-          "ks4": "PE",
+          "ks3": "SEMH Sports",
+          "ks4": "SEMH Sports",
           "kind": "pe",
           "staff_ks3": "LI",
           "staff_ks4": "LI"
@@ -763,8 +742,8 @@
         {
           "start": "13:20",
           "end": "14:00",
-          "ks3": "PE",
-          "ks4": "PE",
+          "ks3": "SEMH Sports",
+          "ks4": "SEMH Sports",
           "kind": "pe",
           "staff_ks3": "LI",
           "staff_ks4": "LI"
@@ -855,7 +834,7 @@
         "ks4": "LI",
         "flz": "HK / JM"
       },
-      "PE": {
+      "SEMH Sports": {
         "ks3": "LI",
         "ks4": "LI"
       },
