@@ -433,21 +433,12 @@
         },
         {
           "start": "14:05",
-          "end": "14:15",
-          "ks3": "Transition / Expectations",
-          "ks4": "Transition / Expectations",
-          "kind": "transition",
-          "staff_ks3": "LI / SA",
-          "staff_ks4": "LI / SA"
-        },
-        {
-          "start": "14:15",
           "end": "14:30",
-          "ks3": "Gym",
-          "ks4": "Gym",
-          "kind": "pe",
-          "staff_ks3": "LI / SA",
-          "staff_ks4": "LI / SA"
+          "ks3": "Pause & Progress",
+          "ks4": "Pause & Progress",
+          "kind": "lesson",
+          "staff_ks3": "LG / LD",
+          "staff_ks4": "LG / LD"
         }
       ]
     },
@@ -904,7 +895,7 @@
       },
       "LG": {
         "monday":    { "start": "12:30", "end": "13:10" },
-        "wednesday": { "start": "14:15", "end": "14:45" }
+        "wednesday": { "start": "14:30", "end": "15:00" }
       },
       "LI": {
         "monday":    { "start": "11:35", "end": "12:15" },
