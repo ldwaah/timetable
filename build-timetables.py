@@ -1537,7 +1537,7 @@ FAQ_ITEMS: dict[str, dict[str, str]] = {
     },
     "centre_duties": {
         "q": "What are Centre Duties?",
-        "a": "Centre Duties means being available on-call for incidents and overseeing general centre operations from the Main Foyer (including supporting unstructured times).",
+        "a": "Centre Duties means being available on-call for incidents, overseeing general centre operations from the Main Foyer (including supporting unstructured times), and assigning staff for student support allocations (Supervision / monitoring of students).",
     },
     "lesson_observations": {
         "q": "What is the lesson observation expectation?",
