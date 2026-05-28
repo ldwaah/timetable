@@ -1489,20 +1489,20 @@ FAQ_ITEMS: dict[str, dict[str, str]] = {
         "q": "What is Whole School Support?",
         "a": "Whole School Support is essentially supporting all staff and all students during unstructured times. To supervise students.",
     },
-    "ppa_oncall": {
-        "q": "What is On-call / Centre Duties?",
-        "a": "Being available on-call for incidents and overseeing general centre operations from the Main Foyer.",
+    "centre_duties": {
+        "q": "What are Centre Duties?",
+        "a": "Centre Duties means being available on-call for incidents and overseeing general centre operations from the Main Foyer (including supporting unstructured times).",
     },
-    "ppa": {
-        "q": "What is PPA?",
-        "a": "Planning, Preparation and Assessment \u2014 time allocated for lesson planning and administrative tasks.",
+    "lesson_observations": {
+        "q": "What is the lesson observation expectation?",
+        "a": "At least two lesson observations per staff member per week.",
     },
 }
 
 def render_faq_section_all() -> str:
     """Render glossary with ALL FAQ items for the main staff page."""
     items_html = []
-    for key in ("student_support", "whole_school_support", "ppa_oncall"):
+    for key in ("student_support", "whole_school_support", "centre_duties", "lesson_observations"):
         item = FAQ_ITEMS[key]
         items_html.append(
             f'<details><summary>{esc(item["q"])}</summary>'
@@ -1959,6 +1959,15 @@ def _overview_staff_activity(person: str, row: dict, day_key: str, all_staff: li
             loc = get_location(break_label, stage, day_key, row.get("kind", ""))
             return activity, loc
 
+    # SLT expectation: during break/lunch, SLT are based in the Main Foyer
+    # unless they are teaching (handled above).
+    if (
+        day_key != "wednesday"
+        and person in SLT_MEMBERS
+        and (_is_break_or_lunch(row.get("ks3", "")) or _is_break_or_lunch(row.get("ks4", "")))
+    ):
+        return "Centre Duties", "Foyer"
+
     return "", ""
 
 
@@ -1979,16 +1988,26 @@ def render_overview_day_panel(week: dict, day_key: str) -> str:
         ks4_loc = get_location(ks4_label, "ks4", day_key, row.get("kind", ""))
         ks3_cat = _overview_category(ks3_label, row.get("kind", ""))
         ks4_cat = _overview_category(ks4_label, row.get("kind", ""))
+        sup3 = row.get("supervision_ks3")
+        sup4 = row.get("supervision_ks4")
+        ks3_support = ""
+        ks4_support = ""
+        if _is_break_or_lunch(ks3_label) and sup3:
+            ks3_support = _supervision_text(sup3, all_staff, day_key=day_key)
+        if _is_break_or_lunch(ks4_label) and sup4:
+            ks4_support = _supervision_text(sup4, all_staff, day_key=day_key)
 
         ks3_cell = (
             f'<td class="ov-cell {ks3_cat}">'
             f'<span class="ov-activity">{esc(ks3_label)}</span>'
+            + (f'<span class="ov-location">{esc(ks3_support)}</span>' if ks3_support else "")
             + (f'<span class="ov-location">{esc(ks3_loc)}</span>' if ks3_loc else "")
             + "</td>"
         )
         ks4_cell = (
             f'<td class="ov-cell {ks4_cat}">'
             f'<span class="ov-activity">{esc(ks4_label)}</span>'
+            + (f'<span class="ov-location">{esc(ks4_support)}</span>' if ks4_support else "")
             + (f'<span class="ov-location">{esc(ks4_loc)}</span>' if ks4_loc else "")
             + "</td>"
         )
@@ -2173,6 +2192,31 @@ def main() -> None:
             for s in combined:
                 if s["subject"] == "PPA":
                     s["subject"] = "On-call / Centre Duties"
+            # During break/lunch, SLT are based in the Main Foyer unless teaching.
+            existing_slots = {(s["day_key"], s["time"]) for s in combined}
+            for day_key in DAY_ORDER:
+                if day_key == "wednesday":
+                    continue
+                day = week["days"].get(day_key)
+                if not day:
+                    continue
+                for row in day.get("rows", []):
+                    if not (_is_break_or_lunch(row.get("ks3", "")) or _is_break_or_lunch(row.get("ks4", ""))):
+                        continue
+                    slot_time = f'{row["start"]}–{row["end"]}'
+                    if (day_key, slot_time) in existing_slots:
+                        continue
+                    combined.append(
+                        {
+                            "day": day_labels.get(day_key, day_key.capitalize()),
+                            "day_key": day_key,
+                            "time": slot_time,
+                            "stage": "All",
+                            "subject": "Centre Duties",
+                            "location": "Foyer",
+                        }
+                    )
+                    existing_slots.add((day_key, slot_time))
         if initials == "SA":
             for s in combined:
                 if s["subject"] == "Break Supervision (Main Foyer)":
@@ -2321,6 +2365,10 @@ def main() -> None:
             for s in combined:
                 if "reset" in s["subject"].lower():
                     s["location"] = "Computer Suite" if s["day_key"] == "wednesday" else "URFUTURE"
+
+        combined.sort(key=lambda s: (DAY_ORDER.index(s["day_key"]), s["time"]))
+        combined[:] = merge_staff_sessions(dedup_person_sessions(combined))
+
         for s in combined:
             if s["subject"] == "PPA" or s["subject"].startswith("PPA"):
                 s["subject"] = ""
