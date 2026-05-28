@@ -2308,6 +2308,15 @@ def main() -> None:
                     new_label = _li_overrides.get((s["day_key"], s["time"]))
                     if new_label:
                         s["subject"] = new_label
+            # Ensure LI's lunch slot is always labelled "Lunch" (Mon/Tue/Thu/Fri only).
+            for s in combined:
+                if (
+                    s["day_key"] in ("monday", "tuesday", "thursday", "friday")
+                    and s["time"] == "12:15\u201312:30"
+                ):
+                    s["subject"] = "Lunch"
+                    s["stage"] = ""
+                    s["location"] = ""
         if initials in ("HK", "JM", "JC"):
             for s in combined:
                 if s["subject"] == "PPA":
