@@ -2209,6 +2209,73 @@ def filter_by_working_hours(sessions: list[dict], initials: str) -> list[dict]:
     return filtered
 
 
+def apply_staff_period_overrides(combined: list[dict], initials: str) -> None:
+    """Apply staff-only Activity overrides by (day_key, period_number).
+
+    These overrides must not alter the underlying student timetable (week.json rows).
+    Period numbers are the rendered numbering within each staff day panel.
+    """
+    overrides: dict[str, dict[str, dict[int, str]]] = {
+        "LG": {
+            "monday": {7: "Student Support", 10: "Lunch"},
+            "tuesday": {7: "Lunch", 10: "Student Support"},
+            "thursday": {7: "Lunch"},
+            "wednesday": {13: "Lunch"},
+        },
+        "LI": {
+            "wednesday": {13: "Lunch"},
+        },
+    }
+
+    def _apply_label(s: dict, label: str) -> None:
+        s["subject"] = label
+        if label.lower() == "lunch":
+            s["stage"] = ""
+            s["location"] = ""
+        elif label.lower() == "student support":
+            s["location"] = ""
+            if not s.get("stage"):
+                s["stage"] = "—"
+
+    per_person = overrides.get(initials, {})
+    if not per_person:
+        return
+
+    grouped = group_sessions_by_day(combined)
+    for day_key, day_sessions in grouped.items():
+        if not day_sessions:
+            continue
+        day_sessions.sort(key=lambda s: s["time"])
+        day_override = per_person.get(day_key, {})
+        for idx, sess in enumerate(day_sessions, start=1):
+            new_label = day_override.get(idx)
+            if new_label:
+                _apply_label(sess, new_label)
+
+
+def split_blank_sessions_for_period_alignment(combined: list[dict], initials: str) -> None:
+    """Split specific blank sessions so period numbering matches expected rows."""
+    if initials != "LI":
+        return
+    split_at = _time_minutes("14:30")
+    new: list[dict] = []
+    for s in combined:
+        if s.get("day_key") != "wednesday" or s.get("subject") != "":
+            new.append(s)
+            continue
+        start_s, end_s = s["time"].split("–")
+        a, b = _time_minutes(start_s), _time_minutes(end_s)
+        if not (a < split_at < b):
+            new.append(s)
+            continue
+        left = dict(s)
+        left["time"] = f"{_minutes_to_time(a)}–{_minutes_to_time(split_at)}"
+        right = dict(s)
+        right["time"] = f"{_minutes_to_time(split_at)}–{_minutes_to_time(b)}"
+        new.extend([left, right])
+    combined[:] = new
+
+
 def main() -> None:
     week = load_week()
     if "rows" not in week["days"]["monday"]:
@@ -2454,6 +2521,21 @@ def main() -> None:
                 s["subject"] = ""
                 s["stage"] = ""
                 s["location"] = ""
+
+        split_blank_sessions_for_period_alignment(combined, initials)
+        apply_staff_period_overrides(combined, initials)
+
+        if initials == "LG":
+            # Friday: fill any blank/unassigned gaps with Student Support (LG only).
+            for s in combined:
+                if s.get("day_key") != "friday":
+                    continue
+                if s.get("subject", "") != "":
+                    continue
+                s["subject"] = "Student Support"
+                s["location"] = ""
+                if not s.get("stage"):
+                    s["stage"] = "—"
         slug = staff_slug(initials)
         page = render_staff_person_page(week, initials, combined)
         (STAFF_DIR / f"{slug}.html").write_text(page, encoding="utf-8")
