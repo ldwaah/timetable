@@ -2225,6 +2225,12 @@ def apply_staff_period_overrides(combined: list[dict], initials: str) -> None:
             "wednesday": {13: "Lunch Break"},
         },
         "LI": {
+            # LI: show Lunch Break in the 11:35–12:15 slot (Period 8) on Mon/Tue/Thu/Fri.
+            # This must not affect the real Lunch period (12:15–12:30).
+            "monday": {8: "Lunch Break"},
+            "tuesday": {8: "Lunch Break"},
+            "thursday": {8: "Lunch Break"},
+            "friday": {8: "Lunch Break"},
             "wednesday": {13: "Lunch Break"},
         },
     }
