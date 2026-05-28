@@ -2365,6 +2365,18 @@ def main() -> None:
             for s in combined:
                 if "reset" in s["subject"].lower():
                     s["location"] = "Computer Suite" if s["day_key"] == "wednesday" else "URFUTURE"
+        if initials in ("JM", "HK"):
+            for s in combined:
+                low = s.get("subject", "").lower()
+                if "lunch" in low:
+                    continue
+                is_break_support = ("break" in low) and ("support" in low or "supervision" in low)
+                if not is_break_support:
+                    continue
+                # Non-Wednesday: break support should display Outside / Foyer for JM/HK.
+                # Wednesday has no foyer; keep the standard Wednesday room rules.
+                if s.get("day_key") != "wednesday":
+                    s["location"] = "Outside / Foyer"
 
         combined.sort(key=lambda s: (DAY_ORDER.index(s["day_key"]), s["time"]))
         combined[:] = merge_staff_sessions(dedup_person_sessions(combined))
