@@ -2259,7 +2259,7 @@ def apply_staff_period_overrides(combined: list[dict], initials: str) -> None:
             "tuesday": {8: "Lunch Break"},
             "thursday": {8: "Lunch Break"},
             "friday": {8: "Lunch Break"},
-            "wednesday": {13: "Lunch Break"},
+            "wednesday": {12: "Student Support", 13: "Lunch Break"},
         },
     }
 
