@@ -76,9 +76,12 @@ def _time_minutes(t: str) -> int:
 
 def _staff_working_at(person: str, day_key: str, start: str) -> bool:
     """Return True if person is working during the given slot."""
-    day_hours = STAFF_WORKING_HOURS.get(person, {}).get(day_key)
-    if not day_hours:
+    person_hours = STAFF_WORKING_HOURS.get(person)
+    if not person_hours:
         return True
+    day_hours = person_hours.get(day_key)
+    if not day_hours:
+        return False
     p_start = _time_minutes(day_hours[0])
     p_end = _time_minutes(day_hours[1])
     slot_start = _time_minutes(start)
@@ -716,6 +719,8 @@ def collect_staff_sessions(week: dict) -> dict[str, list[dict]]:
                 staff = row.get(f"staff_{stage}")
                 if staff:
                     for initials in (s.strip() for s in staff.split("/")):
+                        if day_key in off_days.get(initials, []):
+                            continue
                         sessions.setdefault(initials, []).append(
                             {
                                 "day": day["label"],
@@ -2248,7 +2253,6 @@ def filter_by_working_hours(sessions: list[dict], initials: str) -> list[dict]:
     for s in sessions:
         day_hours = person_hours.get(s["day_key"])
         if not day_hours:
-            filtered.append(s)
             continue
         slot_start = _time_minutes(s["time"].split("\u2013")[0])
         p_start = _time_minutes(day_hours[0])
@@ -2375,8 +2379,11 @@ def main() -> None:
                     s["subject"] = "On-call / Centre Duties"
             # During break/lunch, SLT are based in the Main Foyer unless teaching.
             existing_slots = {(s["day_key"], s["time"]) for s in combined}
+            off = set(week["staff"].get("off_days", {}).get(initials, []))
             for day_key in DAY_ORDER:
                 if day_key == "wednesday":
+                    continue
+                if day_key in off:
                     continue
                 day = week["days"].get(day_key)
                 if not day:
