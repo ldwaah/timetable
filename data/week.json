@@ -954,29 +954,36 @@
         {
           "days": ["monday", "tuesday", "thursday", "friday"],
           "start": "11:05",
+          "end": "11:20",
+          "subject": "KS3 Break Support",
+          "stage": "KS3"
+        },
+        {
+          "days": ["monday", "tuesday", "thursday", "friday"],
+          "start": "11:20",
           "end": "11:35",
-          "subject": "Whole School Support",
-          "stage": "All"
+          "subject": "KS4 Break Support",
+          "stage": "KS4"
         },
         {
           "days": ["monday", "tuesday", "thursday", "friday"],
           "start": "12:15",
           "end": "12:30",
-          "subject": "Whole School Support",
+          "subject": "Lunch Support",
           "stage": "All"
         },
         {
           "days": ["wednesday"],
           "start": "11:10",
           "end": "11:25",
-          "subject": "Whole School Support",
+          "subject": "Break Support",
           "stage": "All"
         },
         {
           "days": ["wednesday"],
           "start": "12:15",
           "end": "12:30",
-          "subject": "Whole School Support",
+          "subject": "Lunch Support",
           "stage": "All"
         }
       ]

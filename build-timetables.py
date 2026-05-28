@@ -1495,7 +1495,7 @@ FAQ_ITEMS: dict[str, dict[str, str]] = {
     },
     "lesson_observations": {
         "q": "What is the lesson observation expectation?",
-        "a": "At least two lesson observations per staff member per week.",
+        "a": "At least two lesson observations per staff member per week as part of SLT Centre Duties.",
     },
 }
 
