@@ -656,33 +656,52 @@ def collect_staff_sessions(week: dict) -> dict[str, list[dict]]:
                     if day_key in off_days.get(person, []):
                         continue
                     # Staff-only exception:
-                    # Lorelle (LG) takes Detentions only until 14:30, then Lunch Break 14:30–15:00.
+                    # Lorelle (LG): on any day where Detentions covers 14:30–15:00,
+                    # show Detentions only until 14:30, then Lunch Break 14:30–15:00.
                     if (
                         person == "LG"
                         and row.get("kind") == "detentions"
                         and label == "Detentions"
-                        and row.get("start") == "14:00"
-                        and row.get("end") == "15:00"
                     ):
-                        sessions.setdefault(person, []).append(
-                            {
-                                "day": day["label"],
-                                "day_key": day_key,
-                                "time": "14:00–14:30",
-                                "stage": "All",
-                                "subject": "Detentions",
-                            }
-                        )
-                        sessions.setdefault(person, []).append(
-                            {
-                                "day": day["label"],
-                                "day_key": day_key,
-                                "time": "14:30–15:00",
-                                "stage": "All",
-                                "subject": "Lunch Break",
-                            }
-                        )
-                        continue
+                        split_at = _time_minutes("14:30")
+                        lunch_end = _time_minutes("15:00")
+                        row_start = _time_minutes(row["start"])
+                        row_end = _time_minutes(row["end"])
+
+                        # Only apply when the detention slot actually overlaps 14:30–15:00.
+                        if row_start < lunch_end and row_end > split_at:
+                            detention_end = min(row_end, split_at)
+                            if detention_end > row_start:
+                                sessions.setdefault(person, []).append(
+                                    {
+                                        "day": day["label"],
+                                        "day_key": day_key,
+                                        "time": f"{_minutes_to_time(row_start)}–{_minutes_to_time(detention_end)}",
+                                        "stage": "All",
+                                        "subject": "Detentions",
+                                    }
+                                )
+                            sessions.setdefault(person, []).append(
+                                {
+                                    "day": day["label"],
+                                    "day_key": day_key,
+                                    "time": "14:30–15:00",
+                                    "stage": "All",
+                                    "subject": "Lunch Break",
+                                }
+                            )
+                            # If detentions continues beyond 15:00, preserve the remainder (rare).
+                            if row_end > lunch_end:
+                                sessions.setdefault(person, []).append(
+                                    {
+                                        "day": day["label"],
+                                        "day_key": day_key,
+                                        "time": f"15:00–{_minutes_to_time(row_end)}",
+                                        "stage": "All",
+                                        "subject": "Detentions",
+                                    }
+                                )
+                            continue
                     sessions.setdefault(person, []).append(
                         {
                             "day": day["label"],
