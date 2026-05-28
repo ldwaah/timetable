@@ -99,6 +99,29 @@ def _is_break_or_lunch(label: str) -> bool:
     return False
 
 
+def _period_suffix_for_row(row: dict) -> str:
+    """Return suffix for a whole-row period label, e.g. ' (Break)'."""
+    ks3 = row.get("ks3", "") or ""
+    ks4 = row.get("ks4", "") or ""
+    if ks3 == "Lunch" or ks4 == "Lunch":
+        return " (Lunch)"
+    if _is_break_or_lunch(ks3) or _is_break_or_lunch(ks4):
+        return " (Break)"
+    return ""
+
+
+def _period_suffix_for_label(label: str) -> str:
+    if label == "Lunch":
+        return " (Lunch)"
+    if _is_break_or_lunch(label):
+        return " (Break)"
+    return ""
+
+
+def _period_label(n: int, *, suffix: str = "") -> str:
+    return f"Period {n}{suffix}"
+
+
 def get_location(label: str, stage: str, day_key: str, kind: str) -> str:
     """Determine the room/location for a given activity."""
     if not label or label == "—":
@@ -391,6 +414,7 @@ def render_student_ks_day_panel(week: dict, day_key: str, stage: str) -> str:
     rows = [r for r in rows if r.get("kind") != "searches"]
     hint_html = render_searches_hint(day)
     rows_html = []
+    period_n = 1
     for row in rows:
         label = row.get(stage, "—")
         if not label or label == "—":
@@ -402,8 +426,11 @@ def render_student_ks_day_panel(week: dict, day_key: str, stage: str) -> str:
             staff = _supervision_text(supervision, all_staff, day_key=day_key)
         location = get_location(label, stage, day_key, row.get("kind", ""))
         cls = cell_class(label, row.get("kind", ""))
+        period = _period_label(period_n, suffix=_period_suffix_for_label(label))
+        period_n += 1
         rows_html.append(
             f'<tr class="{cls}">'
+            f'<td class="period-col">{esc(period)}</td>'
             f'<td class="time-col">{esc(time_str)}</td>'
             f'<td class="activity-col"><span class="slot-label">{esc(label)}</span></td>'
             f'<td class="staff-col">{esc(staff)}</td>'
@@ -418,6 +445,7 @@ def render_student_ks_day_panel(week: dict, day_key: str, stage: str) -> str:
           <table class="ks-grid">
             <thead>
               <tr>
+                <th scope="col">Period</th>
                 <th scope="col">Time</th>
                 <th scope="col">Activity</th>
                 <th scope="col">Staff</th>
@@ -906,12 +934,16 @@ def get_staff_location(subject: str, stage: str, day_key: str) -> str:
 def render_person_day_panel(day_key: str, sessions: list[dict], *, is_off_day: bool = False) -> str:
     if sessions:
         rows_html = []
+        period_n = 1
         for s in sessions:
             is_ppa = s["subject"].startswith("PPA")
             subj_cls = "subject-col ppa" if is_ppa else "subject-col"
             location = s["location"] if "location" in s else get_staff_location(s["subject"], s["stage"], day_key)
+            period = _period_label(period_n)
+            period_n += 1
             rows_html.append(
                 "<tr>"
+                f'<td class="period-col">{esc(period)}</td>'
                 f'<td class="time-col">{esc(s["time"])}</td>'
                 f'<td>{esc(s["stage"])}</td>'
                 f'<td class="{subj_cls}">{esc(s["subject"])}</td>'
@@ -921,13 +953,14 @@ def render_person_day_panel(day_key: str, sessions: list[dict], *, is_off_day: b
         body = "".join(rows_html)
     else:
         msg = "Not working" if is_off_day else "No sessions"
-        body = f'<tr><td colspan="4" class="muted">{msg}</td></tr>'
+        body = f'<tr><td colspan="5" class="muted">{msg}</td></tr>'
     return f"""
       <section class="day-panel" id="panel-{day_key}" role="tabpanel">
         <div class="table-wrap">
           <table class="person-grid">
             <thead>
               <tr>
+                <th scope="col">Period</th>
                 <th scope="col">Time</th>
                 <th scope="col">Group</th>
                 <th scope="col">Activity</th>
@@ -994,6 +1027,7 @@ def render_staff_day_panel(week: dict, day_key: str) -> str:
     has_flz = any(row.get("flz") for row in rows)
     hint_html = render_searches_hint(day)
     rows_html = []
+    period_n = 1
     for row in rows:
         ks3, ks4 = row["ks3"], row["ks4"]
         s3 = row.get("staff_ks3")
@@ -1022,23 +1056,26 @@ def render_staff_day_panel(week: dict, day_key: str) -> str:
             flz_html = f'<td class="{cell_class(flz, row.get("kind", ""))}">{flz_disp}</td>'
         merge_ks = _row_ks_identical(row)
         merge_all = merge_ks and has_flz and _row_flz_matches_ks(row)
+        period = _period_label(period_n, suffix=_period_suffix_for_row(row))
+        period_n += 1
+        period_cell = f'<td class="period-col">{esc(period)}</td>'
         time_cell = f'<td class="time-col">{esc(row["start"])}–{esc(row["end"])}</td>'
         ks3_cls = cell_class(ks3, row.get("kind", ""))
         if merge_all:
             rows_html.append(
-                f"<tr>{time_cell}"
+                f"<tr>{period_cell}{time_cell}"
                 f'<td colspan="3" class="{ks3_cls}">{k3_disp}</td>'
                 f"</tr>"
             )
         elif merge_ks:
             rows_html.append(
-                f"<tr>{time_cell}"
+                f"<tr>{period_cell}{time_cell}"
                 f'<td colspan="2" class="{ks3_cls}">{k3_disp}</td>'
                 f"{flz_html}</tr>"
             )
         else:
             rows_html.append(
-                f"<tr>{time_cell}"
+                f"<tr>{period_cell}{time_cell}"
                 f'<td class="{ks3_cls}">{k3_disp}</td>'
                 f'<td class="{cell_class(ks4, row.get("kind", ""))}">{k4_disp}</td>'
                 f"{flz_html}</tr>"
@@ -1051,6 +1088,7 @@ def render_staff_day_panel(week: dict, day_key: str) -> str:
           <table class="timeline-table">
             <thead>
               <tr>
+                <th scope="col">Period</th>
                 <th scope="col">Time</th>
                 <th scope="col">KS3</th>
                 <th scope="col">KS4</th>
@@ -1202,6 +1240,13 @@ SHARED_STUDENT_CSS = """
       font-size: 0.8rem;
     }
 
+    .period-col {
+      color: #8b949e;
+      white-space: nowrap;
+      width: 6.75rem;
+      font-size: 0.8rem;
+    }
+
     .slot-label { font-weight: 500; color: #e6edf3; display: block; }
 
     .slot-staff {
@@ -1329,6 +1374,7 @@ STAFF_CSS = """
     }
 
     .time-col { color: #8b949e; white-space: nowrap; width: 8.5rem; }
+    .period-col { color: #8b949e; white-space: nowrap; width: 7rem; }
     .lead { color: #a371f7; font-size: 0.8rem; font-weight: 500; }
     .slot.break { color: #3fb950; }
     .slot.assembly { color: #d2a8ff; }
@@ -1554,6 +1600,7 @@ STAFF_PERSON_CSS = (
       text-transform: uppercase;
     }
     .time-col { color: #8b949e; white-space: nowrap; }
+    .period-col { color: #8b949e; white-space: nowrap; width: 7rem; }
     .subject-col { color: #f0f6fc; font-weight: 500; }
     .subject-col.ppa { color: #d2a8ff; font-style: italic; }
     .location-col { color: #a371f7; font-size: 0.8rem; font-weight: 500; }
@@ -1879,6 +1926,13 @@ OVERVIEW_CSS = DAY_TAB_CSS + """
       font-size: 0.72rem;
     }
 
+    .overview-grid .period-col {
+      color: #8b949e;
+      white-space: nowrap;
+      width: 6.75rem;
+      font-size: 0.72rem;
+    }
+
     .ov-cell { min-width: 90px; }
     .ov-cell .ov-activity { font-weight: 500; color: #e6edf3; display: block; line-height: 1.3; }
     .ov-cell .ov-location { font-size: 0.65rem; color: #a371f7; display: block; margin-top: 0.1rem; }
@@ -1979,7 +2033,11 @@ def render_overview_day_panel(week: dict, day_key: str) -> str:
     rows = display_rows(day, include_staff_only=True)
 
     rows_html = []
+    period_n = 1
     for row in rows:
+        period = _period_label(period_n, suffix=_period_suffix_for_row(row))
+        period_n += 1
+        period_cell = f'<td class="period-col">{esc(period)}</td>'
         time_cell = f'<td class="time-col">{esc(row["start"])}–{esc(row["end"])}</td>'
 
         ks3_label = row.get("ks3", "—")
@@ -2033,7 +2091,7 @@ def render_overview_day_panel(week: dict, day_key: str) -> str:
             staff_cells.append(cell)
 
         rows_html.append(
-            f"<tr>{time_cell}{ks3_cell}{ks4_cell}{''.join(staff_cells)}</tr>"
+            f"<tr>{period_cell}{time_cell}{ks3_cell}{ks4_cell}{''.join(staff_cells)}</tr>"
         )
 
     staff_headers = "".join(f'<th scope="col">{esc(p)}</th>' for p in all_staff)
@@ -2044,6 +2102,7 @@ def render_overview_day_panel(week: dict, day_key: str) -> str:
           <table class="overview-grid">
             <thead>
               <tr>
+                <th scope="col">Period</th>
                 <th scope="col">Time</th>
                 <th scope="col">KS3</th>
                 <th scope="col">KS4</th>
