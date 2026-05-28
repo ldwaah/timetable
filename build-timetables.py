@@ -655,6 +655,34 @@ def collect_staff_sessions(week: dict) -> dict[str, list[dict]]:
                 for person in all_people:
                     if day_key in off_days.get(person, []):
                         continue
+                    # Staff-only exception:
+                    # Lorelle (LG) takes Detentions only until 14:30, then Lunch Break 14:30–15:00.
+                    if (
+                        person == "LG"
+                        and row.get("kind") == "detentions"
+                        and label == "Detentions"
+                        and row.get("start") == "14:00"
+                        and row.get("end") == "15:00"
+                    ):
+                        sessions.setdefault(person, []).append(
+                            {
+                                "day": day["label"],
+                                "day_key": day_key,
+                                "time": "14:00–14:30",
+                                "stage": "All",
+                                "subject": "Detentions",
+                            }
+                        )
+                        sessions.setdefault(person, []).append(
+                            {
+                                "day": day["label"],
+                                "day_key": day_key,
+                                "time": "14:30–15:00",
+                                "stage": "All",
+                                "subject": "Lunch Break",
+                            }
+                        )
+                        continue
                     sessions.setdefault(person, []).append(
                         {
                             "day": day["label"],
