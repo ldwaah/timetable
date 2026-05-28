@@ -94,6 +94,8 @@ def _parse_staff(staff_str: str | None) -> set[str]:
 def _is_break_or_lunch(label: str) -> bool:
     if label == "Lunch":
         return True
+    if label == "Lunch Break":
+        return True
     if label.startswith("Break") or "Toilet Break" in label:
         return True
     return False
@@ -152,7 +154,7 @@ def get_location(label: str, stage: str, day_key: str, kind: str) -> str:
             return "Gym"
         if "sports leaders" in low or "vocational" in low:
             return "Gym"
-        if low == "lunch":
+        if low in ("lunch", "lunch break"):
             if stage == "ks3":
                 return "Main Room"
             return "Computer Suite"
@@ -193,7 +195,7 @@ def get_location(label: str, stage: str, day_key: str, kind: str) -> str:
         return "Cooking Room"
     if "flz" in low or stage == "flz":
         return "Sports Hall"
-    if low == "lunch":
+    if low in ("lunch", "lunch break"):
         if stage == "ks3":
             return "Boardroom"
         return "URFUTURE"
@@ -316,7 +318,7 @@ def cell_class(label: str, kind: str) -> str:
         return "slot reset"
     if kind == "checks" or "Checks" in label:
         return "slot checks"
-    if label == "Lunch" or label.startswith("Break") or "Toilet Break" in label:
+    if label in ("Lunch", "Lunch Break") or label.startswith("Break") or "Toilet Break" in label:
         return "slot break"
     if label == "Arrival":
         return "slot arrival"
@@ -807,7 +809,7 @@ def get_staff_location(subject: str, stage: str, day_key: str) -> str:
             if "ks4" in low or stage == "KS4":
                 return "Computer Suite"
             return "Main Room"
-        if low == "lunch":
+        if low in ("lunch", "lunch break"):
             if stage == "KS3":
                 return "Main Room"
             if stage == "KS4":
@@ -888,7 +890,7 @@ def get_staff_location(subject: str, stage: str, day_key: str) -> str:
             return "URFUTURE"
         return ""
 
-    if low == "lunch":
+    if low in ("lunch", "lunch break"):
         if stage == "KS3":
             return "Boardroom"
         if stage == "KS4":
@@ -2217,19 +2219,19 @@ def apply_staff_period_overrides(combined: list[dict], initials: str) -> None:
     """
     overrides: dict[str, dict[str, dict[int, str]]] = {
         "LG": {
-            "monday": {7: "Student Support", 10: "Lunch"},
-            "tuesday": {7: "Lunch", 10: "Student Support"},
-            "thursday": {7: "Lunch"},
-            "wednesday": {13: "Lunch"},
+            "monday": {7: "Student Support", 10: "Lunch Break"},
+            "tuesday": {7: "Lunch Break", 10: "Student Support"},
+            "thursday": {7: "Lunch Break"},
+            "wednesday": {13: "Lunch Break"},
         },
         "LI": {
-            "wednesday": {13: "Lunch"},
+            "wednesday": {13: "Lunch Break"},
         },
     }
 
     def _apply_label(s: dict, label: str) -> None:
         s["subject"] = label
-        if label.lower() == "lunch":
+        if label.lower() in ("lunch", "lunch break"):
             s["stage"] = ""
             s["location"] = ""
         elif label.lower() == "student support":
